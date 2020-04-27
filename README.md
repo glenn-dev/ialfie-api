@@ -11,10 +11,13 @@ Administrative software for condominium management.
 * Trello board used for the execution of the project: (https://trello.com/b/6oaUVcGI/ialfie)
 
 ## Schema:
+
 * Conceptual:
+
 ![Conceptual schema](/assets/ialfie_conceptual_model.png)
 
 * Logical:
+
 ![Logical schema](/assets/ialfie_logic_model.png)
 
 ## Contributing
