@@ -1,0 +1,16 @@
+{
+  "name": "ialfie-app",
+  "version": "1.0.0",
+  "description": "RESTful API with Node.js, Express, and PostgreSQL for ialfie project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Glenn",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.0.3",
+    "pg-promise": "^10.5.2"
+  }
+}
