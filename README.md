@@ -12,10 +12,10 @@ Administrative software for condominium management.
 
 ## Schema:
 * Conceptual:
-[Conceptual schema]: (assets/ialfie_conceptual_model.png)
+[Conceptual schema](assets/ialfie_conceptual_model.png)
 
 * Logical:
-[Logical schema]: (assets/ialfie_logic_model.png)
+[Logical schema](assets/ialfie_logic_model.png)
 
 
 ## Contributing
