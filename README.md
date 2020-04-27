@@ -12,13 +12,10 @@ Administrative software for condominium management.
 
 ## Schema:
 * Conceptual:
-![Conceptual schema][conceptual]
-[conceptual]: assets/ialfie_conceptual_model.png
+![Conceptual schema](/assets/ialfie_conceptual_model.png)
 
 * Logical:
-![Logical schema][conceptual]
-[conceptual]: assets/ialfie_logic_model.png
-
+![Logical schema](/assets/ialfie_logic_model.png)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
