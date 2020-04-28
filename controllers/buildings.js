@@ -2,7 +2,7 @@ const pool = require('../db')
 
 // GET ALL BUILDINGS:
 const getBuildings = (req, res) => {
-  pool.query('SELECT * FROM buildings ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM buildings ORDER BY name ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -12,10 +12,10 @@ const getBuildings = (req, res) => {
 
 // GET BUILDINGS BY ID:
 const getBuildingById = (req, res) => {
-  const id = parseInt(req.params.id)
+  const { id } = req.body
 
   pool.query(
-    'SELECT * FROM buildings WHERE id = $1', [id], (error, results) => {
+    `SELECT * FROM buildings WHERE id IN(${id}) ORDER BY name ASC`, (error, results) => {
     if (error) {
       throw error
     }
@@ -34,7 +34,7 @@ const createBuilding = (req, res) => {
     if (error) {
       throw error
     }
-    res.status(201).send(`Building ${name} added successfully`)
+    res.status(201).send(`Building "${name}" added successfully`)
   })
 }
 
@@ -50,16 +50,16 @@ const updateBuilding = (req, res) => {
       if (error) {
         throw error
       }
-      res.status(200).send(`User modified with ID: ${id}`)
+      res.status(200).send(`Building modified with ID: ${id}`)
     }
   )
 }
 
 // DELETE BUILDING:
 const deleteBuilding = (req, res) => {
-  const id = parseInt(req.params.id)
+  const { id } = req.body
 
-  pool.query('DELETE FROM buildings WHERE id = $1', [id], (error, results) => {
+  pool.query(`DELETE FROM buildings WHERE id IN(${id})`, (error, results) => {
     if (error) {
       throw error
     }
