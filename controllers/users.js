@@ -28,8 +28,8 @@ const createUser = (req, res) => {
   const { name, last_name, email, password, phone } = req.body
 
   pool.query(
-    'INSERT INTO users (name, last_name, email, password, phone) VALUES ($1, $2, $3, $4, $5, $6)', 
-    [name, last_name, email, password, phone, user_type], 
+    'INSERT INTO users (name, last_name, email, password, phone) VALUES ($1, $2, $3, $4, $5)', 
+    [name, last_name, email, password, phone],
     (error, results) => {
     if (error) {
       throw error
@@ -41,7 +41,7 @@ const createUser = (req, res) => {
 // UPDATE (PUT) USER:
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id)
-  const { name, email,  } = req.body
+  const { name, last_name, email, password, phone } = req.body
 
   pool.query(
     'UPDATE users SET name = $1, last_name = $2, email = $3, password = $4, phone = $5 WHERE id = $6',

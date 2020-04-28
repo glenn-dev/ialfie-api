@@ -2,6 +2,7 @@ const users = require('./controllers/users')
 
 function createRouter(app) {
 
+  // USERS:
   app.get('/users', users.getUsers)
   app.get('/users/:id', users.getUserById)
   app.post('/users', users.createUser)
