@@ -1,4 +1,4 @@
-# iAlfie
+# iAlfie - API
 
 Administrative software for condominium management.
 
@@ -22,11 +22,13 @@ Administrative software for condominium management.
 
 ## Contributing
 
-This is an open source project that still in development phase. 
+:warning: This is an open source project that still in development phase :baby:. That said, I suggest to check "development" branch for latest features before any other action.
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+:electric_plug: Pull requests are welcome. 
 
-Please feel free to contribute any suggestion or recommendation :).
+:wrench: For major changes, please open an issue first to discuss what you would like to change. Feel free to contribute any suggestion as well :bowtie:
+
+:email: glenn.marcano90@gmail.com
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+:space_invader: [MIT](https://choosealicense.com/licenses/mit/) :space_invader:
