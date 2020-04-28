@@ -1,11 +1,4 @@
-const Pool = require('pg').Pool
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'ialfie',
-  password: 'arepo8724',
-  port: 5432,
-})
+const pool = require('../db')
 
 // GET ALL USERS:
 const getUsers = (req, res) => {
@@ -21,7 +14,8 @@ const getUsers = (req, res) => {
 const getUserById = (req, res) => {
   const id = parseInt(req.params.id)
 
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query(
+    'SELECT * FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -29,26 +23,29 @@ const getUserById = (req, res) => {
   })
 }
 
-// CREATE USER:
+// CREATE (POST) USER:
 const createUser = (req, res) => {
-  const { name, email } = req.body
+  const { name, last_name, email, password, phone } = req.body
 
-  pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
+  pool.query(
+    'INSERT INTO users (name, last_name, email, password, phone) VALUES ($1, $2, $3, $4, $5, $6)', 
+    [name, last_name, email, password, phone, user_type], 
+    (error, results) => {
     if (error) {
       throw error
     }
-    res.status(201).send(`User added with ID: ${result.insertId}`)
+    res.status(201).send(`User ${name} ${last_name} added successfully`)
   })
 }
 
-// UPDATE USER:
+// UPDATE (PUT) USER:
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id)
-  const { name, email } = req.body
+  const { name, email,  } = req.body
 
   pool.query(
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-    [name, email, id],
+    'UPDATE users SET name = $1, last_name = $2, email = $3, password = $4, phone = $5 WHERE id = $6',
+    [name, last_name, email, password, phone, id],
     (error, results) => {
       if (error) {
         throw error

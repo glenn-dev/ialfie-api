@@ -21,9 +21,12 @@ Administrative software for condominium management.
 ![Logical schema](/assets/ialfie_logic_model.png)
 
 ## Contributing
+
+This is an open source project that still in development phase. 
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please feel free to contribute any suggestion or recommendation :).
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
