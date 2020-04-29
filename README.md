@@ -24,11 +24,11 @@ Administrative software for condominium management.
 
 :construction: This is an open source project that still in development phase :baby:. That said, I suggest to check "development" branch for latest features before any other action.
 
-:wrench: For major changes, please open an issue first to discuss what you would like to change. Feel free to contribute any suggestion as well :bowtie:
+:wrench: For major changes, please open an issue first to discuss what you would like to change. Feel free to contribute any suggestion as well.
 
 :electric_plug: Pull requests are welcome. 
 
 :email: glenn.marcano90@gmail.com
 
-## :scroll: License
+## :lock_with_ink_pen: License
 :space_invader: [MIT](https://choosealicense.com/licenses/mit/) :space_invader:
