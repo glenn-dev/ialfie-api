@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const router = require('./router')
+// const seed = require('./db/seed')
 
 app.use(bodyParser.json())
 app.use(

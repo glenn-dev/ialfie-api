@@ -1,4 +1,4 @@
-const pool = require('../db')
+const pool = require('../db/db')
 
 // GET ALL USERS:
 const getUsers = (req, res) => {
