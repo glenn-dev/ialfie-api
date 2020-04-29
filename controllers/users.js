@@ -1,4 +1,4 @@
-const pool = require('../db/db')
+const pool = require('../database/db')
 
 // GET ALL USERS:
 const getUsers = (req, res) => {
@@ -25,11 +25,11 @@ const getUserById = (req, res) => {
 
 // CREATE (POST) USER:
 const createUser = (req, res) => {
-  const { name, last_name, email, password, phone } = req.body
+  const { name, last_name, email, password, phone, id_number } = req.body
 
   pool.query(
-    'INSERT INTO users (name, last_name, email, password, phone) VALUES ($1, $2, $3, $4, $5)', 
-    [name, last_name, email, password, phone],
+    'INSERT INTO users (name, last_name, email, password, phone, id_number) VALUES ($1, $2, $3, $4, $5, $6)', 
+    [name, last_name, email, password, phone, id_number],
     (error, results) => {
     if (error) {
       throw error
@@ -41,11 +41,11 @@ const createUser = (req, res) => {
 // UPDATE (PUT) USER:
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id)
-  const { name, last_name, email, password, phone } = req.body
+  const { name, last_name, email, password, phone, id_number } = req.body
 
   pool.query(
-    'UPDATE users SET name = $1, last_name = $2, email = $3, password = $4, phone = $5 WHERE id = $6',
-    [name, last_name, email, password, phone, id],
+    'UPDATE users SET name = $1, last_name = $2, email = $3, password = $4, phone = $5, id_number = $6 WHERE id = $7',
+    [name, last_name, email, password, phone, id_number, id],
     (error, results) => {
       if (error) {
         throw error

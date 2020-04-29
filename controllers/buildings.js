@@ -1,4 +1,4 @@
-const pool = require('../db/db')
+const pool = require('../database/db')
 
 // GET ALL BUILDINGS:
 const getBuildings = (req, res) => {
