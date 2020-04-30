@@ -1,6 +1,6 @@
 # iAlfie - API
 
-Administrative software for condominium management.
+This is the API for an administrative software oriented to condominium management.
 
 ## :dart: Technologies:
 

@@ -35,16 +35,17 @@ const createAdmin = (req, res) => {
         throw error
       }
       let admin_id = results.rows[0].id
-      
+
       // CREATE RELATION ADMIN-BUILDING
-      pool.query(
-        'INSERT INTO admins_buildings (admin_id, building_id) VALUES ($1, $2)', 
-        [admin_id, building_id],
-        (error, results) => {
-        if (error) {
-          throw error
-        }
-      })
+      for(let i = 0; i < building_id.length; i++) {
+        pool.query(
+          `INSERT INTO admins_buildings (admin_id, building_id) VALUES (${admin_id}, ${building_id[i]})`, 
+          (error, results) => {
+          if (error) {
+            throw error
+          }
+        })
+      }
       res.status(201).send(`Admin "${name} ${last_name}" with ID: ${results.insertId} and relation with building ID: ${building_id} added successfully`)
     }
   )
