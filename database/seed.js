@@ -1,3 +1,5 @@
+const pool = require('./db')
+
 // *** WARNING *** // *** DANGER *** // *** WARNING *** // *** DANGER *** //
 
 // * !! FUNCTIONS BELOW WILL ALTER DATABASE INTEGRITY PERMANENTLY !! * //
@@ -5,8 +7,6 @@
 // * !! DO NEVER EXECUTE THEM IN PRODUCTION ENVIRONMENTS !! * //
 
 // *** WARNING *** // *** DANGER *** // *** WARNING *** // *** DANGER *** //
-
-const pool = require('./db')
 
 // DELETE DATA:
 let resetDb = (tables) => {
@@ -22,9 +22,9 @@ let resetDb = (tables) => {
 }
 
 // SEED DATA (UNFINISHED METHOD):
-function seedDb() {
+function seedDb(amount) {
 
-  for(let i = 0; i < 3; i++){
+  for(let i = 0; i < amount; i++){
     pool.query(
       `INSERT INTO buildings (
         name,
@@ -62,9 +62,11 @@ let tables = [
   'users_departments'
 ]
 
+console.log("* WARNING * !! DISABLE 'seed.js' FILE IN PRODUCTION ENVIRONMENTS !!");
+
 // *** DANGER *** // *** DANGER *** // *** DANGER *** // *** DANGER *** //
 
-// resetDb(tables) // * !! RUN AT YOUR OWN RISK !! * 
-// seedDb()        // * !! RUN AT YOUR OWN RISK !! *
+//// resetDb(tables) // * !! RUN AT YOUR OWN RISK !! * 
+//// seedDb()        // * !! RUN AT YOUR OWN RISK !! *
 
 // *** DANGER *** // *** DANGER *** // *** DANGER *** // *** DANGER *** //
