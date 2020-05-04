@@ -35,7 +35,7 @@ const createAdmin = (req, res) => {
         throw error
       }
       let admin_id = results.rows[0].id
-
+      
       // CREATE RELATION ADMIN-BUILDING
       for(let i = 0; i < building_id.length; i++) {
         pool.query(

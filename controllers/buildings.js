@@ -23,7 +23,7 @@ const getBuildingById = (req, res) => {
   })
 }
 
-// CREATE (POST) BUILDING:
+// CREATE BUILDING:
 const createBuilding = (req, res) => {
   const { name, address, image } = req.body
 
@@ -38,7 +38,7 @@ const createBuilding = (req, res) => {
   })
 }
 
-// UPDATE (PUT) BUILDING:
+// UPDATE BUILDING:
 const updateBuilding = (req, res) => {
   const id = parseInt(req.params.id)
   const { name, address, image } = req.body

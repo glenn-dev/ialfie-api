@@ -23,22 +23,47 @@ const getUserById = (req, res) => {
   })
 }
 
-// CREATE (POST) USER:
+// CREATE USER:
 const createUser = (req, res) => {
-  const { name, last_name, email, password, phone, id_number } = req.body
+  const { name, last_name, email, password, phone, id_number, building_id, department_id } = req.body
 
   pool.query(
-    'INSERT INTO users (name, last_name, email, password, phone, id_number) VALUES ($1, $2, $3, $4, $5, $6)', 
+    'INSERT INTO users (name, last_name, email, password, phone, id_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', 
     [name, last_name, email, password, phone, id_number],
     (error, results) => {
     if (error) {
       throw error
     }
-    res.status(201).send(`User "${name} ${last_name}" added successfully`)
+    let user_id = results.rows[0].id
+    
+    // CREATE RELATION USER-BUILDINGS:
+    for(let i = 0; i < building_id.length; i++) {
+      pool.query(
+        `INSERT INTO users_buildings (user_id, building_id) VALUES (${user_id}, ${building_id[i]})`, 
+        (error, results) => {
+        if (error) {
+          throw error
+        }
+        console.log(`Relation user: ${user_id} - building: ${building_id[i]} created!`);
+      })
+    }
+
+    // CREATE RELATION USER-DEPARTMENTS (TEST PENDING)
+    for(let i = 0; i < department_id.length; i++) {
+      pool.query(
+        `INSERT INTO users_departments (user_id, department_id) VALUES (${user_id}, ${department_id[i]})`, 
+        (error, results) => {
+        if (error) {
+          throw error
+        }
+        console.log(`Relation user: ${user_id} - department: ${department_id[i]} created!`);
+      })
+    }
+    res.status(201).send(`User "${name} ${last_name}" with ID: ${results.insertId}, building ID: ${building_id} and department ID: ${department_id} added successfully`)
   })
 }
 
-// UPDATE (PUT) USER:
+// UPDATE USER:
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id)
   const { name, last_name, email, password, phone, id_number } = req.body
