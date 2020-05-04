@@ -1,6 +1,7 @@
 const users = require('./controllers/users')
 const buildings = require('./controllers/buildings')
 const admins = require('./controllers/admins')
+const departments = require('./controllers/departments')
 
 function createRouter(app) {
 
@@ -24,6 +25,13 @@ function createRouter(app) {
   app.post('/admins', admins.createAdmin)
   app.put('/admins/:id', admins.updateAdmin)
   app.delete('/admins/id', admins.deleteAdmin)
+
+  // DEPARTMENTS:
+  app.get('/departments', departments.getDepartments)
+  app.get('/departments/id', departments.getDepartmentById)
+  app.post('/departments', departments.createDepartment)
+  app.put('/departments/:id', departments.updateDepartment)
+  app.delete('/departments/id', departments.deleteDepartment)
 
 }
 

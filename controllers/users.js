@@ -59,7 +59,6 @@ const createUser = (req, res) => {
         console.log(`Relation user: ${user_id} - department: ${department_id[i]} created!`);
       })
     }
-
     res.status(201).send(`User "${name} ${last_name}" with ID: ${results.insertId}, building ID: ${building_id} and department ID: ${department_id} added successfully`)
   })
 }

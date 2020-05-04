@@ -22,7 +22,7 @@ This is the API for an administrative software oriented to condominium managemen
 
 ## :octocat: Contributing
 
-:construction: This is an open source project that still in development phase :baby:. That said, I suggest to check "development" branch for latest features before any other action.
+:construction: This is an open source project that still in development phase :baby:. We suggest you check "development" branch for latest features before any other action.
 
 :wrench: For major changes, please open an issue first to discuss what you would like to change. Feel free to contribute any suggestion as well.
 
