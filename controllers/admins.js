@@ -25,11 +25,11 @@ const getAdminById = (req, res) => {
 
 // CREATE ADMIN:
 const createAdmin = (req, res) => {
-  const { name, last_name, email, password, phone, id_number, building_id } = req.body
+  const { name, last_name, email, password, phone, id_number, building_id, status } = req.body
 
   pool.query(
-    'INSERT INTO admins (name, last_name, email, password, phone, id_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', 
-    [name, last_name, email, password, phone, id_number],
+    'INSERT INTO admins (name, last_name, email, password, phone, id_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id', 
+    [name, last_name, email, password, phone, id_number, status],
     (error, results) => {
       if (error) {
         throw error
@@ -54,16 +54,34 @@ const createAdmin = (req, res) => {
 // UPDATE ADMIN:
 const updateAdmin = (req, res) => {
   const id = parseInt(req.params.id)
-  const { name, last_name, email, password, phone, id_number } = req.body
+  const { name, last_name, email, password, phone, id_number, building_id, status } = req.body
 
   pool.query(
-    'UPDATE admins SET name = $1, last_name = $2, email = $3, password = $4, phone = $5, id_number = $6 WHERE id = $7',
-    [name, last_name, email, password, phone, id_number, id],
+    'UPDATE admins SET name = $1, last_name = $2, email = $3, password = $4, phone = $5, id_number = $6, status = $7 WHERE id = $8',
+    [name, last_name, email, password, phone, id_number, status, id],
     (error, results) => {
       if (error) {
         throw error
       }
-      res.status(200).send(`User modified with ID: ${id}`)
+
+      // UPDATE RELATION ADMIN-BUILDING:
+      pool.query(`DELETE FROM admins_buildings WHERE admin_id IN(${id})`, (error, results) => {
+        if (error) {
+          throw error
+        }
+      })
+      
+      for(let i = 0; i < building_id.length; i++) {
+        pool.query(
+          `INSERT INTO admins_buildings (admin_id, building_id) VALUES (${id}, ${building_id[i]})`, 
+          (error, results) => {
+          if (error) {
+            throw error
+          }
+        })
+      }
+
+      res.status(200).send(`Admin modified with ID: ${id}, relations with buildings: ${building_id}`)
     }
   )
 }
@@ -76,7 +94,14 @@ const deleteAdmin = (req, res) => {
     if (error) {
       throw error
     }
-    res.status(200).send(`Admins deleted with ID: ${id}`)
+
+    // DELETE RELATION ADMIN-BUILDING
+    pool.query(`DELETE FROM admins_buildings WHERE admin_id IN(${id})`, (error, results) => {
+      if (error) {
+        throw error
+      }
+    })
+    res.status(200).send(`Admins deleted with ID: ${id}. Relation admin-building removed.`)
   })
 }
 
