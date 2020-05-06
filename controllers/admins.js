@@ -2,7 +2,29 @@ const pool = require('../database/db')
 
 // GET ALL ADMINS:
 const getAdmins = (req, res) => {
-  pool.query('SELECT * FROM admins ORDER BY name ASC', (error, results) => {
+  pool.query(`
+    SELECT 
+	    admins.id,
+	    admins.first_n,
+	    admins.last_n,
+      admins.email,
+      admins.password,
+	    admins.id_number,
+	    admins.phone,
+	    admins.status,
+	    admins.created_at,
+	    admins.updated_at,
+	    admins_buildings.building_id,
+      buildings.name 
+        AS building_name,
+	    buildings.address
+    FROM admins
+      INNER JOIN admins_buildings
+        ON admins.id = admins_buildings.admin_id
+      INNER JOIN buildings
+        ON admins_buildings.building_id = buildings.id
+    ORDER BY admins.first_n asc;`,
+   (error, results) => {
     if (error) {
       throw error
     }
