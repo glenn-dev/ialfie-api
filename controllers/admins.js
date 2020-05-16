@@ -28,6 +28,65 @@ const getAdmins = (req, res) => {
     if (error) {
       throw error
     }
+
+    // RESULTS JSON PARSE METHOD:
+    let getAdminsData = results.rows;
+    let admins = []
+    
+    let pushAdmin = (admin) => {
+      console.log('admin pushed');
+      admins.push(
+        {
+          id: admin.id,
+          name: admin.first_n,
+          last_name: admin.last_n,
+          email: admin.email,
+          password: admin.password,
+          id_number: admin.id_number,
+          phone: admin.phone,
+          status: admin.status,
+          created_at: admin.created_at,
+          updated_at: admin.updated_at,
+          buildings: [
+            {
+              building_id: admin.building_id,
+              building_name: admin.building_name,
+              building_address: admin.address
+            },
+          ]
+        },
+      )
+    }
+
+    let pushBuilding = (index, admin) => {
+      admins[index].buildings.push(
+        {
+          building_id: admin.building_id,
+          building_name: admin.building_name,
+          building_address: admin.address
+        },
+      )
+      console.log('building pushed');
+    }
+
+    let findAdmin = (admins, admin) => admins.find(elem => elem.id === admin.id);
+
+    let haveElem = (admin) => {
+      if(findAdmin(admins, admin) != undefined) {
+        let index = admins.indexOf(findAdmin(admins, admin))
+        pushBuilding(index, admin)
+      } else {
+        pushAdmin(admin)
+      }
+    }
+
+    let parseAdmins = (admin) => (admins.length === 0) ? pushAdmin(admin) : haveElem(admin);
+
+    getAdminsData.map( (admin) => 
+      parseAdmins(admin)
+    );
+
+    // END
     res.status(200).json(results.rows)
   })
 }
