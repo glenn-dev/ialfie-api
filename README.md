@@ -4,11 +4,11 @@ API for an administrative software oriented to condominium management.
 
 ## :dart: Technologies:
 
-* [Express.js  4.16](https://expressjs.com/)
+* :heavy_check_mark: [Express.js  4.16](https://expressjs.com/)
 
-* [PostgreSQL 12.2](https://www.postgresql.org/)
+* :heavy_check_mark: [PostgreSQL 12.2](https://www.postgresql.org/)
 
-* [Trello board](https://trello.com/b/6oaUVcGI/ialfie) used for the execution of the project.
+* :white_check_mark: [Trello board](https://trello.com/b/6oaUVcGI/ialfie)
 
 ## :pencil: Schema:
 
