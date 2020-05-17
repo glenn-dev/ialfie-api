@@ -1,9 +1,8 @@
-/* PARSE GET ALL ADMINS QUERY */
-const allAdmins = (data) => {
+/* PARSE ADMINS QUERY */
 
+const goParse = (data) => {
   // Push new 'admin' object into 'admins' array.
   const pushAdmin = (admin, admins) => {
-    // console.log('admin pushed');
     admins.push(
       {
         id: admin.id,
@@ -26,7 +25,6 @@ const allAdmins = (data) => {
       },
     );
   };
-
   // Push 'building' object into an 'admin' object in 'admins' array.
   const pushBuilding = (admin, admins) => {
     const index = admins.indexOf(admins.find(elem => elem.id === admin.id));
@@ -37,17 +35,17 @@ const allAdmins = (data) => {
         building_address: admin.address
       },
     );
-    // console.log('building pushed');
   };
-
   // Check if 'admin' object already exist in 'admins' array.
-  const parseAdmins = (admin, admins) => {
+  const parseAdmin = (admin, admins) => {
     (admins.find(elem => elem.id === admin.id) == undefined) ? pushAdmin(admin, admins) : pushBuilding(admin, admins);
   };
     
   let admins = [];
-  data.map((admin) => parseAdmins(admin, admins));
+  data.map((admin) => parseAdmin(admin, admins));
   return admins;
 }
 
-module.exports = allAdmins;
+const parseAdmins = (data) => (data.length > 0) ? goParse(data) : data;
+
+module.exports = parseAdmins;

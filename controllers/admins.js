@@ -1,5 +1,5 @@
 const pool = require('../database/db');
-const parse = require('../helpers/admins');
+const parseAdmins = require('../helpers/admins-helper');
 
 /* GET ALL ADMINS */
 const getAdmins = (req, res) => {
@@ -17,8 +17,7 @@ const getAdmins = (req, res) => {
 	    admins.created_at,
 	    admins.updated_at,
 	    admins_buildings.building_id,
-      buildings.name 
-        AS building_name,
+      buildings.b_name,
 	    buildings.address
     FROM admins
       INNER JOIN admins_buildings
@@ -30,7 +29,7 @@ const getAdmins = (req, res) => {
     if (error) {
       throw error;
     };
-    res.status(200).json(parse(results.rows));
+    res.status(200).json(parseAdmins(results.rows));
   });
 };
 
@@ -38,12 +37,33 @@ const getAdmins = (req, res) => {
 const getAdminById = (req, res) => {
   const id = req.body;
 
-  pool.query(
-    `SELECT * FROM admins WHERE id IN(${id}) ORDER BY name ASC`, (error, results) => {
+  pool.query(`    
+    SELECT 
+	    admins.id,
+	    admins.first_n,
+	    admins.last_n,
+      admins.email,
+      admins.password,
+	    admins.id_number,
+	    admins.phone,
+	    admins.status,
+	    admins.created_at,
+	    admins.updated_at,
+	    admins_buildings.building_id,
+      buildings.b_name, 
+	    buildings.address
+    FROM admins
+      INNER JOIN admins_buildings
+        ON admins.id = admins_buildings.admin_id
+      INNER JOIN buildings
+        ON admins_buildings.building_id = buildings.id
+    WHERE admins.id IN(${id})
+    ORDER BY admins.first_n asc;`, 
+    (error, results) => {
     if (error) {
       throw error;
     };
-    res.status(200).json(results.rows);
+    res.status(200).json(parseAdmins(results.rows));
   });
 };
 
@@ -137,4 +157,4 @@ module.exports = {
   createAdmin,
   updateAdmin,
   deleteAdmin,
-}
+};
