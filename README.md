@@ -4,9 +4,11 @@ API for an administrative software oriented to condominium management.
 
 ## :dart: Technologies:
 
-* [Express.js  4.16](https://expressjs.com/)
+* [Express.js 4.17](https://expressjs.com/)
 
-* [PostgreSQL 12.2](https://www.postgresql.org/)
+* [PostgreSQL 8.0](https://www.postgresql.org/)
+
+* [Nodemon 2.0](https://nodemon.io/)
 
 ## :pencil: Schema:
 
