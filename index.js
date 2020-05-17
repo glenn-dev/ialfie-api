@@ -1,9 +1,12 @@
+/* REQUIRES */
 const express = require('express')
 const bodyParser = require('body-parser')
-const app = express()
-const port = 3000
 const router = require('./router')
 // const seed = require('./database/seed')
+
+/* CONST */
+const app = express()
+const port = 3000
 
 app.use(bodyParser.json())
 app.use(

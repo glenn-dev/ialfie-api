@@ -1,14 +1,14 @@
 # iAlfie - API
 
-This is the API for an administrative software oriented to condominium management.
+API for an administrative software oriented to condominium management.
 
 ## :dart: Technologies:
 
-* Express.js:  4.16.1
+* :heavy_check_mark: [Express.js  4.16](https://expressjs.com/)
 
-* PostgreSQL: 12.2
+* :heavy_check_mark: [PostgreSQL 12.2](https://www.postgresql.org/)
 
-* Trello board used for the execution of the project: (https://trello.com/b/6oaUVcGI/ialfie)
+* :white_check_mark: [Trello board](https://trello.com/b/6oaUVcGI/ialfie)
 
 ## :pencil: Schema:
 
@@ -22,9 +22,9 @@ This is the API for an administrative software oriented to condominium managemen
 
 ## :octocat: Contributing
 
-:construction: This is an open source project that still in development phase :baby:. We suggest you check "development" branch for latest features before any other action.
+:construction: This is an open source project that still in development phase :baby:. We suggest you check [development branch](https://github.com/glenn-dev/ialfie-api/tree/development) for latest features before any other action.
 
-:wrench: For major changes, please open an issue first to discuss what you would like to change. Feel free to contribute any suggestion as well.
+:wrench: For major changes, please open an [issue](https://guides.github.com/features/issues/) first to discuss what you would like to change. Feel free to contribute any suggestion as well.
 
 :electric_plug: Pull requests are welcome. 
 
