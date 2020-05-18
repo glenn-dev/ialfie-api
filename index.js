@@ -2,7 +2,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const router = require('./router')
-// const seed = require('./database/seed')
 
 /* CONST */
 const app = express()
@@ -20,3 +19,5 @@ router(app)
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
 })
+
+// const seed = require('./database/seed')

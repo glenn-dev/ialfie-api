@@ -34,7 +34,7 @@ const createDepartment = (req, res) => {
     if (error) {
       throw error
     }
-    res.status(201).send(`Department "${number}" added successfully`)
+    res.status(201).send(`Department "${number}" added successfully on building: ${building_id}`)
   })
 }
 

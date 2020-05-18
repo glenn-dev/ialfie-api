@@ -69,31 +69,33 @@ const getAdminById = (req, res) => {
 
 /* CREATE ADMIN */
 const createAdmin = (req, res) => {
-
-  const { name, last_name, email, password, phone, id_number, building_id, status } = req.body;
-
+  const { name, last_name, email, password, phone, id_number, buildings, status } = req.body;
+  // Insert Admin
   pool.query(
-    'INSERT INTO admins (name, last_name, email, password, phone, id_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id', 
+    'INSERT INTO admins (first_n, last_n, email, password, phone, id_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id', 
     [name, last_name, email, password, phone, id_number, status],
     (error, results) => {
       if (error) {
         throw error;
       };
-      const admin_id = results.rows[0].id;
-      
-      // Create relation Admin-Building
-      for(let i = 0; i < building_id.length; i++) {
-        pool.query(
-          `INSERT INTO admins_buildings (admin_id, building_id) VALUES (${admin_id}, ${building_id[i]})`, 
-          (error, results) => {
-          if (error) {
-            throw error;
-          };
-        });
-      };
-      res.status(201).send(`Admin "${name} ${last_name}" with ID: ${results.insertId} and relation with building ID: ${building_id} added successfully`)
+      insertAdminBuilding(results.rows[0].id);
     }
   );
+  // Create relation Admin-Building
+  const insertAdminBuilding = (id) => {
+    let values = [];
+    buildings.forEach((building, index) => {
+      (buildings.length < index) ? values.push(`(${id}, ${building}),`) : values.push(`(${id}, ${building})`)
+    });
+    pool.query(
+      `INSERT INTO admins_buildings (admin_id, building_id) VALUES ${values}`, 
+      (error, results) => {
+      if (error) {
+        throw error;
+      };
+      res.status(201).send(`Admin "${name} ${last_name}" with ID: ${id} and buildings: ${buildings} added  successfully.`);
+    });
+  }
 };
 
 /* UPDATE ADMIN */

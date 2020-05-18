@@ -1,17 +1,17 @@
 const pool = require('./db')
 
-// *** WARNING *** // *** DANGER *** // *** WARNING *** // *** DANGER *** //
+/* *** WARNING *** !! *** DANGER *** !! *** WARNING *** !! *** DANGER ***
 
-// * !! FUNCTIONS BELOW WILL ALTER DATABASE INTEGRITY PERMANENTLY !! * //
+ * !! FUNCTIONS BELOW WILL ALTER DATABASE INTEGRITY PERMANENTLY !! * 
 
-// * !! DO NEVER EXECUTE THEM IN PRODUCTION ENVIRONMENTS !! * //
+ * !! DO NEVER EXECUTE THEM IN PRODUCTION ENVIRONMENTS !! * 
 
-// *** WARNING *** // *** DANGER *** // *** WARNING *** // *** DANGER *** //
+ *** WARNING *** !! *** DANGER *** !! *** WARNING *** !! *** DANGER *** */
 
-// DELETE DATA:
+/* DELETE DATA */
 let resetDb = (tables) => {
   pool.query(
-    `TRUNCATE ${tables}`,
+    `DELETE FROM ${tables}`,
     (error, results) => {
       if (error) {
         throw error
@@ -21,7 +21,7 @@ let resetDb = (tables) => {
   )
 }
 
-// SEED DATA (UNFINISHED METHOD):
+/* SEED DATA (UNFINISHED METHOD) */
 function seedDb(amount) {
 
   for(let i = 0; i < amount; i++){
@@ -45,7 +45,7 @@ function seedDb(amount) {
   
 }
 
-// SET TABLES TO RESET/SEED:
+/* SET TABLES TO RESET/SEED */
 let tables = [
   'admins',
   'admins_buildings',
@@ -62,11 +62,12 @@ let tables = [
   'users_departments'
 ]
 
-console.log("* WARNING * !! DISABLE 'seed.js' FILE IN PRODUCTION ENVIRONMENTS !!");
+console.log("!! * WARNING * !! DISABLE 'seed.js' FILE IN PRODUCTION ENVIRONMENTS !!");
 
-// *** DANGER *** // *** DANGER *** // *** DANGER *** // *** DANGER *** //
+/*  *** DANGER *** !! *** DANGER *** !! *** DANGER *** !! *** DANGER ***  */
 
-//// resetDb(tables) // * !! RUN AT YOUR OWN RISK !! * 
-//// seedDb()        // * !! RUN AT YOUR OWN RISK !! *
+// resetDb(tables)  /* * !! RUN AT YOUR OWN RISK !! * */ 
 
-// *** DANGER *** // *** DANGER *** // *** DANGER *** // *** DANGER *** //
+// seedDb(tables)   /* * !! RUN AT YOUR OWN RISK !! * */
+
+/* *** DANGER *** !! *** DANGER *** !! *** DANGER *** !! *** DANGER ***  */
