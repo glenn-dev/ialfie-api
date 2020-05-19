@@ -5,33 +5,33 @@ const departments = require('./controllers/departments');
 
 function createRouter(app) {
 
-  // Buildings
+  /* BUILDINGS */
   app.get('/buildings', buildings.getBuildings);
   app.get('/buildings/id', buildings.getBuildingById);
-  app.post('/buildings', buildings.createBuilding);
-  app.put('/buildings/:id', buildings.updateBuilding);
-  app.delete('/buildings/id', buildings.deleteBuilding);
+  app.post('/buildings/create', buildings.createBuilding);
+  app.put('/buildings/update', buildings.updateBuilding);
+  app.delete('/buildings/delete', buildings.deleteBuilding);
 
-  // Users
+  /* USERS */
   app.get('/users', users.getUsers);
   app.get('/users/id', users.getUserById);
-  app.post('/users', users.createUser);
-  app.put('/users/:id', users.updateUser);
-  app.delete('/users/id', users.deleteUser);
+  app.post('/users/create', users.createUser);
+  app.put('/users/update', users.updateUser);
+  app.delete('/users/delete', users.deleteUser);
 
-  // Admins
+  /* ADMINS */
   app.get('/admins', admins.getAdmins);
   app.get('/admins/id', admins.getAdminById);
-  app.post('/admins', admins.createAdmin);
-  app.put('/admins/:id', admins.updateAdmin);
-  app.delete('/admins/id', admins.deleteAdmin);
+  app.post('/admins/create', admins.createAdmin);
+  app.put('/admins/update', admins.updateAdmin);
+  app.delete('/admins/delete', admins.deleteAdmin);
 
-  // Departments
+  /* DEPARTMENTS */
   app.get('/departments', departments.getDepartments);
   app.get('/departments/id', departments.getDepartmentById);
-  app.post('/departments', departments.createDepartment);
-  app.put('/departments/:id', departments.updateDepartment);
-  app.delete('/departments/id', departments.deleteDepartment);
+  app.post('/departments/create', departments.createDepartment);
+  app.put('/departments/update', departments.updateDepartment);
+  app.delete('/departments/delete', departments.deleteDepartment);
 
 };
 

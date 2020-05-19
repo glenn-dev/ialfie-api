@@ -17,7 +17,7 @@ const goParse = (data) => {
         buildings: [
           {
             building_id: admin.building_id,
-            building_name: admin.building_name,
+            building_name: admin.b_name,
             building_address: admin.address
           },
         ]
@@ -30,7 +30,7 @@ const goParse = (data) => {
     admins[index].buildings.push(
       {
         building_id: admin.building_id,
-        building_name: admin.building_name,
+        building_name: admin.b_name,
         building_address: admin.address
       },
     );
@@ -41,7 +41,7 @@ const goParse = (data) => {
   };
   // Check if data represent one or many object, then parse.
   let admins = [];
-  (data.length > 1) ? data.map((admin) => parseAdmins(admin, admins)) : pushAdmin(data, admins);
+  (data.length > 1) ? data.map((admin) => parseAdmins(admin, admins)) : pushAdmin(data[0], admins);
   return admins;
 };
 /* EXPORTS */
