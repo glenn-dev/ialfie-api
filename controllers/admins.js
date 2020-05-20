@@ -26,7 +26,7 @@ const getAdmins = (req, res) => {
       INNER JOIN buildings
         AS bd
         ON ab.building_id = bd.id
-    ORDER BY ad.first_n asc;`,
+    ORDER BY ad.first_n ASC;`,
    (error, results) => {
     if (error) {
       throw error;
@@ -62,7 +62,7 @@ const getAdminById = (req, res) => {
         AS bd
         ON ab.building_id = bd.id
     WHERE ad.id IN(${id})
-    ORDER BY ad.first_n asc;`, 
+    ORDER BY ad.first_n ASC;`, 
     (error, results) => {
     if (error) {
       throw error;
@@ -133,7 +133,6 @@ const updateAdmin = (req, res) => {
 /* DELETE ADMIN */
 const deleteAdmin = (req, res) => {
   const id = req.body;
-  // Delete Admins
   pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {
     if (error) {
       throw error;
