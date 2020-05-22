@@ -1,10 +1,3 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 # iAlfie - API
 
 * [About the Project](#about-the-project)
@@ -69,11 +62,10 @@ $ npm install -g nodemon
 ### :rocket: Installation
 
 1. Clone the repo
-  * *HTTPS*/*SSH*
 ```sh
-$ git clone https://github.com/glenn-dev/ialfie-api.git
+HTTPS: $ git clone https://github.com/glenn-dev/ialfie-api.git
 
-$ git clone git@github.com:glenn-dev/ialfie-api.git
+SSH: $ git clone git@github.com:glenn-dev/ialfie-api.git
 ```
 2. Navigate to root folder
 ```sh
