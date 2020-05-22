@@ -63,9 +63,8 @@ $ npm install -g nodemon
 
 1. Clone the repo
 ```sh
-HTTPS: $ git clone https://github.com/glenn-dev/ialfie-api.git
-
 SSH: $ git clone git@github.com:glenn-dev/ialfie-api.git
+HTTPS: $ git clone https://github.com/glenn-dev/ialfie-api.git
 ```
 2. Navigate to root folder
 ```sh
@@ -107,7 +106,7 @@ $ nodemon index
 * :email: glenn.marcano90@gmail.com
 
 
-## :space_invader: Acknowledgements
+## Acknowledgements
 
 * [NodeJs](https://nodejs.org/en/)
   * [npm](https://www.npmjs.com/)
