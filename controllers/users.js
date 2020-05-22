@@ -1,102 +1,211 @@
-const pool = require('../database/db')
+const pool = require('../database/db');
+const parseUser = require('../helpers/users-helper');
 
-// GET ALL USERS:
+/* GET ALL USERS */
 const getUsers = (req, res) => {
-  pool.query('SELECT * FROM users ORDER BY name ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    res.status(200).json(results.rows)
-  })
-}
-
-// GET USER BY ID:
-const getUserById = (req, res) => {
-  const { id } = req.body
-
-  pool.query(
-    `SELECT * FROM users WHERE id IN(${id}) ORDER BY name ASC`, (error, results) => {
-    if (error) {
-      throw error
-    }
-    res.status(200).json(results.rows)
-  })
-}
-
-// CREATE USER:
-const createUser = (req, res) => {
-  const { name, last_name, email, password, phone, id_number, building_id, department_id } = req.body
-
-  pool.query(
-    'INSERT INTO users (name, last_name, email, password, phone, id_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', 
-    [name, last_name, email, password, phone, id_number],
-    (error, results) => {
-    if (error) {
-      throw error
-    }
-    let user_id = results.rows[0].id
-    
-    // CREATE RELATION USER-BUILDINGS:
-    for(let i = 0; i < building_id.length; i++) {
-      pool.query(
-        `INSERT INTO users_buildings (user_id, building_id) VALUES (${user_id}, ${building_id[i]})`, 
-        (error, results) => {
-        if (error) {
-          throw error
-        }
-        console.log(`Relation user: ${user_id} - building: ${building_id[i]} created!`);
-      })
-    }
-
-    // CREATE RELATION USER-DEPARTMENTS (TEST PENDING)
-    for(let i = 0; i < department_id.length; i++) {
-      pool.query(
-        `INSERT INTO users_departments (user_id, department_id) VALUES (${user_id}, ${department_id[i]})`, 
-        (error, results) => {
-        if (error) {
-          throw error
-        }
-        console.log(`Relation user: ${user_id} - department: ${department_id[i]} created!`);
-      })
-    }
-    res.status(201).send(`User "${name} ${last_name}" with ID: ${results.insertId}, building ID: ${building_id} and department ID: ${department_id} added successfully`)
-  })
-}
-
-// UPDATE USER:
-const updateUser = (req, res) => {
-  const id = parseInt(req.params.id)
-  const { name, last_name, email, password, phone, id_number } = req.body
-
-  pool.query(
-    'UPDATE users SET name = $1, last_name = $2, email = $3, password = $4, phone = $5, id_number = $6 WHERE id = $7',
-    [name, last_name, email, password, phone, id_number, id],
+  pool.query(`
+    SELECT 
+      us.id,
+      us.first_n,
+      us.last_n,
+      us.email,
+      us.password,
+      us.id_number,
+      us.phone,
+      us.status,
+      us.created_at,
+      us.updated_at,
+      ub.building_id,
+      bd.b_name,
+      bd.address,
+      ud.department_id,
+      dp.number,
+      dp.floor,
+      dp.habitability,
+      dp.defaulting,
+      dp.aliquot
+    FROM users
+      AS us
+      INNER JOIN users_buildings
+        AS ub
+        ON us.id = ub.user_id
+      INNER JOIN buildings
+        AS bd
+        ON ub.building_id = bd.id
+      INNER JOIN users_departments
+        AS ud
+        ON us.id = ud.user_id
+      INNER JOIN departments
+        AS dp
+        ON ud.department_id = dp.id
+    ORDER BY us.first_n ASC;`, 
     (error, results) => {
       if (error) {
-        throw error
-      }
-      res.status(200).send(`User modified with ID: ${id}`)
+        throw error;
+      };
+      res.status(200).json(parseUser(results.rows)); // Parse method
     }
-  )
-}
+  );
+};
 
-// DELETE USER:
+/* GET USER BY ID */
+const getUserById = (req, res) => {
+  const id = req.body;
+  pool.query(`
+    SELECT 
+      us.id,
+      us.first_n,
+      us.last_n,
+      us.email,
+      us.password,
+      us.id_number,
+      us.phone,
+      us.status,
+      us.created_at,
+      us.updated_at,
+      ub.building_id,
+      bd.b_name,
+      bd.address,
+      ud.department_id,
+      dp.number,
+      dp.floor,
+      dp.habitability,
+      dp.defaulting,
+      dp.aliquot
+    FROM users
+      AS us
+      INNER JOIN users_buildings
+        AS ub
+        ON us.id = ub.user_id
+      INNER JOIN buildings
+        AS bd
+        ON ub.building_id = bd.id
+      INNER JOIN users_departments
+        AS ud
+        ON us.id = ud.user_id
+      INNER JOIN departments
+        AS dp
+        ON ud.department_id = dp.id
+    WHERE id IN(${id})
+    ORDER BY us.first_n ASC;`, 
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      res.status(200).json(results.rows); // Parse method
+    }
+  );
+};
+
+/* CREATE RELATIONS */
+const insertRelations = (id, buildings, departments) => {
+  /* Insert User-Building relation */
+  let values = [];
+  buildings.forEach(
+    (building, index) => {
+      (buildings.length < (index + 1)) ? values.push(`(${id}, ${building}),`) : values.push(`(${id}, ${building})`)
+    }
+  );
+  pool.query(
+    `INSERT INTO users_buildings (user_id, building_id) VALUES ${values}`, 
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      console.log(`Relation user: ${id} - buildings: ${buildings} added!`);
+    }
+  );
+  /* Insert User-Department relation */
+  values = [];
+  departments.forEach(
+    (department, index) => {
+      (departments.length < (index + 1)) ? values.push(`(${id}, ${department}),`) : values.push(`(${id}, ${department})`)
+    }
+  );
+  pool.query(
+    `INSERT INTO users_departments (user_id, department_id) VALUES ${values}`, 
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      console.log(`Relation user ${id} - departments: ${departments} added!`);
+    }
+  );
+};
+
+/* DELETE RELATIONS */
+const deleteRelations = (id) => {
+  /* Delete User-Building relation */
+  pool.query(`DELETE FROM users_buildings WHERE user_id IN(${id})`, 
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      console.log(`Relation user: ${id} - buildings: ${buildings} deleted!`);
+    }
+  );
+  /* Delete User-Building relation */
+  pool.query(`DELETE FROM users_buildings WHERE user_id IN(${id})`, 
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      console.log(`Relation user ${id} - departments: ${departments} deleted!`);
+    }
+  );
+};
+
+/* CREATE USER */
+const createUser = (req, res) => {
+  const { first_n, last_n, email, password, phone, id_number, user_type, buildings, departments } = req.body
+  pool.query(
+    'INSERT INTO users (first_n, last_n, email, password, phone, id_number, user_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id', 
+    [first_n, last_n, email, password, phone, id_number, user_type],
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      const id = results.rows[0].id;
+      insertRelations(id, buildings, departments);
+      res.status(201).send(`User "${first_n} ${last_n}" ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`);
+    }
+  );
+};
+
+/* UPDATE USER */
+const updateUser = (req, res) => {
+  const { id, first_n, last_n, email, password, phone, id_number, user_type, buildings, departments } = req.body;
+  pool.query(
+    'UPDATE users SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, user_type = $7 WHERE id = $8',
+    [first_n, last_n, email, password, phone, id_number, user_type, id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      deleteRelations(id); // Check questions.
+      insertRelations(id, buildings, departments);
+      res.status(200).send(`User "${first_n} ${last_n}" with ID: ${id}, departments: ${departments} and buildings: ${buildings} modified  successfully.`);
+    }
+  );
+};
+
+/* DELETE USER */
 const deleteUser = (req, res) => {
-  const { id } = req.body
-
+  const id = req.body;
   pool.query(`DELETE FROM users WHERE id IN(${id})`, (error, results) => {
     if (error) {
-      throw error
-    }
-    res.status(200).send(`User deleted with ID: ${id}`)
+      throw error;
+    };
+    deleteRelations(id);
+    res.status(200).send(`User deleted with ID: ${id}. All relations removed.`);
   })
 }
 
-// EXPORTS:
+/* EXPORTS */
 module.exports = {
   getUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
-}
+};
