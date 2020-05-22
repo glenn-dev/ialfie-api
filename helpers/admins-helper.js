@@ -26,7 +26,7 @@ const goParse = (data) => {
   };
   /* Push 'building' object into an 'admin' object in 'admins' array. */
   const pushBuilding = (admin, admins) => {
-    const index = admins.indexOf(admins.find(elem => elem.id === admin.id));
+    const index = admins.length - 1;
     admins[index].buildings.push(
       {
         building_id: admin.building_id,
