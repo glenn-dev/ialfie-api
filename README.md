@@ -22,22 +22,22 @@
 ## About the Project
 iAlfie is an administrative software for condominium management.
 
-### Built With:
+### :dart: Built With:
 
-* :dart: [Express.js 4.17](https://expressjs.com/)
+* [Express.js 4.17](https://expressjs.com/)
 
-* :dart: [PostgreSQL 12.3](https://www.postgresql.org/)
+* [PostgreSQL 12.3](https://www.postgresql.org/)
 
 
-### Schema:
+### :pencil: Schema:
 
-* :pencil: [Board](https://trello.com/b/6oaUVcGI/ialfie)
+* [Board](https://trello.com/b/6oaUVcGI/ialfie)
 
-* :pencil: Conceptual:
+* Conceptual:
 
 ![Conceptual schema](/assets/ialfie_conceptual_model.png)
 
-* :pencil: Logical:
+* Logical:
 
 ![Logical schema](/assets/ialfie_logic_model.png)
 
@@ -72,16 +72,19 @@ $ npm install -g nodemon
 ```sh
 $ git clone https://github.com/glenn-dev/ialfie-api.git
 ```
+Or
 ```sh
 $ git clone git@github.com:glenn-dev/ialfie-api.git
 ```
-
-2. Install NPM packages
+2. Navigate to root folder
+```sh
+$ cd <your/root/project/path>
+```
+3. Install NPM packages
 ```sh
 $ npm install
 ```
-
-3. Run nodemon
+4. Run nodemon
 ```sh
 $ nodemon index
 ```
@@ -109,8 +112,8 @@ $ nodemon index
 
 ## Contact
 
-[LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
-:email: glenn.marcano90@gmail.com
+* [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
+* :email: glenn.marcano90@gmail.com
 
 
 ## Acknowledgements
@@ -121,8 +124,11 @@ $ nodemon index
   * [Nodemon](https://nodemon.io/)
 * [PostgreSQL](https://www.postgresql.org/)
 * [Ubuntu](https://ubuntu.com/)
-* [Visual Studio Code](https://code.visualstudio.com/)
-  * [Prettier](https://prettier.io/)
+  * [Visual Studio Code](https://code.visualstudio.com/)
+    * [Prettier](https://prettier.io/)
+    * [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
+  * [Postman](https://www.postman.com/)
+  * [DBeaver](https://dbeaver.io/)
 * [Draw.io](https://www.draw.io/)
 * [GitHub](https://github.com/)
   * [Choose an open source license](https://choosealicense.com/)
