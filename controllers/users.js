@@ -46,7 +46,7 @@ const getUsers = (req, res) => {
 };
 
 /* GET USER BY ID */
-const getUserById = (req, res) => {
+const getUsersById = (req, res) => {
   const id = req.body;
   pool.query(`
     SELECT 
@@ -187,7 +187,7 @@ const updateUser = (req, res) => {
 };
 
 /* DELETE USER */
-const deleteUser = (req, res) => {
+const deleteUsers = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM users WHERE id IN(${id})`, (error, results) => {
     if (error) {
@@ -201,8 +201,8 @@ const deleteUser = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getUsers,
-  getUserById,
+  getUsersById,
   createUser,
   updateUser,
-  deleteUser,
+  deleteUsers,
 };

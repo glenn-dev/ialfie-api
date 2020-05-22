@@ -36,7 +36,7 @@ const getAdmins = (req, res) => {
 };
 
 /* GET ADMIN BY ID */
-const getAdminById = (req, res) => {
+const getAdminsById = (req, res) => {
   const id = req.body;
   pool.query(`
   SELECT 
@@ -131,7 +131,7 @@ const updateAdmin = (req, res) => {
 };
 
 /* DELETE ADMIN */
-const deleteAdmin = (req, res) => {
+const deleteAdmins = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {
     if (error) {
@@ -145,8 +145,8 @@ const deleteAdmin = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getAdmins,
-  getAdminById,
+  getAdminsById,
   createAdmin,
   updateAdmin,
-  deleteAdmin,
+  deleteAdmins,
 };
