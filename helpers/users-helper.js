@@ -54,10 +54,9 @@ const goParse = (data) => {
       },
     );
   };
-  /* Push 'department' object into an 'building' object into 'user' object. */
+  /* Push 'department' object into a 'building' object into 'user' object on 'users' array. */
   const pushDepartment = (user, users, u_index) => {
-    console.log(users[u_index].buildings);
-    const b_index = users[u_index].buildings.indexOf(users[u_index].buildings.find(elem => elem.building_id === user.building_id));
+    const b_index = users[u_index].buildings.length - 1;
     users[u_index].buildings[b_index].departments.push(
       {
         dep_id: user.department_id,
@@ -71,7 +70,7 @@ const goParse = (data) => {
   };
   /* Check if 'building' object already exist in 'user' object. */
   const parseBuilding = (user, users) => {
-    const index = users.indexOf(users.find(elem => elem.id === user.id));
+    const index = users.length - 1;
     (users[index].buildings.find(elem => elem.building_id === user.building_id) === undefined) ? pushBuilding(user, users, index) : pushDepartment(user, users, index);
   };
   /* Check if 'user' object already exist in 'users' array. */

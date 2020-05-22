@@ -15,7 +15,7 @@ const getUsers = (req, res) => {
       us.status,
       us.created_at,
       us.updated_at,
-      ub.building_id,
+      dp.building_id,
       bd.b_name,
       bd.address,
       ud.department_id,
@@ -26,18 +26,15 @@ const getUsers = (req, res) => {
       dp.aliquot
     FROM users
       AS us
-      INNER JOIN users_buildings
-        AS ub
-        ON us.id = ub.user_id
-      INNER JOIN buildings
-        AS bd
-        ON ub.building_id = bd.id
       INNER JOIN users_departments
         AS ud
         ON us.id = ud.user_id
       INNER JOIN departments
         AS dp
         ON ud.department_id = dp.id
+      INNER JOIN buildings
+        AS bd
+        ON dp.building_id = bd.id
     ORDER BY us.first_n ASC;`, 
     (error, results) => {
       if (error) {
@@ -92,7 +89,7 @@ const getUserById = (req, res) => {
       if (error) {
         throw error;
       };
-      res.status(200).json(results.rows); // Parse method
+      res.status(200).json(parseUser(results.rows)); // Parse method
     }
   );
 };
