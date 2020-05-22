@@ -14,7 +14,7 @@ const getDepartments = (req, res) => {
 };
 
 /* GET DEPARTMENT BY ID */
-const getDepartmentById = (req, res) => {
+const getDepartmentsById = (req, res) => {
   const id = req.body
   pool.query(`SELECT * FROM departments WHERE id IN(${id}) ORDER BY name ASC`, 
     (error, results) => {
@@ -57,7 +57,7 @@ const updateDepartment = (req, res) => {
 };
 
 /* DELETE DEPARTMENT */
-const deleteDepartment = (req, res) => {
+const deleteDepartments = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM departments WHERE id IN(${id})`, 
     (error, results) => {
@@ -72,8 +72,8 @@ const deleteDepartment = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getDepartments,
-  getDepartmentById,
+  getDepartmentsById,
   createDepartment,
   updateDepartment,
-  deleteDepartment,
+  deleteDepartments,
 };

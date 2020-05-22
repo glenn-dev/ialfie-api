@@ -13,7 +13,7 @@ const getBuildings = (req, res) => {
 };
 
 /* GET BUILDINGS BY ID */
-const getBuildingById = (req, res) => {
+const getBuildingsById = (req, res) => {
   const id = req.body;
   pool.query(`SELECT * FROM buildings WHERE id IN(${id}) ORDER BY b_name ASC`, 
     (error, results) => {
@@ -56,7 +56,7 @@ const updateBuilding = (req, res) => {
 };
 
 /* DELETE BUILDING */
-const deleteBuilding = (req, res) => {
+const deleteBuildings = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM buildings WHERE id IN(${id})`, 
     (error, results) => {
@@ -71,8 +71,8 @@ const deleteBuilding = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getBuildings,
-  getBuildingById,
+  getBuildingsById,
   createBuilding,
   updateBuilding,
-  deleteBuilding,
+  deleteBuildings,
 };
