@@ -1,9 +1,9 @@
-[![Contributors][contributors-shield]][https://github.com/glenn-dev/ialfie-api/graphs/contributors]
-[![Forks][forks-shield]][https://github.com/glenn-dev/ialfie-api/network/members]
-[![Stargazers][stars-shield]][https://github.com/glenn-dev/ialfie-api/stargazers]
-[![Issues][issues-shield]][https://github.com/glenn-dev/ialfie-api/issues]
-[![MIT License][license-shield]][https://choosealicense.com/licenses/mit/]
-[![LinkedIn][linkedin-shield]][https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 # iAlfie - API
 
@@ -44,7 +44,7 @@ iAlfie is an administrative software for condominium management.
 
 ## Getting Started
 
-### Prerequisites
+### :telescope: Prerequisites
 
 * [NodeJs](https://nodejs.org/en/download/package-manager/#arch-linux)
 ```sh
@@ -66,19 +66,18 @@ $ npm install pg-promise
 $ npm install -g nodemon
 ```
 
-### Installation
+### :rocket: Installation
 
 1. Clone the repo
+  * *HTTPS*/*SSH*
 ```sh
 $ git clone https://github.com/glenn-dev/ialfie-api.git
-```
-Or
-```sh
+
 $ git clone git@github.com:glenn-dev/ialfie-api.git
 ```
 2. Navigate to root folder
 ```sh
-$ cd <your/root/project/path>
+$ cd root/folder/project/path
 ```
 3. Install NPM packages
 ```sh
@@ -107,28 +106,29 @@ $ nodemon index
 
 
 ## License
-:lock_with_ink_pen: [MIT](https://choosealicense.com/licenses/mit/) :space_invader:
+:lock_with_ink_pen: [MIT](https://choosealicense.com/licenses/mit/)
 
 
 ## Contact
 
-* [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
+* :busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
 * :email: glenn.marcano90@gmail.com
 
 
-## Acknowledgements
+## :space_invader: Acknowledgements
 
 * [NodeJs](https://nodejs.org/en/)
-  * [Express](https://expressjs.com/)
   * [npm](https://www.npmjs.com/)
+  * [Express](https://expressjs.com/)
   * [Nodemon](https://nodemon.io/)
 * [PostgreSQL](https://www.postgresql.org/)
-* [Ubuntu](https://ubuntu.com/)
-  * [Visual Studio Code](https://code.visualstudio.com/)
-    * [Prettier](https://prettier.io/)
-    * [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
-  * [Postman](https://www.postman.com/)
-  * [DBeaver](https://dbeaver.io/)
+* [Linux](https://www.linux.org/)
+  * [Ubuntu](https://ubuntu.com/)
+* [Visual Studio Code](https://code.visualstudio.com/)
+  * [Prettier](https://prettier.io/)
+  * [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
+* [Postman](https://www.postman.com/)
+* [DBeaver](https://dbeaver.io/)
 * [Draw.io](https://www.draw.io/)
 * [GitHub](https://github.com/)
   * [Choose an open source license](https://choosealicense.com/)
