@@ -1,6 +1,6 @@
 /* PARSE ADMINS QUERY */
 const goParse = (data) => {
-  // Push new 'admin' object into 'admins' array.
+  /* Push new 'admin' object into 'admins' array. */
   const pushAdmin = (admin, admins) => {
     admins.push(
       {
@@ -24,7 +24,7 @@ const goParse = (data) => {
       },
     );
   };
-  // Push 'building' object into an 'admin' object in 'admins' array.
+  /* Push 'building' object into an 'admin' object in 'admins' array. */
   const pushBuilding = (admin, admins) => {
     const index = admins.indexOf(admins.find(elem => elem.id === admin.id));
     admins[index].buildings.push(
@@ -35,11 +35,11 @@ const goParse = (data) => {
       },
     );
   };
-  // Check if 'admin' object already exist in 'admins' array.
+  /* Check if 'admin' object already exist in 'admins' array. */
   const parseAdmins = (admin, admins) => {
     (admins.find(elem => elem.id === admin.id) === undefined) ? pushAdmin(admin, admins) : pushBuilding(admin, admins);
   };
-  // Check if data represent one or many object, then parse.
+  /* Check if data represent one or many object, then parse. */
   let admins = [];
   (data.length > 1) ? data.map((admin) => parseAdmins(admin, admins)) : pushAdmin(data[0], admins);
   return admins;

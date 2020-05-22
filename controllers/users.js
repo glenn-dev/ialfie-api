@@ -1,4 +1,5 @@
 const pool = require('../database/db');
+const parseUser = require('../helpers/users-helper');
 
 /* GET ALL USERS */
 const getUsers = (req, res) => {
@@ -42,7 +43,7 @@ const getUsers = (req, res) => {
       if (error) {
         throw error;
       };
-      res.status(200).json(results.rows); // Parse method
+      res.status(200).json(parseUser(results.rows)); // Parse method
     }
   );
 };
