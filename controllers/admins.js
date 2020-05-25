@@ -35,7 +35,7 @@ const getAdmins = (req, res) => {
   });
 };
 
-/* GET ADMIN BY ID */
+/* GET ADMINS BY ID */
 const getAdminsById = (req, res) => {
   const id = req.body;
   pool.query(`
@@ -130,7 +130,7 @@ const updateAdmin = (req, res) => {
   res.status(201).send(`Admin "${first_n} ${last_n}" with ID: ${id} and buildings: ${buildings} modified  successfully.`);
 };
 
-/* DELETE ADMIN */
+/* DELETE ADMINS */
 const deleteAdmins = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {

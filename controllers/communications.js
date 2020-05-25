@@ -3,7 +3,23 @@ const pool = require('../database/db')
 /* GET ALL COMMUNICATIONS */
 const getCommunications = (req, res) => {
   const building_id = req.body;
-  pool.query(`SELECT * FROM communications WHERE building_id = ${building_id} ORDER BY release ASC`, 
+  pool.query(`
+    SELECT
+      cm.id,
+      cm.release,
+      cm.title,
+      cm.status,
+      cm.building_id,
+      cm.admin_id,
+      ad.first_n,
+      ad.last_n
+    FROM communications 
+      AS cm
+      INNER JOIN admins
+        AS ad
+        ON cm.admin_id = ad.id
+    WHERE building_id = ${building_id} 
+    ORDER BY release ASC;`, 
     (error, results) => {
       if (error) {
         throw error;
@@ -16,7 +32,25 @@ const getCommunications = (req, res) => {
 /* GET COMMUNICATIONS BY ID */
 const getCommunicationsById = (req, res) => {
   const id = req.body
-  pool.query(`SELECT * FROM communications WHERE id IN(${id}) ORDER BY release ASC`, 
+  pool.query(`
+    SELECT
+      cm.id,
+      cm.release,
+      cm.title,
+      cm.content,
+      cm.status,
+      cm.document,
+      cm.building_id,
+      cm.admin_id,
+      ad.first_n,
+      ad.last_n
+    FROM communications 
+      AS cm
+      INNER JOIN admins
+        AS ad
+        ON cm.admin_id = ad.id
+    WHERE cm.id IN (${id})
+    ORDER BY release ASC;`, 
     (error, results) => {
       if (error) {
         throw error;
@@ -26,7 +60,7 @@ const getCommunicationsById = (req, res) => {
   );
 };
 
-/* CREATE COMMUNICATIONS */
+/* CREATE COMMUNICATION */
 const createCommunication = (req, res) => {
   const { release, title, content, status, document, admin_id, building_id } = req.body;
   pool.query(

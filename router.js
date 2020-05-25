@@ -3,7 +3,8 @@ const buildings = require('./controllers/buildings');
 const admins = require('./controllers/admins');
 const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
-
+const concepts = require('./controllers/concepts');
+const generalExpenses = require('./controllers/general-expenses');
 
 function createRouter(app) {
 
@@ -35,13 +36,26 @@ function createRouter(app) {
   app.put('/departments/update', departments.updateDepartment);
   app.delete('/departments/delete', departments.deleteDepartments);
 
-  /* DEPARTMENTS */
+  /* COMMUNICATIONS */
   app.get('/communications', communications.getCommunications);
   app.get('/communications/id', communications.getCommunicationsById);
   app.post('/communications/create', communications.createCommunication);
   app.put('/communications/update', communications.updateCommunication);
   app.delete('/communications/delete', communications.deleteCommunications);
 
+  /* CONCEPTS */
+  app.get('/concepts', concepts.getConcepts);
+  app.get('/concepts/id', concepts.getConceptsById);
+  app.post('/concepts/create', concepts.createConcept);
+  app.put('/concepts/update', concepts.updateConcept);
+  app.delete('/concepts/delete', concepts.deleteConcepts);
+
+  /* GENERAL-EXPENSES */
+  app.get('/general-expenses', generalExpenses.getGeneralExpenses);
+  app.get('/general-expenses/id', generalExpenses.getGeneralExpensesById);
+  app.post('/general-expenses/create', generalExpenses.createGeneralExpense);
+  app.put('/general-expenses/update', generalExpenses.updateGeneralExpense);
+  app.delete('/general-expenses/delete', generalExpenses.deleteGeneralExpenses);
 };
 
 module.exports = createRouter;
