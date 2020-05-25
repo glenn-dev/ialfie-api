@@ -13,7 +13,7 @@ const getDepartments = (req, res) => {
   );
 };
 
-/* GET DEPARTMENT BY ID */
+/* GET DEPARTMENTS BY ID */
 const getDepartmentsById = (req, res) => {
   const id = req.body
   pool.query(`SELECT * FROM departments WHERE id IN(${id}) ORDER BY name ASC`, 
@@ -56,7 +56,7 @@ const updateDepartment = (req, res) => {
   );
 };
 
-/* DELETE DEPARTMENT */
+/* DELETE DEPARTMENTS */
 const deleteDepartments = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM departments WHERE id IN(${id})`, 

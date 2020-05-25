@@ -60,7 +60,7 @@ const getCommunicationsById = (req, res) => {
   );
 };
 
-/* CREATE COMMUNICATIONS */
+/* CREATE COMMUNICATION */
 const createCommunication = (req, res) => {
   const { release, title, content, status, document, admin_id, building_id } = req.body;
   pool.query(

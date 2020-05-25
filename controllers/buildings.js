@@ -55,7 +55,7 @@ const updateBuilding = (req, res) => {
   );
 };
 
-/* DELETE BUILDING */
+/* DELETE BUILDINGS */
 const deleteBuildings = (req, res) => {
   const id = req.body;
   pool.query(`DELETE FROM buildings WHERE id IN(${id})`, 
