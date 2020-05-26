@@ -131,4 +131,4 @@ $ nodemon index
   * [GNU](https://www.gnu.org/)
   * [Linux](https://www.linux.org/)
   * [Ubuntu](https://ubuntu.com/)
-* [Mei Chan](https://www.linkedin.com/in/mei-ling-chan-b07a1ab7/) :heart: :love_letter:
+* [Mei Chan](https://www.linkedin.com/in/mei-ling-chan-b07a1ab7/) :love_letter:
