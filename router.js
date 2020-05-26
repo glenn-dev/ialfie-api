@@ -5,6 +5,7 @@ const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
 const concepts = require('./controllers/concepts');
 const generalExpenses = require('./controllers/general-expenses');
+const bills = require('./controllers/bills');
 
 function createRouter(app) {
 
@@ -56,6 +57,13 @@ function createRouter(app) {
   app.post('/general-expenses/create', generalExpenses.createGeneralExpense);
   app.put('/general-expenses/update', generalExpenses.updateGeneralExpense);
   app.delete('/general-expenses/delete', generalExpenses.deleteGeneralExpenses);
+
+  /* BILLS */
+  app.get('/bills', bills.getBills);
+  app.get('/bills/id', bills.getBillsById);
+  app.post('/bills/create', bills.createBill);
+  app.put('/bills/update', bills.updateBill);
+  app.delete('/bills/delete', bills.deleteBills);
 };
 
 module.exports = createRouter;
