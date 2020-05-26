@@ -17,7 +17,8 @@ const getGeneralExpenses = (req, res) => {
     ad.first_n,
     ad.last_n,
     ge.building_id,
-    bd.b_name
+    bu.name
+      AS building
   FROM general_expenses 
     AS ge
     INNER JOIN concepts
@@ -27,8 +28,8 @@ const getGeneralExpenses = (req, res) => {
       AS ad
       ON ge.admin_id = ad.id
     INNER JOIN buildings
-      AS bd
-      ON ge.building_id = bd.id
+      AS bu
+      ON ge.building_id = bu.id
   WHERE ge.building_id = ${building_id} 
   ORDER BY ge.ge_date ASC`, 
     (error, results) => {
@@ -57,7 +58,8 @@ const getGeneralExpensesById = (req, res) => {
       ad.first_n,
       ad.last_n,
       ge.building_id,
-      bd.b_name
+      bu.name
+        AS building
     FROM general_expenses 
       AS ge
       INNER JOIN concepts
@@ -67,8 +69,8 @@ const getGeneralExpensesById = (req, res) => {
         AS ad
         ON ge.admin_id = ad.id
       INNER JOIN buildings
-        AS bd
-        ON ge.building_id = bd.id
+        AS bu
+        ON ge.building_id = bu.id
     WHERE ge.id IN(${id})  
     ORDER BY ge.ge_date ASC`, 
     (error, results) => {

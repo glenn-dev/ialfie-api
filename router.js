@@ -3,6 +3,7 @@ const buildings = require('./controllers/buildings');
 const admins = require('./controllers/admins');
 const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
+const categories = require('./controllers/categories');
 const concepts = require('./controllers/concepts');
 const generalExpenses = require('./controllers/general-expenses');
 const bills = require('./controllers/bills');
@@ -43,6 +44,13 @@ function createRouter(app) {
   app.post('/communications/create', communications.createCommunication);
   app.put('/communications/update', communications.updateCommunication);
   app.delete('/communications/delete', communications.deleteCommunications);
+
+  /* CATEGORIES */
+  app.get('/categories', categories.getCategories);
+  app.get('/categories/id', categories.getCategoriesById);
+  app.post('/categories/create', categories.createCategory);
+  app.put('/categories/update', categories.updateCategory);
+  app.delete('/categories/delete', categories.deleteCategories);
 
   /* CONCEPTS */
   app.get('/concepts', concepts.getConcepts);

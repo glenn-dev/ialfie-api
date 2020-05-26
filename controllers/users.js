@@ -16,8 +16,9 @@ const getUsers = (req, res) => {
       us.created_at,
       us.updated_at,
       dp.building_id,
-      bd.b_name,
-      bd.address,
+      bu.name
+        AS building,
+      bu.address,
       ud.department_id,
       dp.number,
       dp.floor,
@@ -33,8 +34,8 @@ const getUsers = (req, res) => {
         AS dp
         ON ud.department_id = dp.id
       INNER JOIN buildings
-        AS bd
-        ON dp.building_id = bd.id
+        AS bu
+        ON dp.building_id = bu.id
     ORDER BY us.first_n ASC;`, 
     (error, results) => {
       if (error) {
@@ -61,8 +62,9 @@ const getUsersById = (req, res) => {
       us.created_at,
       us.updated_at,
       ub.building_id,
-      bd.b_name,
-      bd.address,
+      bu.name
+        AS building,
+      bu.address,
       ud.department_id,
       dp.number,
       dp.floor,
@@ -75,8 +77,8 @@ const getUsersById = (req, res) => {
         AS ub
         ON us.id = ub.user_id
       INNER JOIN buildings
-        AS bd
-        ON ub.building_id = bd.id
+        AS bu
+        ON ub.building_id = bu.id
       INNER JOIN users_departments
         AS ud
         ON us.id = ud.user_id

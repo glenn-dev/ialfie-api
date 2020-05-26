@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL BUILDINGS */
 const getBuildings = (req, res) => {
-  pool.query('SELECT * FROM buildings ORDER BY b_name ASC', 
+  pool.query('SELECT * FROM buildings ORDER BY name ASC', 
     (error, results) => {
       if (error) {
         throw error;
@@ -15,7 +15,7 @@ const getBuildings = (req, res) => {
 /* GET BUILDINGS BY ID */
 const getBuildingsById = (req, res) => {
   const id = req.body;
-  pool.query(`SELECT * FROM buildings WHERE id IN(${id}) ORDER BY b_name ASC`, 
+  pool.query(`SELECT * FROM buildings WHERE id IN(${id}) ORDER BY name ASC`, 
     (error, results) => {
       if (error) {
         throw error;
@@ -29,7 +29,7 @@ const getBuildingsById = (req, res) => {
 const createBuilding = (req, res) => {
   const { name, address, image, status } = req.body;
   pool.query(
-    'INSERT INTO buildings (b_name, address, image, status) VALUES ($1, $2, $3)', 
+    'INSERT INTO buildings (name, address, image, status) VALUES ($1, $2, $3)', 
     [name, address, image], 
     (error, results) => {
       if (error) {
@@ -44,7 +44,7 @@ const createBuilding = (req, res) => {
 const updateBuilding = (req, res) => {
   const {id, name, address, image, status } = req.body;
   pool.query(
-    'UPDATE buildings SET b_name = $1, address = $2, image = $3 WHERE id = $4',
+    'UPDATE buildings SET name = $1, address = $2, image = $3 WHERE id = $4',
     [name, address, image, id, status],
     (error, results) => {
       if (error) {

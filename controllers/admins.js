@@ -16,16 +16,17 @@ const getAdmins = (req, res) => {
 	    ad.created_at,
 	    ad.updated_at,
 	    ab.building_id,
-      bd.b_name,
-	    bd.address
+      bu.name
+        AS building,
+	    bu.address
     FROM admins
       AS ad
       INNER JOIN admins_buildings
         AS ab
         ON ad.id = ab.admin_id
       INNER JOIN buildings
-        AS bd
-        ON ab.building_id = bd.id
+        AS bu
+        ON ab.building_id = bu.id
     ORDER BY ad.first_n ASC;`,
    (error, results) => {
     if (error) {
@@ -51,16 +52,17 @@ const getAdminsById = (req, res) => {
 	    ad.created_at,
 	    ad.updated_at,
 	    ab.building_id,
-      bd.b_name,
-	    bd.address
+      bu.name
+        AS building,
+	    bu.address
     FROM admins
       AS ad
       INNER JOIN admins_buildings
         AS ab
         ON ad.id = ab.admin_id
       INNER JOIN buildings
-        AS bd
-        ON ab.building_id = bd.id
+        AS bu
+        ON ab.building_id = bu.id
     WHERE ad.id IN(${id})
     ORDER BY ad.first_n ASC;`, 
     (error, results) => {

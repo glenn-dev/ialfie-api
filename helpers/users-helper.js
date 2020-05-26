@@ -17,7 +17,7 @@ const goParse = (data) => {
         buildings: [
           {
             building_id: user.building_id,
-            building_name: user.b_name,
+            building_name: user.building,
             building_address: user.address,
             departments: [
               {
@@ -39,7 +39,7 @@ const goParse = (data) => {
     users[index].buildings.push(
       {
         building_id: user.building_id,
-        building_name: user.b_name,
+        building_name: user.building,
         building_address: user.address,
         departments: [
           {

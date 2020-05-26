@@ -6,7 +6,7 @@ const getBills = (req, res) => {
   pool.query(`
   SELECT
     bi.id,
-    bi.bill_number,
+    bi.number,
     bi.exp_date,
     bi.total,
     bi.status,
@@ -21,7 +21,7 @@ const getBills = (req, res) => {
     ad.last_n
       AS adm_last_n,
     bi.building_id,
-    bd.b_name
+    bu.name
   FROM bills 
     AS bi
     INNER JOIN departments
@@ -31,10 +31,10 @@ const getBills = (req, res) => {
       AS ad
       ON bi.admin_id = ad.id
     INNER JOIN buildings
-      AS bd
-      ON bi.building_id = bd.id
+      AS bu
+      ON bi.building_id = bu.id
   WHERE bi.building_id = ${building_id} 
-  ORDER BY bi.bill_number ASC`, 
+  ORDER BY bi.number ASC`, 
     (error, results) => {
       if (error) {
         throw error;
@@ -81,27 +81,27 @@ const getBillsById = (req, res) => {
 
 /* CREATE BILL */
 const createBill = (req, res) => {
-  const { bill_number, exp_date, total, status, document, department_id, building_id, admin_id } = req.body;
+  const { number, exp_date, total, status, document, department_id, building_id, admin_id } = req.body;
   pool.query(`
-    INSERT INTO bills (bill_number, exp_date, total, status, document, department_id, building_id, admin_id) 
+    INSERT INTO bills (number, exp_date, total, status, document, department_id, building_id, admin_id) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`, 
-     [bill_number, exp_date, total, status, document, department_id, building_id, admin_id], 
+     [number, exp_date, total, status, document, department_id, building_id, admin_id], 
     (error, results) => {
       if (error) {
         throw error;
       };
-      res.status(201).send(`Bill "${bill_number}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
+      res.status(201).send(`Bill "${number}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
     }
   );
 };
 
 /* UPDATE BILL */
 const updateBill = (req, res) => {
-  const { id, bill_number, exp_date, total, status, document, department_id, building_id, admin_id } = req.body;
+  const { id, number, exp_date, total, status, document, department_id, building_id, admin_id } = req.body;
   pool.query(`
     UPDATE bills 
     SET 
-      bill_number = $1,
+      number = $1,
       exp_date = $2, 
       total = $3, 
       status = $4, 
@@ -110,7 +110,7 @@ const updateBill = (req, res) => {
       building_id = $7, 
       admin_id = $8
     WHERE id = $9`,
-    [bill_number, exp_date, total, status, document, department_id, building_id, admin_id, id],
+    [number, exp_date, total, status, document, department_id, building_id, admin_id, id],
     (error, results) => {
       if (error) {
         throw error;
