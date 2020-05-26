@@ -17,7 +17,9 @@ iAlfie is an administrative software for condominium management.
 
 ### :dart: Built With:
 
-* [Express.js 4.17](https://expressjs.com/)
+* [NodeJs 12.16.3](https://nodejs.org/en/)
+  * [Express.js 4.17.1](https://expressjs.com/)
+  * [pg 8.0.3](https://www.npmjs.com/package/pg)
 
 * [PostgreSQL 12.3](https://www.postgresql.org/)
 
@@ -109,21 +111,22 @@ $ nodemon index
 ## Acknowledgements
 
 * [NodeJs](https://nodejs.org/en/)
-  * [npm](https://www.npmjs.com/)
-  * [Express](https://expressjs.com/)
-  * [Nodemon](https://nodemon.io/)
+* [npm](https://www.npmjs.com/)
+* [Express](https://expressjs.com/)
+* [Nodemon](https://nodemon.io/)
 * [PostgreSQL](https://www.postgresql.org/)
 * [Linux](https://www.linux.org/)
-  * [Ubuntu](https://ubuntu.com/)
+* [Ubuntu](https://ubuntu.com/)
+* [GNU](https://www.gnu.org/)
 * [Visual Studio Code](https://code.visualstudio.com/)
-  * [Prettier](https://prettier.io/)
-  * [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
+* [Prettier](https://prettier.io/)
+* [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
 * [Postman](https://www.postman.com/)
 * [DBeaver](https://dbeaver.io/)
 * [Draw.io](https://www.draw.io/)
 * [GitHub](https://github.com/)
-  * [Choose an open source license](https://choosealicense.com/)
-  * [Othneil Drew](https://github.com/othneildrew/Best-README-Template)
+* [Choose an open source license](https://choosealicense.com/)
+* [Othneil Drew](https://github.com/othneildrew/Best-README-Template)
 * [Stack Overflow](https://stackoverflow.com/)
 * [Trello](https://trello.com/)
 * [Mei Chan](https://www.linkedin.com/in/mei-ling-chan-b07a1ab7/)
