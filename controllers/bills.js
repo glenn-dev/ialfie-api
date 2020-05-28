@@ -82,7 +82,7 @@ const getBillsById = (req, res) => {
 /* CREATE RELATIONS */
 const insertBillDetails = (res, id, details, department_id, building_id, admin_id) => {
   let values = [];
-  details.forEach((detail, index) => {
+  details.forEach((detail) => {
     values.push(`(
       ${detail.category_id}, 
       ${detail.concept_id}, 
@@ -108,22 +108,29 @@ const insertBillDetails = (res, id, details, department_id, building_id, admin_i
       department_id, 
       building_id,
       admin_id) 
-    VALUES ${values}`, 
+    VALUES ${values}
+    RETURNING id`, 
     (error, results) => {
     if (error) {
+      selfDelete(id, res);
       throw error;
     };
     res.status(201).send(`Bill "${id}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
   });
-}
+};
+
+/* DELETE RELATIONS */
+const deleteBillDetails = (id) => {
+  return pool.query(`DELETE FROM bill_details WHERE bill_id IN(${id})`);
+};
 
 /* CREATE BILL */
 const createBill = (req, res) => {
-  const { number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id, details } = req.body;
+  const { number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, details } = req.body;
   pool.query(`
-    INSERT INTO bills (number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, 
-    [number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id], 
+    INSERT INTO bills (number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`, 
+    [number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id], 
     (error, results) => {
       if (error) {
         throw error;
@@ -135,32 +142,35 @@ const createBill = (req, res) => {
 
 /* UPDATE BILL */
 const updateBill = (req, res) => {
-  const { id, number, exp_date, total, status, document, department_id, building_id, admin_id, details } = req.body;
+  const { id, number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, details } = req.body;
   pool.query(`
     UPDATE bills 
     SET 
       number = $1,
       exp_date = $2, 
-      total = $3, 
-      status = $4, 
-      document = $5, 
-      department_id = $6, 
-      building_id = $7, 
-      admin_id = $8
-    WHERE id = $9`,
-    [number, exp_date, total, status, document, department_id, building_id, admin_id, id],
-    (error, results) => {
+      ge_subtotal = $3, 
+      in_subtotal = $4, 
+      total = $5, 
+      status = $6, 
+      issued = $7, 
+      document = $8,
+      department_id = $9,
+      building_id = $10,
+      admin_id = $11
+    WHERE id = $12`,
+    [number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, id],
+    async (error, results) => {
       if (error) {
         throw error;
       };
-      res.status(200).send(`Bill modified with ID: ${id}`);
+      await deleteBillDetails(id);
+      await insertBillDetails(res, id, details, department_id, building_id, admin_id);
     }
   );
 };
 
 /* DELETE BILLS */
-const deleteBills = (req, res) => {
-  const id = req.body;
+const selfDelete = (id, res) => {
   pool.query(`DELETE FROM bills WHERE id IN(${id})`, 
     (error, results) => {
       if (error) {
@@ -169,6 +179,12 @@ const deleteBills = (req, res) => {
       res.status(200).send(`Bills deleted with ID: ${id}`);
     }
   );
+};
+const deleteBills = async (req, res) => {
+  const id = req.body;
+  const response = await deleteBillDetails(id);
+  console.log(response);
+  await selfDelete(id, res);
 };
 
 /* EXPORTS */

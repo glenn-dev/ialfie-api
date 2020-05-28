@@ -104,7 +104,7 @@ $ nodemon index
 
 ## Contact
 
-:busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
+:busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)<br/>
 :email: glenn.marcano90@gmail.com
 
 
