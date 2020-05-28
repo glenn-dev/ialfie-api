@@ -1,0 +1,40 @@
+[
+  {
+    "number": "0001",
+    "exp_date": "2020-03-25 11:26:14",
+    "ge_subtotal": 25000.00,
+    "in_subtotal": 75000.00,
+    "total": 100000.00,
+    "status": false,
+    "document": "/document/path/bill_001",
+    "department_id": "1",
+    "building_id": "23",
+    "admin_id": "30",
+    "details": [
+      {
+        "category_id": "1",
+        "concept_id": "8",
+        "description": "Optional description.",
+        "amount": 25000.00,
+        "quantity": 1.0,
+        "total": 25000.00
+      },
+      {
+        "category_id": "1",
+        "concept_id": "9",
+        "description": "Optional description.",
+        "amount": 10000.00,
+        "quantity": 2.0,
+        "total": 20000.00
+      },
+      {
+        "category_id": "2",
+        "concept_id": "11",
+        "description": "Optional description.",
+        "amount": 5000.00,
+        "quantity": 6.0,
+        "total": 30000.00
+      }
+    ]
+  }
+]

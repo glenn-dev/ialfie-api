@@ -79,25 +79,62 @@ const getBillsById = (req, res) => {
   );
 };
 
+/* CREATE RELATIONS */
+const insertBillDetails = (id, details, department_id, building_id) => {
+  let values = [];
+  details.forEach((detail, index) => {
+    values.push(`(
+      ${detail.category_id}, 
+      ${detail.concept_id}, 
+      '${detail.description}', 
+      ${detail.amount}, 
+      ${detail.quantity}, 
+      ${detail.total}, 
+      ${id}, 
+      ${department_id}, 
+      ${building_id})`
+    );
+  });
+  pool.query(`
+    INSERT INTO bill_details (
+      category_id, 
+      concept_id, 
+      description, 
+      amount, 
+      quantity, 
+      total, 
+      bill_id, 
+      department_id, 
+      building_id) 
+    VALUES ${values}`, 
+    (error, results) => {
+    if (error) {
+      throw error;
+    };
+  });
+}
+
 /* CREATE BILL */
 const createBill = (req, res) => {
-  const { number, exp_date, total, status, document, department_id, building_id, admin_id } = req.body;
+  const { number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id, details } = req.body;
   pool.query(`
-    INSERT INTO bills (number, exp_date, total, status, document, department_id, building_id, admin_id) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`, 
-     [number, exp_date, total, status, document, department_id, building_id, admin_id], 
+    INSERT INTO bills (number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, 
+     [number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id], 
     (error, results) => {
       if (error) {
         throw error;
       };
-      res.status(201).send(`Bill "${number}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
+      const id = results.rows[0].id;
+      insertBillDetails(id, details, department_id, building_id);
+      res.status(201).send(`Bill "${number}" with id: ${id}; added successfully on department: ${department_id}, by admin: ${admin_id}`);
     }
   );
 };
 
 /* UPDATE BILL */
 const updateBill = (req, res) => {
-  const { id, number, exp_date, total, status, document, department_id, building_id, admin_id } = req.body;
+  const { id, number, exp_date, total, status, document, department_id, building_id, admin_id, details } = req.body;
   pool.query(`
     UPDATE bills 
     SET 
