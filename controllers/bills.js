@@ -80,7 +80,7 @@ const getBillsById = (req, res) => {
 };
 
 /* CREATE RELATIONS */
-const insertBillDetails = (id, details, department_id, building_id) => {
+const insertBillDetails = (res, id, details, department_id, building_id, admin_id) => {
   let values = [];
   details.forEach((detail, index) => {
     values.push(`(
@@ -92,7 +92,8 @@ const insertBillDetails = (id, details, department_id, building_id) => {
       ${detail.total}, 
       ${id}, 
       ${department_id}, 
-      ${building_id})`
+      ${building_id},
+      ${admin_id})`
     );
   });
   pool.query(`
@@ -105,12 +106,14 @@ const insertBillDetails = (id, details, department_id, building_id) => {
       total, 
       bill_id, 
       department_id, 
-      building_id) 
+      building_id,
+      admin_id) 
     VALUES ${values}`, 
     (error, results) => {
     if (error) {
       throw error;
     };
+    res.status(201).send(`Bill "${id}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
   });
 }
 
@@ -120,14 +123,12 @@ const createBill = (req, res) => {
   pool.query(`
     INSERT INTO bills (number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, 
-     [number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id], 
+    [number, exp_date, ge_subtotal, in_subtotal, total, status, document, department_id, building_id, admin_id], 
     (error, results) => {
       if (error) {
         throw error;
       };
-      const id = results.rows[0].id;
-      insertBillDetails(id, details, department_id, building_id);
-      res.status(201).send(`Bill "${number}" with id: ${id}; added successfully on department: ${department_id}, by admin: ${admin_id}`);
+      insertBillDetails(res, results.rows[0].id, details, department_id, building_id, admin_id);
     }
   );
 };

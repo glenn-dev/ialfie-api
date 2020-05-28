@@ -104,25 +104,12 @@ $ nodemon index
 
 ## Contact
 
-* :busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
-* :email: glenn.marcano90@gmail.com
+:busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
+:email: glenn.marcano90@gmail.com
 
 
 ## Acknowledgements
 
-* [NodeJs](https://nodejs.org/en/)
-  * [Express](https://expressjs.com/)
-  * [npm](https://www.npmjs.com/)
-  * [node-postgres](https://www.npmjs.com/package/pg)
-  * [Nodemon](https://nodemon.io/)
-* [PostgreSQL](https://www.postgresql.org/)
-* [Visual Studio Code](https://code.visualstudio.com/)
-  * [Prettier](https://prettier.io/)
-  * [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
-* [Postman](https://www.postman.com/)
-* [DBeaver](https://dbeaver.io/)
-* [Draw.io](https://www.draw.io/)
-* [Trello](https://trello.com/)
 * [Stack Overflow](https://stackoverflow.com/)
 * [GitHub](https://github.com/)
   * [Open source license](https://choosealicense.com/)
@@ -131,4 +118,18 @@ $ nodemon index
   * [GNU](https://www.gnu.org/)
   * [Linux](https://www.linux.org/)
   * [Ubuntu](https://ubuntu.com/)
+  * [Spotify for Linux](https://www.spotify.com/cl/download/linux/)
+* [Visual Studio Code](https://code.visualstudio.com/)
+  * [Prettier](https://prettier.io/)
+  * [vscode-spotify](https://marketplace.visualstudio.com/items?itemName=shyykoserhiy.vscode-spotify)
+* [NodeJs](https://nodejs.org/en/)
+  * [Express](https://expressjs.com/)
+  * [npm](https://www.npmjs.com/)
+  * [pg](https://www.npmjs.com/package/pg)
+  * [Nodemon](https://nodemon.io/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Postman](https://www.postman.com/)
+* [DBeaver](https://dbeaver.io/)
+* [Draw.io](https://www.draw.io/)
+* [Trello](https://trello.com/)
 * [Mei Chan](https://www.linkedin.com/in/mei-ling-chan-b07a1ab7/) :love_letter:
