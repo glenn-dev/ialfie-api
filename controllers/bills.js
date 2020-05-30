@@ -80,7 +80,7 @@ const getBillsById = (req, res) => {
 };
 
 /* CREATE RELATIONS */
-const insertBillDetails = (res, id, details, department_id, building_id, admin_id) => {
+const insertBillDetails = (id, details, department_id, building_id, admin_id, res) => {
   let values = [];
   details.forEach((detail) => {
     values.push(`(
@@ -112,7 +112,6 @@ const insertBillDetails = (res, id, details, department_id, building_id, admin_i
     RETURNING id`, 
     (error, results) => {
     if (error) {
-      selfDelete(id, res);
       throw error;
     };
     res.status(201).send(`Bill "${id}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
@@ -120,8 +119,15 @@ const insertBillDetails = (res, id, details, department_id, building_id, admin_i
 };
 
 /* DELETE RELATIONS */
-const deleteBillDetails = (id) => {
-  return pool.query(`DELETE FROM bill_details WHERE bill_id IN(${id})`);
+const deleteBillDetails = (id, res, data = false) => {
+  pool.query(`DELETE FROM bill_details WHERE bill_id IN(${id})`, 
+    (error, results) => {
+      if (error) {
+        throw error;
+      };
+      (data) ? insertBillDetails(id, data.details, data.department_id, data.building_id, data.admin_id, res) : selfDelete(id, res);
+    }
+  );
 };
 
 /* CREATE BILL */
@@ -135,7 +141,7 @@ const createBill = (req, res) => {
       if (error) {
         throw error;
       };
-      insertBillDetails(res, results.rows[0].id, details, department_id, building_id, admin_id);
+      insertBillDetails(results.rows[0].id, details, department_id, building_id, admin_id, res);
     }
   );
 };
@@ -159,12 +165,11 @@ const updateBill = (req, res) => {
       admin_id = $11
     WHERE id = $12`,
     [number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, id],
-    async (error, results) => {
+    (error, results) => {
       if (error) {
         throw error;
       };
-      await deleteBillDetails(id);
-      await insertBillDetails(res, id, details, department_id, building_id, admin_id);
+      deleteBillDetails(id, res, {details, department_id, building_id, admin_id});
     }
   );
 };
@@ -180,11 +185,8 @@ const selfDelete = (id, res) => {
     }
   );
 };
-const deleteBills = async (req, res) => {
-  const id = req.body;
-  const response = await deleteBillDetails(id);
-  console.log(response);
-  await selfDelete(id, res);
+const deleteBills = (req, res) => {
+  deleteBillDetails(req.body, res);
 };
 
 /* EXPORTS */
