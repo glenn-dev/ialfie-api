@@ -38,83 +38,81 @@
   ]
 }
 
-Result {
-  command: 'DELETE',
-  rowCount: 3,
-  oid: null,
-  rows: [],
-  fields: [],
-  _parsers: undefined,
-  _types: TypeOverrides {
-    _types: {
-      getTypeParser: [Function: getTypeParser],
-      setTypeParser: [Function: setTypeParser],
-      arrayParser: [Object],
-      builtins: [Object]
-    },
-    text: {},
-    binary: {}
-  },
-  RowCtor: null,
-  rowAsArray: false
+
+Body for querys:
+All Get by id: [1, 2, 3, 4, ...]
+Update is the same as post but with "id".
+
+admin:
+{
+"first_n" : "Admin Name 4",
+"last_n" : "Admin Last Name 4",
+"email" : "admin4@mail.com",
+"password" : "123456",
+"phone" : "987654321",
+"id_number" : "123456789",
+"status": true,
+"buildings": [24, 23]
 }
-Result {
-  command: 'DELETE',
-  rowCount: 0,
-  oid: null,
-  rows: [],
-  fields: [],
-  _parsers: undefined,
-  _types: TypeOverrides {
-    _types: {
-      getTypeParser: [Function: getTypeParser],
-      setTypeParser: [Function: setTypeParser],
-      arrayParser: [Object],
-      builtins: [Object]
-    },
-    text: {},
-    binary: {}
-  },
-  RowCtor: null,
-  rowAsArray: false
+user:
+{
+"first_n" : "User 1",
+"last_n" : "User Last Name 1",
+"email" : "user1@mail.com",
+"password" : "123456",
+"phone" : "123456789",
+"id_number" : "123456789",
+"user_type" : false,
+"buildings": [23],
+"departments": [1]
+}
+Communications:
+{
+"release" : "B23-001",
+"title" : "1 comm for building 24",
+"content" : "Content 1 - 24",
+"status" : "true",
+"document" : "document/url",
+"admin_id" : "29",
+"building_id" : "23"
+}
+Categories:
+{
+	"code" : "B24-CA02",
+	"name" : "Cat Name 2",
+	"building_id" : 24
+}
+Concepts:
+{
+	"code" : "B24-CA04-CO04",
+	"concept" : "Concept 4 B24",
+	"category_id" : 4,
+	"building_id" : 24
+}
+Bill:
+{
+	"number" : "B23-D01-A30-BI03",
+	"exp_date" : "2020-03-25 11:26:14",
+	"total" : 95000.00,
+	"status" : false,
+	"document" : "bill/document/path",
+	"department_id" : "1",
+	"building_id" : "23",
+	"admin_id" : "30"
 }
 
-Body: <nothing>
-TypeError: Cannot read property '1' of null
-    at firstchar (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/body-parser/lib/types/json.js:176:37)
-    at parse (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/body-parser/lib/types/json.js:79:19)
-    at /home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/body-parser/lib/read.js:121:18
-    at invokeCallback (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/raw-body/index.js:224:16)
-    at done (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/raw-body/index.js:213:7)
-    at IncomingMessage.onEnd (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/raw-body/index.js:273:7)
-    at IncomingMessage.emit (events.js:327:22)
-    at endReadableNT (_stream_readable.js:1221:12)
-    at processTicksAndRejections (internal/process/task_queues.js:84:21)
-
-Body: ['dfg']
-    SyntaxError: Unexpected token ' in JSON at position 2
-    at JSON.parse (<anonymous>)
-    at parse (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/body-parser/lib/types/json.js:89:19)
-    at /home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/body-parser/lib/read.js:121:18
-    at invokeCallback (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/raw-body/index.js:224:16)
-    at done (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/raw-body/index.js:213:7)
-    at IncomingMessage.onEnd (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/raw-body/index.js:273:7)
-    at IncomingMessage.emit (events.js:327:22)
-    at endReadableNT (_stream_readable.js:1221:12)
-    at processTicksAndRejections (internal/process/task_queues.js:84:21)
-
-Body: []
-(node:13787) UnhandledPromiseRejectionWarning: error: syntax error at or near ")"
-    at Connection.parseE (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/pg/lib/connection.js:581:48)
-    at Connection.parseMessage (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/pg/lib/connection.js:380:19)
-    at Socket.<anonymous> (/home/glenn-dev/Documents/ialfie/ialfie-app/node_modules/pg/lib/connection.js:116:22)
-    at Socket.emit (events.js:315:20)
-    at addChunk (_stream_readable.js:295:12)
-    at readableAddChunk (_stream_readable.js:271:9)
-    at Socket.Readable.push (_stream_readable.js:212:10)
-    at TCP.onStreamRead (internal/stream_base_commons.js:186:23)
-(node:13787) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function 
-without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, 
-use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 1)
-(node:13787) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled 
-will terminate the Node.js process with a non-zero exit code.
+• 23: {
+	DEP: [1, 2, 3], 
+	ADM: [30, 31],
+	US: [27, 30],
+	CAT: [1 , 2],
+	CON: [8, 9, 10, 11]
+	}
+• 24: {
+	DEP: [4, 5, 6], 
+	ADM: [29, 31], 
+	US: [29, 30],
+	CAT: [3 , 4],
+	CON: [12, 13, 14, 15]
+	}
+	

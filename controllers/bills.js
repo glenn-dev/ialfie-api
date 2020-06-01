@@ -4,37 +4,40 @@ const pool = require('../database/db')
 const getBills = (req, res) => {
   const building_id = req.body;
   pool.query(`
-  SELECT
-    bi.id,
-    bi.number,
-    bi.exp_date,
-    bi.total,
-    bi.status,
-    bi.document,
-    bi.department_id,
-    de.number
-      AS dep_number,
-    de.defaulting,
-    bi.admin_id,
-    ad.first_n
-      AS adm_first_n,
-    ad.last_n
-      AS adm_last_n,
-    bi.building_id,
-    bu.name
-  FROM bills 
-    AS bi
-    INNER JOIN departments
-      AS de
-      ON bi.department_id = de.id
-    INNER JOIN admins
-      AS ad
-      ON bi.admin_id = ad.id
-    INNER JOIN buildings
-      AS bu
-      ON bi.building_id = bu.id
-  WHERE bi.building_id = ${building_id} 
-  ORDER BY bi.number ASC`, 
+    SELECT
+      bi.id,
+      bi.number,
+      bi.exp_date,
+      bi.ge_subtotal,
+      bi.in_subtotal,
+      bi.total,
+      bi.issued,
+      bi.status,
+      bi.document,
+      bi.department_id,
+      de.number
+        AS dep_number,
+      de.defaulting,
+      bi.admin_id,
+      ad.first_n
+        AS adm_first_n,
+      ad.last_n
+        AS adm_last_n,
+      bi.building_id,
+      bu.name
+    FROM bills 
+      AS bi
+      INNER JOIN departments
+        AS de
+        ON bi.department_id = de.id
+      INNER JOIN admins
+        AS ad
+        ON bi.admin_id = ad.id
+      INNER JOIN buildings
+        AS bu
+        ON bi.building_id = bu.id
+    WHERE bi.building_id = ${building_id} 
+    ORDER BY bi.number ASC`, 
     (error, results) => {
       if (error) {
         throw error;
