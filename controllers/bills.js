@@ -1,9 +1,11 @@
-const pool = require('../database/db')
+const pool = require("../database/db");
+const goParseBills = require("../helpers/bills-helper");
 
 /* GET ALL BILLS */
 const getBills = (req, res) => {
   const building_id = req.body;
-  pool.query(`
+  pool.query(
+    `
     SELECT
       bi.id,
       bi.number,
@@ -37,11 +39,11 @@ const getBills = (req, res) => {
         AS bu
         ON bi.building_id = bu.id
     WHERE bi.building_id = ${building_id} 
-    ORDER BY bi.number ASC`, 
+    ORDER BY bi.number ASC`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(results.rows);
     }
   );
@@ -49,20 +51,51 @@ const getBills = (req, res) => {
 
 /* GET BILLS BY ID */
 const getBillsById = (req, res) => {
-  const id = req.body
-  pool.query(`
+  const id = req.body;
+  pool.query(
+    `
     SELECT
-      bd.id,
-      bd.category_id,
-      ca.cat_code,
-      ca.cat_name,
-      bd.concept_id,
-      co.code,
-      co.concept,
+      bi.id
+        AS bill_id,
+      bi.number
+        AS bill_number,
+      bi.status
+        AS bill_status,
+      bi.issued
+        AS bill_issued,
+      bi.ge_subtotal
+        AS general_expense_subtotal,
+      bi.in_subtotal
+        AS individual_expense_subtotal,
+      bi.total
+        AS bill_total,
+      bi.exp_date,
+      de.id
+        AS department_id,
+      de.number
+        AS department_number,
+      de.floor
+        AS department_floor,
+      de.status
+        AS department_status,
+      de.defaulting
+        AS department_defaulting,
+      de.aliquot
+        AS department_aliquot,
+      ca.code
+        AS category_code,
+      ca.name
+        As category_name,
+      co.code
+        AS concept_code,
+      co.name
+        AS concept_name,
+      bd.id
+        AS bill_detail_id,
       bd.description,
       bd.amount,
       bd.quantity,
-      bd.total,
+      bd.total
     FROM bill_details
       AS bd
       INNER JOIN concepts
@@ -71,19 +104,32 @@ const getBillsById = (req, res) => {
       INNER JOIN categories
         AS ca
         ON bd.category_id = ca.id
-    WHERE bd.id IN(${id}) 
-    ORDER BY ca.cat_name ASC`, 
+      INNER JOIN bills
+        AS bi
+        ON bd.bill_id = bi.id
+      INNER JOIN departments
+        AS de
+        ON bi.department_id = de.id
+    WHERE bd.bill_id IN(${id}) 
+    ORDER BY bi.id ASC`,
     (error, results) => {
       if (error) {
         throw error;
-      };
-      res.status(200).json(results.rows);
+      }
+      res.status(200).json(goParseBills(results.rows));
     }
   );
 };
 
 /* CREATE RELATIONS */
-const insertBillDetails = (id, details, department_id, building_id, admin_id, res) => {
+const insertBillDetails = (
+  id,
+  details,
+  department_id,
+  building_id,
+  admin_id,
+  res
+) => {
   let values = [];
   details.forEach((detail) => {
     values.push(`(
@@ -96,10 +142,10 @@ const insertBillDetails = (id, details, department_id, building_id, admin_id, re
       ${id}, 
       ${department_id}, 
       ${building_id},
-      ${admin_id})`
-    );
+      ${admin_id})`);
   });
-  pool.query(`
+  pool.query(
+    `
     INSERT INTO bill_details (
       category_id, 
       concept_id, 
@@ -112,47 +158,110 @@ const insertBillDetails = (id, details, department_id, building_id, admin_id, re
       building_id,
       admin_id) 
     VALUES ${values}
-    RETURNING id`, 
+    RETURNING id`,
     (error, results) => {
-    if (error) {
-      throw error;
-    };
-    res.status(201).send(`Bill "${id}" added successfully on department: ${department_id}, by admin: ${admin_id}`);
-  });
+      if (error) {
+        throw error;
+      }
+      res
+        .status(201)
+        .send(
+          `Bill "${id}" added successfully on department: ${department_id}, by admin: ${admin_id}`
+        );
+    }
+  );
 };
 
 /* DELETE RELATIONS */
 const deleteBillDetails = (id, res, data = false) => {
-  pool.query(`DELETE FROM bill_details WHERE bill_id IN(${id})`, 
+  pool.query(
+    `DELETE FROM bill_details WHERE bill_id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;
-      };
-      (data) ? insertBillDetails(id, data.details, data.department_id, data.building_id, data.admin_id, res) : selfDelete(id, res);
+      }
+      data
+        ? insertBillDetails(
+            id,
+            data.details,
+            data.department_id,
+            data.building_id,
+            data.admin_id,
+            res
+          )
+        : selfDelete(id, res);
     }
   );
 };
 
 /* CREATE BILL */
 const createBill = (req, res) => {
-  const { number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, details } = req.body;
-  pool.query(`
+  const {
+    number,
+    exp_date,
+    ge_subtotal,
+    in_subtotal,
+    total,
+    status,
+    issued,
+    document,
+    department_id,
+    building_id,
+    admin_id,
+    details,
+  } = req.body;
+  pool.query(
+    `
     INSERT INTO bills (number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`, 
-    [number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id], 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+    [
+      number,
+      exp_date,
+      ge_subtotal,
+      in_subtotal,
+      total,
+      status,
+      issued,
+      document,
+      department_id,
+      building_id,
+      admin_id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
-      };
-      insertBillDetails(results.rows[0].id, details, department_id, building_id, admin_id, res);
+      }
+      insertBillDetails(
+        results.rows[0].id,
+        details,
+        department_id,
+        building_id,
+        admin_id,
+        res
+      );
     }
   );
 };
 
 /* UPDATE BILL */
 const updateBill = (req, res) => {
-  const { id, number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, details } = req.body;
-  pool.query(`
+  const {
+    id,
+    number,
+    exp_date,
+    ge_subtotal,
+    in_subtotal,
+    total,
+    status,
+    issued,
+    document,
+    department_id,
+    building_id,
+    admin_id,
+    details,
+  } = req.body;
+  pool.query(
+    `
     UPDATE bills 
     SET 
       number = $1,
@@ -167,26 +276,42 @@ const updateBill = (req, res) => {
       building_id = $10,
       admin_id = $11
     WHERE id = $12`,
-    [number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id, id],
+    [
+      number,
+      exp_date,
+      ge_subtotal,
+      in_subtotal,
+      total,
+      status,
+      issued,
+      document,
+      department_id,
+      building_id,
+      admin_id,
+      id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
-      };
-      deleteBillDetails(id, res, {details, department_id, building_id, admin_id});
+      }
+      deleteBillDetails(id, res, {
+        details,
+        department_id,
+        building_id,
+        admin_id,
+      });
     }
   );
 };
 
 /* DELETE BILLS */
 const selfDelete = (id, res) => {
-  pool.query(`DELETE FROM bills WHERE id IN(${id})`, 
-    (error, results) => {
-      if (error) {
-        throw error;
-      };
-      res.status(200).send(`Bills deleted with ID: ${id}`);
+  pool.query(`DELETE FROM bills WHERE id IN(${id})`, (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).send(`Bills deleted with ID: ${id}`);
+  });
 };
 const deleteBills = (req, res) => {
   deleteBillDetails(req.body, res);

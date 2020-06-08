@@ -1,25 +1,24 @@
-const pool = require('../database/db');
+const pool = require("../database/db");
 
 /* GET ALL BUILDINGS */
 const getBuildings = (req, res) => {
-  pool.query('SELECT * FROM buildings ORDER BY name ASC', 
-    (error, results) => {
-      if (error) {
-        throw error;
-      };
-      res.status(200).json(results.rows);
+  pool.query("SELECT * FROM buildings ORDER BY name ASC", (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).json(results.rows);
+  });
 };
 
 /* GET BUILDINGS BY ID */
 const getBuildingsById = (req, res) => {
   const id = req.body;
-  pool.query(`SELECT * FROM buildings WHERE id IN(${id}) ORDER BY name ASC`, 
+  pool.query(
+    `SELECT * FROM buildings WHERE id IN(${id}) ORDER BY name ASC`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(results.rows);
     }
   );
@@ -29,12 +28,12 @@ const getBuildingsById = (req, res) => {
 const createBuilding = (req, res) => {
   const { name, address, image, status } = req.body;
   pool.query(
-    'INSERT INTO buildings (name, address, image, status) VALUES ($1, $2, $3)', 
-    [name, address, image], 
+    "INSERT INTO buildings (name, address, image, status) VALUES ($1, $2, $3)",
+    [name, address, image],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(201).send(`Building "${name}" added successfully`);
     }
   );
@@ -42,14 +41,14 @@ const createBuilding = (req, res) => {
 
 /* UPDATE BUILDING */
 const updateBuilding = (req, res) => {
-  const {id, name, address, image, status } = req.body;
+  const { id, name, address, image, status } = req.body;
   pool.query(
-    'UPDATE buildings SET name = $1, address = $2, image = $3 WHERE id = $4',
+    "UPDATE buildings SET name = $1, address = $2, image = $3 WHERE id = $4",
     [name, address, image, id, status],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).send(`Building modified with ID: ${id}`);
     }
   );
@@ -58,14 +57,12 @@ const updateBuilding = (req, res) => {
 /* DELETE BUILDINGS */
 const deleteBuildings = (req, res) => {
   const id = req.body;
-  pool.query(`DELETE FROM buildings WHERE id IN(${id})`, 
-    (error, results) => {
-      if (error) {
-        throw error;
-      };
-      res.status(200).send(`Building deleted with ID: ${id}`);
+  pool.query(`DELETE FROM buildings WHERE id IN(${id})`, (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).send(`Building deleted with ID: ${id}`);
+  });
 };
 
 /* EXPORTS */

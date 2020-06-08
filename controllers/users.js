@@ -1,9 +1,10 @@
-const pool = require('../database/db');
-const parseUser = require('../helpers/users-helper');
+const pool = require("../database/db");
+const parseUser = require("../helpers/users-helper");
 
 /* GET ALL USERS */
 const getUsers = (req, res) => {
-  pool.query(`
+  pool.query(
+    `
     SELECT 
       us.id,
       us.first_n,
@@ -36,11 +37,11 @@ const getUsers = (req, res) => {
       INNER JOIN buildings
         AS bu
         ON dp.building_id = bu.id
-    ORDER BY us.first_n ASC;`, 
+    ORDER BY us.first_n ASC;`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(parseUser(results.rows)); // Parse method
     }
   );
@@ -49,7 +50,8 @@ const getUsers = (req, res) => {
 /* GET USER BY ID */
 const getUsersById = (req, res) => {
   const id = req.body;
-  pool.query(`
+  pool.query(
+    `
     SELECT 
       us.id,
       us.first_n,
@@ -86,11 +88,11 @@ const getUsersById = (req, res) => {
         AS dp
         ON ud.department_id = dp.id
     WHERE id IN(${id})
-    ORDER BY us.first_n ASC;`, 
+    ORDER BY us.first_n ASC;`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(parseUser(results.rows)); // Parse method
     }
   );
@@ -100,33 +102,33 @@ const getUsersById = (req, res) => {
 const insertRelations = (id, buildings, departments) => {
   /* Insert User-Building relation */
   let values = [];
-  buildings.forEach(
-    (building, index) => {
-      (buildings.length < (index + 1)) ? values.push(`(${id}, ${building}),`) : values.push(`(${id}, ${building})`)
-    }
-  );
+  buildings.forEach((building, index) => {
+    buildings.length < index + 1
+      ? values.push(`(${id}, ${building}),`)
+      : values.push(`(${id}, ${building})`);
+  });
   pool.query(
-    `INSERT INTO users_buildings (user_id, building_id) VALUES ${values}`, 
+    `INSERT INTO users_buildings (user_id, building_id) VALUES ${values}`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       console.log(`Relation user: ${id} - buildings: ${buildings} added!`);
     }
   );
   /* Insert User-Department relation */
   values = [];
-  departments.forEach(
-    (department, index) => {
-      (departments.length < (index + 1)) ? values.push(`(${id}, ${department}),`) : values.push(`(${id}, ${department})`)
-    }
-  );
+  departments.forEach((department, index) => {
+    departments.length < index + 1
+      ? values.push(`(${id}, ${department}),`)
+      : values.push(`(${id}, ${department})`);
+  });
   pool.query(
-    `INSERT INTO users_departments (user_id, department_id) VALUES ${values}`, 
+    `INSERT INTO users_departments (user_id, department_id) VALUES ${values}`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       console.log(`Relation user ${id} - departments: ${departments} added!`);
     }
   );
@@ -135,20 +137,22 @@ const insertRelations = (id, buildings, departments) => {
 /* DELETE RELATIONS */
 const deleteRelations = (id) => {
   /* Delete User-Building relation */
-  pool.query(`DELETE FROM users_buildings WHERE user_id IN(${id})`, 
+  pool.query(
+    `DELETE FROM users_buildings WHERE user_id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       console.log(`Relation user: ${id} - buildings: ${buildings} deleted!`);
     }
   );
   /* Delete User-Building relation */
-  pool.query(`DELETE FROM users_buildings WHERE user_id IN(${id})`, 
+  pool.query(
+    `DELETE FROM users_buildings WHERE user_id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       console.log(`Relation user ${id} - departments: ${departments} deleted!`);
     }
   );
@@ -156,34 +160,63 @@ const deleteRelations = (id) => {
 
 /* CREATE USER */
 const createUser = (req, res) => {
-  const { first_n, last_n, email, password, phone, id_number, user_type, buildings, departments } = req.body
+  const {
+    first_n,
+    last_n,
+    email,
+    password,
+    phone,
+    id_number,
+    user_type,
+    buildings,
+    departments,
+  } = req.body;
   pool.query(
-    'INSERT INTO users (first_n, last_n, email, password, phone, id_number, user_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id', 
+    "INSERT INTO users (first_n, last_n, email, password, phone, id_number, user_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
     [first_n, last_n, email, password, phone, id_number, user_type],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       const id = results.rows[0].id;
       insertRelations(id, buildings, departments);
-      res.status(201).send(`User "${first_n} ${last_n}" ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`);
+      res
+        .status(201)
+        .send(
+          `User "${first_n} ${last_n}" ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`
+        );
     }
   );
 };
 
 /* UPDATE USER */
 const updateUser = (req, res) => {
-  const { id, first_n, last_n, email, password, phone, id_number, user_type, buildings, departments } = req.body;
+  const {
+    id,
+    first_n,
+    last_n,
+    email,
+    password,
+    phone,
+    id_number,
+    user_type,
+    buildings,
+    departments,
+  } = req.body;
   pool.query(
-    'UPDATE users SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, user_type = $7 WHERE id = $8',
+    "UPDATE users SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, user_type = $7 WHERE id = $8",
     [first_n, last_n, email, password, phone, id_number, user_type, id],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       deleteRelations(id); // Check questions.
       insertRelations(id, buildings, departments);
-      res.status(200).send(`User "${first_n} ${last_n}" with ID: ${id}, departments: ${departments} and buildings: ${buildings} modified  successfully.`);
+      res
+        .status(200)
+        .send(
+          `User "${first_n} ${last_n}" with ID: ${id}, departments: ${departments} and buildings: ${buildings} modified  successfully.`
+        );
     }
   );
 };
@@ -194,11 +227,11 @@ const deleteUsers = (req, res) => {
   pool.query(`DELETE FROM users WHERE id IN(${id})`, (error, results) => {
     if (error) {
       throw error;
-    };
+    }
     deleteRelations(id);
     res.status(200).send(`User deleted with ID: ${id}. All relations removed.`);
-  })
-}
+  });
+};
 
 /* EXPORTS */
 module.exports = {

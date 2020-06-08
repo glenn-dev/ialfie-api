@@ -1,9 +1,10 @@
-const pool = require('../database/db')
+const pool = require("../database/db");
 
 /* GET ALL GENERAL-EXPENSES */
 const getGeneralExpenses = (req, res) => {
   const building_id = req.body;
-  pool.query(`
+  pool.query(
+    `
   SELECT
     ge.id,
     ge.amount,
@@ -31,11 +32,11 @@ const getGeneralExpenses = (req, res) => {
       AS bu
       ON ge.building_id = bu.id
   WHERE ge.building_id = ${building_id} 
-  ORDER BY ge.ge_date ASC`, 
+  ORDER BY ge.ge_date ASC`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(results.rows);
     }
   );
@@ -43,8 +44,9 @@ const getGeneralExpenses = (req, res) => {
 
 /* GET GENERAL-EXPENSES BY ID */
 const getGeneralExpensesById = (req, res) => {
-  const id = req.body
-  pool.query(`
+  const id = req.body;
+  pool.query(
+    `
     SELECT
       ge.id,
       ge.amount,
@@ -72,11 +74,11 @@ const getGeneralExpensesById = (req, res) => {
         AS bu
         ON ge.building_id = bu.id
     WHERE ge.id IN(${id})  
-    ORDER BY ge.ge_date ASC`, 
+    ORDER BY ge.ge_date ASC`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(results.rows);
     }
   );
@@ -84,24 +86,61 @@ const getGeneralExpensesById = (req, res) => {
 
 /* CREATE GENERAL-EXPENSE */
 const createGeneralExpense = (req, res) => {
-  const { number, concept_id, amount, quantity, total, document, date, admin_id, building_id } = req.body;
-  pool.query(`
+  const {
+    number,
+    concept_id,
+    amount,
+    quantity,
+    total,
+    document,
+    date,
+    admin_id,
+    building_id,
+  } = req.body;
+  pool.query(
+    `
     INSERT INTO general_expenses (number, concept_id, amount, quantity, total, document, date, admin_id, building_id) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`, 
-     [number, concept_id, amount, quantity, total, document, date, admin_id, building_id], 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+    [
+      number,
+      concept_id,
+      amount,
+      quantity,
+      total,
+      document,
+      date,
+      admin_id,
+      building_id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
-      };
-      res.status(201).send(`General Expenses "${results.rows[0].id}" added successfully on building: ${building_id} by admin ${admin_id}`);
+      }
+      res
+        .status(201)
+        .send(
+          `General Expenses "${results.rows[0].id}" added successfully on building: ${building_id} by admin ${admin_id}`
+        );
     }
   );
 };
 
 /* UPDATE GENERAL-EXPENSE */
 const updateGeneralExpense = (req, res) => {
-  const { id, number, concept_id, amount, quantity, total, document, date, admin_id, building_id } = req.body;
-  pool.query(`
+  const {
+    id,
+    number,
+    concept_id,
+    amount,
+    quantity,
+    total,
+    document,
+    date,
+    admin_id,
+    building_id,
+  } = req.body;
+  pool.query(
+    `
     UPDATE general_expenses 
     SET 
       number = $1,
@@ -114,11 +153,22 @@ const updateGeneralExpense = (req, res) => {
       admin_id = $8, 
       building_id = $9 
     WHERE id = $10`,
-    [number, concept_id, amount, quantity, total, document, date, admin_id, building_id, id],
+    [
+      number,
+      concept_id,
+      amount,
+      quantity,
+      total,
+      document,
+      date,
+      admin_id,
+      building_id,
+      id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).send(`General Expense modified with ID: ${id}`);
     }
   );
@@ -127,11 +177,12 @@ const updateGeneralExpense = (req, res) => {
 /* DELETE GENERAL-EXPENSES */
 const deleteGeneralExpenses = (req, res) => {
   const id = req.body;
-  pool.query(`DELETE FROM general_expenses WHERE id IN(${id})`, 
+  pool.query(
+    `DELETE FROM general_expenses WHERE id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).send(`General Expenses deleted with ID: ${id}`);
     }
   );

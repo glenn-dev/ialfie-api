@@ -1,9 +1,10 @@
-const pool = require('../database/db')
+const pool = require("../database/db");
 
 /* GET ALL CATEGORIES */
 const getCategories = (req, res) => {
   const building_id = req.body;
-  pool.query(`
+  pool.query(
+    `
     SELECT
       id,
       name,
@@ -13,11 +14,11 @@ const getCategories = (req, res) => {
       updated_at
     FROM categories 
     WHERE building_id IN (${building_id}) 
-    ORDER BY name ASC;`, 
+    ORDER BY name ASC;`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(results.rows);
     }
   );
@@ -25,8 +26,9 @@ const getCategories = (req, res) => {
 
 /* GET CATEGORIES BY ID */
 const getCategoriesById = (req, res) => {
-  const id = req.body
-  pool.query(`
+  const id = req.body;
+  pool.query(
+    `
     SELECT
       id,
       name,
@@ -37,11 +39,11 @@ const getCategoriesById = (req, res) => {
     FROM categories 
     WHERE id IN (${id})
       AND 
-    ORDER BY name ASC;`, 
+    ORDER BY name ASC;`,
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).json(results.rows);
     }
   );
@@ -51,12 +53,12 @@ const getCategoriesById = (req, res) => {
 const createCategory = (req, res) => {
   const { name, code, building_id } = req.body;
   pool.query(
-    'INSERT INTO categories (name, code, building_id) VALUES ($1, $2, $3)', 
-    [name, code, building_id], 
+    "INSERT INTO categories (name, code, building_id) VALUES ($1, $2, $3)",
+    [name, code, building_id],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(201).send(`Category "${name}" added successfully.`);
     }
   );
@@ -66,12 +68,12 @@ const createCategory = (req, res) => {
 const updateCategory = (req, res) => {
   const { id, name, code, building_id } = req.body;
   pool.query(
-    'UPDATE categories SET name = $1, code = $2, building_id = $3 WHERE id = $4',
+    "UPDATE categories SET name = $1, code = $2, building_id = $3 WHERE id = $4",
     [name, code, building_id, id],
     (error, results) => {
       if (error) {
         throw error;
-      };
+      }
       res.status(200).send(`Category modified with ID: ${id}`);
     }
   );
@@ -80,14 +82,12 @@ const updateCategory = (req, res) => {
 /* DELETE CATEGORIES */
 const deleteCategories = (req, res) => {
   const id = req.body;
-  pool.query(`DELETE FROM categories WHERE id IN(${id})`, 
-    (error, results) => {
-      if (error) {
-        throw error;
-      };
-      res.status(200).send(`Categories deleted with ID: ${id}`);
+  pool.query(`DELETE FROM categories WHERE id IN(${id})`, (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).send(`Categories deleted with ID: ${id}`);
+  });
 };
 
 /* EXPORTS */
