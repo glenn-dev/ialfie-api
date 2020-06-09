@@ -91,7 +91,9 @@ const insertAdminBuilding = (id, res, buildings) => {
       }
       res
         .status(201)
-        .send(`Admin: ${id} with buildings: ${buildings} added/modified successfully.`);
+        .send(
+          `Admin: ${id} with buildings: ${buildings} added/modified successfully.`
+        );
     }
   );
 };

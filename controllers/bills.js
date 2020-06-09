@@ -189,7 +189,7 @@ const deleteBillDetails = (id, res, data = false) => {
             data.admin_id,
             res
           )
-        : selfDelete(id, res);
+        : deleteBillsMethod(id, res);
     }
   );
 };
@@ -305,7 +305,7 @@ const updateBill = (req, res) => {
 };
 
 /* DELETE BILLS */
-const selfDelete = (id, res) => {
+const deleteBillsMethod = (id, res) => {
   pool.query(`DELETE FROM bills WHERE id IN(${id})`, (error, results) => {
     if (error) {
       throw error;
