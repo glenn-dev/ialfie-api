@@ -42,7 +42,7 @@ const getUsers = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(parseUser(results.rows)); // Parse method
+      res.status(200).json(parseUser(results.rows));
     }
   );
 };
@@ -102,26 +102,20 @@ const getUsersById = (req, res) => {
 const insertRelations = (id, buildings, departments) => {
   /* Insert User-Building relation */
   let values = [];
-  buildings.forEach((building, index) => {
-    buildings.length < index + 1
-      ? values.push(`(${id}, ${building}),`)
-      : values.push(`(${id}, ${building})`);
+  buildings.forEach((building) => {
+    values.push(`(${id}, ${building})`);
   });
   pool.query(
-    `INSERT INTO users_buildings (user_id, building_id) VALUES ${values}`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      console.log(`Relation user: ${id} - buildings: ${buildings} added!`);
-    }
-  );
+    `INSERT INTO users_buildings (user_id, building_id) VALUES ${values}`
+  ).then(res=>{
+    // Everything good!
+  }).catch(err=>{
+    // Hell no :(
+  })
   /* Insert User-Department relation */
   values = [];
-  departments.forEach((department, index) => {
-    departments.length < index + 1
-      ? values.push(`(${id}, ${department}),`)
-      : values.push(`(${id}, ${department})`);
+  departments.forEach((department) => {
+    values.push(`(${id}, ${department})`);
   });
   pool.query(
     `INSERT INTO users_departments (user_id, department_id) VALUES ${values}`,
@@ -129,6 +123,7 @@ const insertRelations = (id, buildings, departments) => {
       if (error) {
         throw error;
       }
+
       console.log(`Relation user ${id} - departments: ${departments} added!`);
     }
   );
@@ -179,12 +174,12 @@ const createUser = (req, res) => {
         throw error;
       }
       const id = results.rows[0].id;
-      insertRelations(id, buildings, departments);
+      insertRelations(id, buildings, departments, res);
       res
-        .status(201)
-        .send(
-          `User "${first_n} ${last_n}" ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`
-        );
+      .status(201)
+      .send(
+        `User "${first_n} ${last_n}" ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`
+      );
     }
   );
 };
