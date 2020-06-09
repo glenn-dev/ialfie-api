@@ -1,5 +1,5 @@
 /* PARSE USERS QUERY */
-const goParse = (data) => {
+const goParseUsers = (data) => {
   /* Push new 'user' object into 'users' array. */
   const pushUser = (user, users) => {
     users.push({
@@ -86,4 +86,4 @@ const goParse = (data) => {
 };
 
 /* EXPORTS */
-module.exports = goParse;
+module.exports = goParseUsers;

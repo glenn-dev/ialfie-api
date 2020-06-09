@@ -1,5 +1,5 @@
 /* PARSE ADMINS QUERY */
-const goParse = (data) => {
+const goParseAdmins = (data) => {
   /* Push new 'admin' object into 'admins' array. */
   const pushAdmin = (admin, admins) => {
     admins.push({
@@ -44,5 +44,6 @@ const goParse = (data) => {
     : pushAdmin(data[0], admins);
   return admins;
 };
+
 /* EXPORTS */
-module.exports = goParse;
+module.exports = goParseAdmins;

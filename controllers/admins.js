@@ -77,13 +77,11 @@ const getAdminsById = (req, res) => {
   );
 };
 
-/* CREATE RELATIONS */
-const insertAdminBuilding = (id, buildings) => {
+/* CREATE RELATION ADMIN-BUILDING */
+const insertAdminBuilding = (id, res, buildings) => {
   let values = [];
-  buildings.forEach((building, index) => {
-    buildings.length < index
-      ? values.push(`(${id}, ${building}),`)
-      : values.push(`(${id}, ${building})`);
+  buildings.forEach((building) => {
+    values.push(`(${id}, ${building})`);
   });
   pool.query(
     `INSERT INTO admins_buildings (admin_id, building_id) VALUES ${values}`,
@@ -91,18 +89,24 @@ const insertAdminBuilding = (id, buildings) => {
       if (error) {
         throw error;
       }
+      res
+        .status(201)
+        .send(`Admin: ${id} with buildings: ${buildings} added/modified successfully.`);
     }
   );
 };
 
-/* DELETE RELATIONS */
-const deleteAdminBuilding = (id) => {
+/* DELETE RELATION ADMIN-BUILDING */
+const deleteAdminBuilding = (id, res, buildings = false) => {
   pool.query(
     `DELETE FROM admins_buildings WHERE admin_id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;
       }
+      buildings
+        ? insertAdminBuilding(id, res, buildings)
+        : deleteAdminsMethod(id, res);
     }
   );
 };
@@ -126,13 +130,7 @@ const createAdmin = (req, res) => {
       if (error) {
         throw error;
       }
-      const id = results.rows[0].id;
-      insertAdminBuilding(id, buildings);
-      res
-        .status(201)
-        .send(
-          `Admin "${first_n} ${last_n}" with ID: ${id} and buildings: ${buildings} added  successfully.`
-        );
+      insertAdminBuilding(results.rows[0].id, res, buildings);
     }
   );
 };
@@ -157,25 +155,20 @@ const updateAdmin = (req, res) => {
       if (error) {
         throw error;
       }
+      deleteAdminBuilding(id, res, buildings);
     }
   );
-  deleteAdminBuilding(id);
-  insertAdminBuilding(id, buildings);
-  res
-    .status(201)
-    .send(
-      `Admin "${first_n} ${last_n}" with ID: ${id} and buildings: ${buildings} modified  successfully.`
-    );
 };
 
 /* DELETE ADMINS */
 const deleteAdmins = (req, res) => {
-  const id = req.body;
+  deleteAdminBuilding(req.body, res);
+};
+const deleteAdminsMethod = (id, res) => {
   pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {
     if (error) {
       throw error;
     }
-    deleteAdminBuilding(id);
     res
       .status(200)
       .send(`Admins deleted with ID: ${id}. All relations removed.`);
