@@ -110,8 +110,27 @@ const createUser = (req, res) => {
     departments,
   } = req.body;
   pool.query(
-    'INSERT INTO users (first_n, last_n, email, password, phone, id_number, user_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-    [first_n, last_n, email, password, phone, id_number, user_type],
+    `
+    INSERT INTO 
+      users (
+        first_n, 
+        last_n, 
+        email, 
+        password, 
+        phone, 
+        id_number, 
+        user_type
+      ) 
+    VALUES (
+      '${first_n}', 
+      '${last_n}', 
+      '${email}', 
+      '${password}', 
+      '${phone}', 
+      '${id_number}', 
+      '${user_type}'
+    ) 
+    RETURNING id`,
     (error, results) => {
       if (error) {
         throw error;
@@ -160,17 +179,27 @@ const updateUser = (req, res) => {
     departments,
   } = req.body;
   pool.query(
-    'UPDATE users SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, user_type = $7 WHERE id = $8',
-    [first_n, last_n, email, password, phone, id_number, user_type, id],
+    `
+    UPDATE 
+      users 
+    SET 
+      first_n = ${first_n}, 
+      last_n = ${last_n}, 
+      email = ${email}, 
+      password = ${password}, 
+      phone = ${phone}, 
+      id_number = ${id_number}, 
+      user_type = ${user_type} 
+    WHERE id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
       }
       /* Update relations */
-      user_id, building_id;
-      users_buildings;
-
-      Promise.all([deleteUsersBuildings(id), deleteUsersDepartments(id)])
+      Promise.all([
+        deleteRelations(id, 'users_buildings'),
+        deleteRelations(id, 'users_departments'),
+      ])
         .then(
           Promise.all([
             insertRelations(
@@ -189,7 +218,7 @@ const updateUser = (req, res) => {
             .then((results) => {
               response(
                 res,
-                `User ID: ${id}, departments: ${departments} and buildings: ${buildings} modified successfully.`
+                `User: ${id}, departments: ${departments} and buildings: ${buildings} modified successfully.`
               );
             })
             .catch((err) => {
@@ -206,7 +235,10 @@ const updateUser = (req, res) => {
 /* DELETE USER */
 const deleteUsers = (req, res) => {
   const id = req.body;
-  Promise.all([deleteUsersBuildings(id), deleteUsersDepartments(id)])
+  Promise.all([
+    deleteRelations(id, 'users_buildings'),
+    deleteRelations(id, 'users_departments'),
+  ])
     .then((results) => {
       pool.query(`DELETE FROM users WHERE id IN(${id})`, (error, results) => {
         if (error) {
@@ -229,29 +261,9 @@ const insertRelations = (id, array, table, columns) => {
   return pool.query(`INSERT INTO ${table} (${columns}) VALUES ${values}`);
 };
 
-// const insertUsersBuildings = (id, buildings) => {
-//   return pool.query(
-//     `INSERT INTO users_buildings (user_id, building_id) VALUES ${assignValues(
-//       id,
-//       buildings
-//     )}`
-//   );
-// };
-// const insertUsersDepartments = (id, departments) => {
-//   return pool.query(
-//     `INSERT INTO users_departments (user_id, department_id) VALUES ${assignValues(
-//       id,
-//       departments
-//     )}`
-//   );
-// };
-
 /* DELETE RELATIONS */
-const deleteUsersBuildings = (id) => {
-  return pool.query(`DELETE FROM users_buildings WHERE user_id IN(${id})`);
-};
-const deleteUsersDepartments = (id) => {
-  return pool.query(`DELETE FROM users_departments WHERE user_id IN(${id})`);
+const deleteRelations = (id, table) => {
+  return pool.query(`DELETE FROM ${table} WHERE user_id IN(${id})`);
 };
 
 /* RESPONSE */
