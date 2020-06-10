@@ -39,9 +39,9 @@
 }
 
 
-Body for querys:
-All Get by id: [1, 2, 3, 4, ...]
-Update is the same as post but with "id".
+// Body for querys:
+// All Get by id: [1, 2, 3, 4, ...]
+// Update is the same as post but with "id".
 
 admin:
 {

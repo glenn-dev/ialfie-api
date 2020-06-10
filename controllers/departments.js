@@ -1,4 +1,4 @@
-const pool = require("../database/db");
+const pool = require('../database/db');
 
 /* GET ALL DEPARTMENTS */
 const getDepartments = (req, res) => {
@@ -35,12 +35,12 @@ const createDepartment = (req, res) => {
     floor,
     aliquot,
     building_id,
-    habitability,
+    status,
     defaulting,
   } = req.body;
   pool.query(
-    "INSERT INTO departments (number, floor, aliquot, building_id, habitability, defaulting) VALUES ($1, $2, $3, $4, $5, $6)",
-    [number, floor, aliquot, building_id, habitability, defaulting],
+    'INSERT INTO departments (number, floor, aliquot, building_id, status, defaulting) VALUES ($1, $2, $3, $4, $5, $6)',
+    [number, floor, aliquot, building_id, status, defaulting],
     (error, results) => {
       if (error) {
         throw error;
@@ -62,12 +62,12 @@ const updateDepartment = (req, res) => {
     floor,
     aliquot,
     building_id,
-    habitability,
+    status,
     defaulting,
   } = req.body;
   pool.query(
-    "UPDATE departments SET number = $1, floor = $2, aliquot = $3, building_id = $4, habitability = $5, defaulting = $6 WHERE id = $7",
-    [number, floor, aliquot, building_id, habitability, defaulting, id],
+    'UPDATE departments SET number = $1, floor = $2, aliquot = $3, building_id = $4, status = $5, defaulting = $6 WHERE id = $7',
+    [number, floor, aliquot, building_id, status, defaulting, id],
     (error, results) => {
       if (error) {
         throw error;
