@@ -1,4 +1,4 @@
-const pool = require("../database/db");
+const pool = require('../database/db');
 
 /* GET ALL CATEGORIES */
 const getCategories = (req, res) => {
@@ -53,7 +53,7 @@ const getCategoriesById = (req, res) => {
 const createCategory = (req, res) => {
   const { name, code, building_id } = req.body;
   pool.query(
-    "INSERT INTO categories (name, code, building_id) VALUES ($1, $2, $3)",
+    'INSERT INTO categories (name, code, building_id) VALUES ($1, $2, $3)',
     [name, code, building_id],
     (error, results) => {
       if (error) {
@@ -68,7 +68,7 @@ const createCategory = (req, res) => {
 const updateCategory = (req, res) => {
   const { id, name, code, building_id } = req.body;
   pool.query(
-    "UPDATE categories SET name = $1, code = $2, building_id = $3 WHERE id = $4",
+    'UPDATE categories SET name = $1, code = $2, building_id = $3 WHERE id = $4',
     [name, code, building_id, id],
     (error, results) => {
       if (error) {

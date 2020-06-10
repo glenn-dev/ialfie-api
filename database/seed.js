@@ -1,4 +1,4 @@
-const pool = require("./db");
+const pool = require('./db');
 /********************************************************************* 
 *** WARNING *** !! *** DANGER *** !! *** WARNING *** !! *** DANGER ***
 
@@ -42,19 +42,19 @@ console.log(
 
 /* SET TABLES TO RESET/SEED */
 let tables = [
-  "admins",
-  "admins_buildings",
-  "bill_details",
-  "bills",
-  "buildings",
-  "communications",
-  "concepts",
-  "departments",
-  "general_expenses",
-  "payments",
-  "users",
-  "users_buildings",
-  "users_departments",
+  'admins',
+  'admins_buildings',
+  'bill_details',
+  'bills',
+  'buildings',
+  'communications',
+  'concepts',
+  'departments',
+  'general_expenses',
+  'payments',
+  'users',
+  'users_buildings',
+  'users_departments',
 ];
 
 /*  *** DANGER *** !! *** DANGER *** !! *** DANGER *** !! *** DANGER ***  */

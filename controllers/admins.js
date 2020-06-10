@@ -1,5 +1,5 @@
-const pool = require("../database/db");
-const parseAdmins = require("../helpers/admins-helper");
+const pool = require('../database/db');
+const parseAdmins = require('../helpers/admins-helper');
 
 /* GET ALL ADMINS */
 const getAdmins = (req, res) => {
@@ -126,7 +126,7 @@ const createAdmin = (req, res) => {
     status,
   } = req.body;
   pool.query(
-    "INSERT INTO admins (first_n, last_n, email, password, phone, id_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
+    'INSERT INTO admins (first_n, last_n, email, password, phone, id_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
     [first_n, last_n, email, password, phone, id_number, status],
     (error, results) => {
       if (error) {
@@ -151,7 +151,7 @@ const updateAdmin = (req, res) => {
     buildings,
   } = req.body;
   pool.query(
-    "UPDATE admins SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, status = $7 WHERE id = $8",
+    'UPDATE admins SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, status = $7 WHERE id = $8',
     [first_n, last_n, email, password, phone, id_number, status, id],
     (error, results) => {
       if (error) {

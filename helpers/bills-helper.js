@@ -1,4 +1,5 @@
 /* PARSE BILL DETAILS QUERY */
+
 const goParseBills = (data) => {
   /* Push new 'bill' object into 'bills' array. */
   const pushBill = (bill, bills) => {
@@ -30,8 +31,9 @@ const goParseBills = (data) => {
           total: bill.total,
         },
       ],
-    },);
+    });
   };
+
   /* Push 'bill_detail' object into a 'bill_details' array into 'bill' object on 'bills' array. */
   const pushBillDetail = (bill, bills, index) => {
     bills[index].bill_details.push({
@@ -44,14 +46,16 @@ const goParseBills = (data) => {
       amount: bill.amount,
       quantity: bill.quantity,
       total: bill.total,
-    },);
+    });
   };
+
   /* Check if 'bill' object already exist in 'bills' array. */
   const parseBills = (bill, bills) => {
     bills.find((elem) => elem.bill_id === bill.bill_id) === undefined
       ? pushBill(bill, bills)
       : pushBillDetail(bill, bills, bills.length - 1);
   };
+
   /* Check if data represent one or many object, then parse. */
   let bills = [];
   data.length > 1

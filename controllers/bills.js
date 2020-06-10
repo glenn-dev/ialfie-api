@@ -1,5 +1,5 @@
-const pool = require("../database/db");
-const goParseBills = require("../helpers/bills-helper");
+const pool = require('../database/db');
+const goParseBills = require('../helpers/bills-helper');
 
 /* GET ALL BILLS */
 const getBills = (req, res) => {

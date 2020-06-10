@@ -1,4 +1,5 @@
 /* PARSE ADMINS QUERY */
+
 const goParseAdmins = (data) => {
   /* Push new 'admin' object into 'admins' array. */
   const pushAdmin = (admin, admins) => {
@@ -22,6 +23,7 @@ const goParseAdmins = (data) => {
       ],
     });
   };
+
   /* Push 'building' object into an 'admin' object in 'admins' array. */
   const pushBuilding = (admin, admins) => {
     const index = admins.length - 1;
@@ -31,12 +33,14 @@ const goParseAdmins = (data) => {
       building_address: admin.address,
     });
   };
+
   /* Check if 'admin' object already exist in 'admins' array. */
   const parseAdmins = (admin, admins) => {
     admins.find((elem) => elem.id === admin.id) === undefined
       ? pushAdmin(admin, admins)
       : pushBuilding(admin, admins);
   };
+
   /* Check if data represent one or many object, then parse. */
   let admins = [];
   data.length > 1

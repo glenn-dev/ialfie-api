@@ -1,4 +1,5 @@
 /* PARSE USERS QUERY */
+
 const goParseUsers = (data) => {
   /* Push new 'user' object into 'users' array. */
   const pushUser = (user, users) => {
@@ -32,6 +33,7 @@ const goParseUsers = (data) => {
       ],
     });
   };
+
   /* Push 'building' object into an 'user' object in 'users' array. */
   const pushBuilding = (user, users, index) => {
     users[index].buildings.push({
@@ -50,6 +52,7 @@ const goParseUsers = (data) => {
       ],
     });
   };
+
   /* Push 'department' object into a 'building' object into 'user' object on 'users' array. */
   const pushDepartment = (user, users, u_index) => {
     const b_index = users[u_index].buildings.length - 1;
@@ -62,6 +65,7 @@ const goParseUsers = (data) => {
       dep_aliquot: user.aliquot,
     });
   };
+
   /* Check if 'building' object already exist in 'user' object. */
   const parseBuilding = (user, users) => {
     const index = users.length - 1;
@@ -71,12 +75,14 @@ const goParseUsers = (data) => {
       ? pushBuilding(user, users, index)
       : pushDepartment(user, users, index);
   };
+
   /* Check if 'user' object already exist in 'users' array. */
   const parseUsers = (user, users) => {
     users.find((elem) => elem.id === user.id) === undefined
       ? pushUser(user, users)
       : parseBuilding(user, users);
   };
+
   /* Check if data represent one or many object, then parse. */
   let users = [];
   data.length > 1

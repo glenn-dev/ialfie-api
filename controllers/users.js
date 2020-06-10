@@ -119,10 +119,20 @@ const createUser = (req, res) => {
       /* Create relations */
       const id = results.rows[0].id;
       Promise.all([
-        insertUsersBuildings(id, buildings),
-        insertUsersDepartments(id, departments),
+        insertRelations(
+          id,
+          buildings,
+          'users_buildings',
+          'user_id, building_id'
+        ),
+        insertRelations(
+          id,
+          departments,
+          'users_departments',
+          'user_id, department_id'
+        ),
       ])
-        .then((res) => {
+        .then((results) => {
           response(
             res,
             `User ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`
@@ -157,11 +167,24 @@ const updateUser = (req, res) => {
         throw error;
       }
       /* Update relations */
+      user_id, building_id;
+      users_buildings;
+
       Promise.all([deleteUsersBuildings(id), deleteUsersDepartments(id)])
         .then(
           Promise.all([
-            insertUsersBuildings(id, buildings),
-            insertUsersDepartments(id, departments),
+            insertRelations(
+              id,
+              buildings,
+              'users_buildings',
+              'user_id, building_id'
+            ),
+            insertRelations(
+              id,
+              departments,
+              'users_departments',
+              'user_id, department_id'
+            ),
           ])
             .then((results) => {
               response(
@@ -198,29 +221,30 @@ const deleteUsers = (req, res) => {
 };
 
 /* INSERT RELATIONS */
-const assignValues = (id, array) => {
+const insertRelations = (id, array, table, columns) => {
   let values = [];
   array.forEach((elem_id) => {
     values.push(`(${id}, ${elem_id})`);
   });
-  return values;
+  return pool.query(`INSERT INTO ${table} (${columns}) VALUES ${values}`);
 };
-const insertUsersBuildings = (id, buildings) => {
-  return pool.query(
-    `INSERT INTO users_buildings (user_id, building_id) VALUES ${assignValues(
-      id,
-      buildings
-    )}`
-  );
-};
-const insertUsersDepartments = (id, departments) => {
-  return pool.query(
-    `INSERT INTO users_departments (user_id, department_id) VALUES ${assignValues(
-      id,
-      departments
-    )}`
-  );
-};
+
+// const insertUsersBuildings = (id, buildings) => {
+//   return pool.query(
+//     `INSERT INTO users_buildings (user_id, building_id) VALUES ${assignValues(
+//       id,
+//       buildings
+//     )}`
+//   );
+// };
+// const insertUsersDepartments = (id, departments) => {
+//   return pool.query(
+//     `INSERT INTO users_departments (user_id, department_id) VALUES ${assignValues(
+//       id,
+//       departments
+//     )}`
+//   );
+// };
 
 /* DELETE RELATIONS */
 const deleteUsersBuildings = (id) => {

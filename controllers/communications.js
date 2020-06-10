@@ -1,4 +1,4 @@
-const pool = require("../database/db");
+const pool = require('../database/db');
 
 /* GET ALL COMMUNICATIONS */
 const getCommunications = (req, res) => {
@@ -74,7 +74,7 @@ const createCommunication = (req, res) => {
     building_id,
   } = req.body;
   pool.query(
-    "INSERT INTO communications (release, title, content, status, document, admin_id, building_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+    'INSERT INTO communications (release, title, content, status, document, admin_id, building_id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
     [release, title, content, status, document, admin_id, building_id],
     (error, results) => {
       if (error) {
@@ -98,7 +98,7 @@ const updateCommunication = (req, res) => {
     building_id,
   } = req.body;
   pool.query(
-    "UPDATE communications SET release = $1, title = $2, content = $3, status = $4, document = $5, admin_id = $6, building_id = $7 WHERE id = $8",
+    'UPDATE communications SET release = $1, title = $2, content = $3, status = $4, document = $5, admin_id = $6, building_id = $7 WHERE id = $8',
     [release, title, content, status, document, admin_id, building_id, id],
     (error, results) => {
       if (error) {

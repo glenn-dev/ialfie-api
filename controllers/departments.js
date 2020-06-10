@@ -30,14 +30,7 @@ const getDepartmentsById = (req, res) => {
 
 /* CREATE DEPARTMENT */
 const createDepartment = (req, res) => {
-  const {
-    number,
-    floor,
-    aliquot,
-    building_id,
-    status,
-    defaulting,
-  } = req.body;
+  const { number, floor, aliquot, building_id, status, defaulting } = req.body;
   pool.query(
     'INSERT INTO departments (number, floor, aliquot, building_id, status, defaulting) VALUES ($1, $2, $3, $4, $5, $6)',
     [number, floor, aliquot, building_id, status, defaulting],

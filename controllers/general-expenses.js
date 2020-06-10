@@ -1,4 +1,4 @@
-const pool = require("../database/db");
+const pool = require('../database/db');
 
 /* GET ALL GENERAL-EXPENSES */
 const getGeneralExpenses = (req, res) => {

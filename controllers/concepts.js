@@ -1,4 +1,4 @@
-const pool = require("../database/db");
+const pool = require('../database/db');
 
 /* GET ALL CONCEPTS */
 const getConcepts = (req, res) => {
@@ -70,7 +70,7 @@ const getConceptsById = (req, res) => {
 const createConcept = (req, res) => {
   const { code, concept, category_id, building_id } = req.body;
   pool.query(
-    "INSERT INTO concepts (code, concept, category_id, building_id) VALUES ($1, $2, $3, $4)",
+    'INSERT INTO concepts (code, concept, category_id, building_id) VALUES ($1, $2, $3, $4)',
     [code, concept, category_id, building_id],
     (error, results) => {
       if (error) {
@@ -85,7 +85,7 @@ const createConcept = (req, res) => {
 const updateConcept = (req, res) => {
   const { id, code, concept, category_id, building_id } = req.body;
   pool.query(
-    "UPDATE concepts SET code = $1, concept = $2, category_id = $3, building_id = $4 WHERE id = $5",
+    'UPDATE concepts SET code = $1, concept = $2, category_id = $3, building_id = $4 WHERE id = $5',
     [code, concept, category_id, building_id, id],
     (error, results) => {
       if (error) {
