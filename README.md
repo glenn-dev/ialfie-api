@@ -12,10 +12,10 @@
 * [Acknowledgements](#acknowledgements)
 
 
-## About the Project
+## :dart: About the Project
 iAlfie is an administrative software for condominium management.
 
-### :dart: Built With:
+### :gear: Built With:
 
 * [NodeJs 12.16.3](https://nodejs.org/en/)
 
@@ -26,7 +26,7 @@ iAlfie is an administrative software for condominium management.
 
 ### :pencil: Schema:
 
-* [Board](https://trello.com/b/6oaUVcGI/ialfie)
+* [Trello Board](https://trello.com/b/6oaUVcGI/ialfie)
 
 * Conceptual:
 
@@ -37,7 +37,7 @@ iAlfie is an administrative software for condominium management.
 ![Logical schema](/assets/ialfie_logic_model.png)
 
 
-## Getting Started
+## :rocket: Getting Started
 
 ### :telescope: Prerequisites
 
@@ -61,7 +61,7 @@ $ npm install pg-promise
 $ npm install -g nodemon
 ```
 
-### :rocket: Installation
+### :computer: Installation
 
 1. Clone the repo
 ```sh
@@ -82,11 +82,11 @@ $ nodemon index
 ```
 
 
-## Contributing
+## :octocat: Contributing
 
-:octocat: Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+:seedling: Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-:construction: This is an open source project that still in development phase :baby:. Check [development branch](https://github.com/glenn-dev/ialfie-api/tree/development) for latest features.
+:warning: This is an open source project that still in development phase :baby:. Check [development branch](https://github.com/glenn-dev/ialfie-api/tree/development) for latest features.
 
 :wrench: For major changes, please open an [issue](https://guides.github.com/features/issues/) first to discuss what you would like to change. Feel free to contribute any suggestion as well.
 
@@ -98,17 +98,17 @@ $ nodemon index
 5. Open a Pull Request
 
 
-## License
-:lock_with_ink_pen: [MIT](https://choosealicense.com/licenses/mit/)
+## :lock_with_ink_pen:  License
+:mag: [MIT](https://choosealicense.com/licenses/mit/)
 
 
-## Contact
+## :speech_balloon: Contact
 
 :busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)<br/>
 :email: glenn.marcano90@gmail.com
 
 
-## Acknowledgements
+## :bowtie: :v: Acknowledgements
 
 * [NodeJs](https://nodejs.org/en/)
   * [Express](https://expressjs.com/)
