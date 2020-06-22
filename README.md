@@ -98,17 +98,17 @@ $ nodemon index
 5. Open a Pull Request
 
 
-## :lock_with_ink_pen:  License
-:mag: [MIT](https://choosealicense.com/licenses/mit/)
+## :lock_with_ink_pen: License
+[MIT](https://choosealicense.com/licenses/mit/) :mag:
 
 
-## :speech_balloon: Contact
+## :email: Contact
 
-:busts_in_silhouette: [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)<br/>
-:email: glenn.marcano90@gmail.com
+* [LinkedIn](https://www.linkedin.com/in/glenn-marcano-b59b7414b/?locale=en_US)
+* glenn.marcano90@gmail.com
 
 
-## :bowtie: :v: Acknowledgements
+## :v: Acknowledgements
 
 * [NodeJs](https://nodejs.org/en/)
   * [Express](https://expressjs.com/)
