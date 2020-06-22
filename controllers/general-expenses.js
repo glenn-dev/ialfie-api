@@ -5,34 +5,34 @@ const getGeneralExpenses = (req, res) => {
   const building_id = req.body;
   pool.query(
     `
-  SELECT
-    ge.id,
-    ge.amount,
-    ge.quantity,
-    ge.total,
-    ge.ge_date,
-    ge.concept_id,
-    co.code,
-    co.concept,
-    ge.admin_id,
-    ad.first_n,
-    ad.last_n,
-    ge.building_id,
-    bu.name
-      AS building
-  FROM general_expenses 
-    AS ge
-    INNER JOIN concepts
-      AS co
-      ON ge.concept_id = co.id
-    INNER JOIN admins
-      AS ad
-      ON ge.admin_id = ad.id
-    INNER JOIN buildings
-      AS bu
-      ON ge.building_id = bu.id
-  WHERE ge.building_id = ${building_id} 
-  ORDER BY ge.ge_date ASC`,
+    SELECT
+      ge.id,
+      ge.amount,
+      ge.quantity,
+      ge.total,
+      ge.ge_date,
+      ge.concept_id,
+      co.code,
+      co.concept,
+      ge.admin_id,
+      ad.first_n,
+      ad.last_n,
+      ge.building_id,
+      bu.name
+        AS building
+    FROM general_expenses 
+      AS ge
+      INNER JOIN concepts
+        AS co
+        ON ge.concept_id = co.id
+      INNER JOIN admins
+        AS ad
+        ON ge.admin_id = ad.id
+      INNER JOIN buildings
+        AS bu
+        ON ge.building_id = bu.id
+    WHERE ge.building_id = ${building_id} 
+    ORDER BY ge.ge_date ASC`,
     (error, results) => {
       if (error) {
         throw error;
@@ -99,8 +99,22 @@ const createGeneralExpense = (req, res) => {
   } = req.body;
   pool.query(
     `
-    INSERT INTO general_expenses (number, concept_id, amount, quantity, total, document, date, admin_id, building_id) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+    INSERT INTO 
+      general_expenses 
+      (
+        number, 
+        concept_id, 
+        amount, 
+        quantity, 
+        total, 
+        document, 
+        date, 
+        admin_id, 
+        building_id
+      ) 
+    VALUES 
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+    RETURNING id`,
     [
       number,
       concept_id,
@@ -116,11 +130,10 @@ const createGeneralExpense = (req, res) => {
       if (error) {
         throw error;
       }
-      res
-        .status(201)
-        .send(
-          `General Expenses "${results.rows[0].id}" added successfully on building: ${building_id} by admin ${admin_id}`
-        );
+      res.status(201).send(`
+          General Expenses "${results.rows[0].id}" 
+          added successfully on building: ${building_id} 
+          by admin ${admin_id}`);
     }
   );
 };

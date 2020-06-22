@@ -26,18 +26,23 @@ const getUsers = (req, res) => {
       dp.status,
       dp.defaulting,
       dp.aliquot
-    FROM users
+    FROM 
+      users 
       AS us
-      INNER JOIN users_departments
-        AS ud
-        ON us.id = ud.user_id
-      INNER JOIN departments
-        AS dp
-        ON ud.department_id = dp.id
-      INNER JOIN buildings
-        AS bu
-        ON dp.building_id = bu.id
-    ORDER BY us.id ASC;`,
+    INNER JOIN 
+      users_departments
+      AS ud
+      ON us.id = ud.user_id
+    INNER JOIN 
+      departments
+      AS dp
+      ON ud.department_id = dp.id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON dp.building_id = bu.id
+    ORDER BY 
+      us.id ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -74,19 +79,25 @@ const getUsersById = (req, res) => {
       dp.status,
       dp.defaulting,
       dp.aliquot
-    FROM users
+    FROM 
+      users
       AS us
-      INNER JOIN users_departments
-        AS ud
-        ON us.id = ud.user_id
-      INNER JOIN departments
-        AS dp
-        ON ud.department_id = dp.id
-      INNER JOIN buildings
-        AS bu
-        ON dp.building_id = bu.id
-    WHERE us.id IN(${id})
-    ORDER BY us.id ASC;`,
+    INNER JOIN 
+      users_departments
+      AS ud
+      ON us.id = ud.user_id
+    INNER JOIN 
+      departments
+      AS dp
+      ON ud.department_id = dp.id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON dp.building_id = bu.id
+    WHERE 
+      us.id IN(${id})
+    ORDER BY 
+      us.id ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -154,7 +165,10 @@ const createUser = (req, res) => {
         .then((results) => {
           response(
             res,
-            `User ID: ${id}, with buildings: ${buildings} and departments: ${departments} added successfully!`
+            `User ID: ${id}, 
+            with buildings: ${buildings} 
+            and departments: ${departments} 
+            added successfully!`
           );
         })
         .catch((err) => {
@@ -190,7 +204,8 @@ const updateUser = (req, res) => {
       phone = ${phone}, 
       id_number = ${id_number}, 
       user_type = ${user_type} 
-    WHERE id = ${id}`,
+    WHERE 
+      id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
@@ -218,7 +233,10 @@ const updateUser = (req, res) => {
             .then((results) => {
               response(
                 res,
-                `User: ${id}, departments: ${departments} and buildings: ${buildings} modified successfully.`
+                `User: ${id}, 
+                departments: ${departments} 
+                and buildings: ${buildings} 
+                modified successfully.`
               );
             })
             .catch((err) => {
