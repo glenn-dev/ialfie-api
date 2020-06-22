@@ -3,16 +3,12 @@ const parseAdmins = require('../helpers/admins-helper');
 
 /* GET ALL ADMINS */
 const getAdmins = (req, res) => {
-  pool.query(
-    'SELECT * FROM admins ORDER BY first_n ASC;',
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      console.log(results.rows);
-      res.status(200).json(results.rows);
+  pool.query('SELECT * FROM admins ORDER BY first_n ASC;', (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).json(results.rows);
+  });
 };
 
 /* GET ADMINS BY ID */
@@ -55,42 +51,6 @@ const getAdminsById = (req, res) => {
         throw error;
       }
       res.status(200).json(parseAdmins(results.rows));
-    }
-  );
-};
-
-/* CREATE RELATION ADMIN-BUILDING */
-const insertAdminBuilding = (id, res, buildings) => {
-  let values = [];
-  buildings.forEach((building) => {
-    values.push(`(${id}, ${building})`);
-  });
-  pool.query(
-    `INSERT INTO admins_buildings (admin_id, building_id) VALUES ${values}`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res
-        .status(201)
-        .send(
-          `Admin: ${id} with buildings: ${buildings} added/modified successfully.`
-        );
-    }
-  );
-};
-
-/* DELETE RELATION ADMIN-BUILDING */
-const deleteAdminBuilding = (id, res, buildings = false) => {
-  pool.query(
-    `DELETE FROM admins_buildings WHERE admin_id IN(${id})`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      buildings
-        ? insertAdminBuilding(id, res, buildings)
-        : deleteAdminsMethod(id, res);
     }
   );
 };
@@ -157,14 +117,45 @@ const updateAdmin = (req, res) => {
       if (error) {
         throw error;
       }
-      deleteAdminBuilding(id, res, buildings);
+      /* Update relation admin-building */
+      deleteAdminBuilding(id)
+        .then(insertAdminBuilding(id, res, buildings))
+        .catch((err) => {
+          throw err;
+        });
+    }
+  );
+};
+
+/* CREATE RELATION ADMIN-BUILDING */
+const insertAdminBuilding = (id, res, buildings) => {
+  let values = [];
+  buildings.forEach((building) => {
+    values.push(`(${id}, ${building})`);
+  });
+  pool.query(
+    `INSERT INTO admins_buildings (admin_id, building_id) VALUES ${values}`,
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res
+        .status(201)
+        .send(
+          `Admin: ${id} with buildings: ${buildings} added/modified successfully.`
+        );
     }
   );
 };
 
 /* DELETE ADMINS */
 const deleteAdmins = (req, res) => {
-  deleteAdminBuilding(req.body, res);
+  const id = req.body;
+  deleteAdminBuilding(id)
+    .then(deleteAdminsMethod(id, res))
+    .catch((err) => {
+      throw err;
+    });
 };
 const deleteAdminsMethod = (id, res) => {
   pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {
@@ -175,6 +166,11 @@ const deleteAdminsMethod = (id, res) => {
       .status(200)
       .send(`Admins deleted with ID: ${id}. All relations removed.`);
   });
+};
+
+/* DELETE RELATION ADMIN-BUILDING */
+const deleteAdminBuilding = (id) => {
+  return pool.query(`DELETE FROM admins_buildings WHERE admin_id IN(${id})`);
 };
 
 /* EXPORTS */
