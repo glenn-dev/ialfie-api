@@ -4,40 +4,13 @@ const parseAdmins = require('../helpers/admins-helper');
 /* GET ALL ADMINS */
 const getAdmins = (req, res) => {
   pool.query(
-    `
-    SELECT 
-	    ad.id,
-	    ad.first_n,
-	    ad.last_n,
-      ad.email,
-      ad.password,
-	    ad.id_number,
-	    ad.phone,
-	    ad.status,
-	    ad.created_at,
-	    ad.updated_at,
-	    ab.building_id,
-      bu.name
-        AS building,
-	    bu.address
-    FROM 
-      admins
-      AS ad
-    INNER JOIN 
-      admins_buildings
-      AS ab
-      ON ad.id = ab.admin_id
-    INNER JOIN 
-      buildings
-      AS bu
-      ON ab.building_id = bu.id
-    ORDER BY 
-      ad.first_n ASC;`,
+    'SELECT * FROM admins ORDER BY first_n ASC;',
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(parseAdmins(results.rows));
+      console.log(results.rows);
+      res.status(200).json(results.rows);
     }
   );
 };

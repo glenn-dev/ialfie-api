@@ -24,8 +24,16 @@ function seedDb(amount) {
   for (let i = 0; i < amount; i++) {
     pool.query(
       `
-      INSERT INTO buildings ( name, address, image, status ) 
-      VALUES ('Building ${i}', 'Address for building ${i}', '/image/path/for/building_${i}','true')`,
+      INSERT INTO 
+        buildings 
+        (name, address, image, status) 
+      VALUES 
+        (
+          'Building ${i}', 
+          'Address for building ${i}', 
+          '/image/path/for/building_${i}',
+          'true'
+        )`,
       (error, results) => {
         if (error) {
           throw error;
@@ -59,7 +67,7 @@ let tables = [
 
 /*  *** DANGER *** !! *** DANGER *** !! *** DANGER *** !! *** DANGER ***  */
 
-// resetDb('admins');  /* * !! RUN AT YOUR OWN RISK !! * */
+// resetDb(tables);  /* * !! RUN AT YOUR OWN RISK !! * */
 
 // seedDb(3);         /* * !! RUN AT YOUR OWN RISK !! * */
 
