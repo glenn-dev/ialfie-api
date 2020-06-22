@@ -14,13 +14,17 @@ const getCommunications = (req, res) => {
       cm.admin_id,
       ad.first_n,
       ad.last_n
-    FROM communications 
+    FROM 
+      communications 
       AS cm
-      INNER JOIN admins
-        AS ad
-        ON cm.admin_id = ad.id
-    WHERE building_id = ${building_id} 
-    ORDER BY release ASC;`,
+    INNER JOIN 
+      admins
+      AS ad
+      ON cm.admin_id = ad.id
+    WHERE 
+      building_id = ${building_id} 
+    ORDER BY 
+      release ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -46,13 +50,17 @@ const getCommunicationsById = (req, res) => {
       cm.admin_id,
       ad.first_n,
       ad.last_n
-    FROM communications 
+    FROM 
+      communications 
       AS cm
-      INNER JOIN admins
-        AS ad
-        ON cm.admin_id = ad.id
-    WHERE cm.id IN (${id})
-    ORDER BY release ASC;`,
+    INNER JOIN 
+      admins
+      AS ad
+      ON cm.admin_id = ad.id
+    WHERE 
+      cm.id IN (${id})
+    ORDER BY 
+      release ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -74,7 +82,12 @@ const createCommunication = (req, res) => {
     building_id,
   } = req.body;
   pool.query(
-    'INSERT INTO communications (release, title, content, status, document, admin_id, building_id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+    `
+    INSERT INTO 
+      communications 
+      (release, title, content, status, document, admin_id, building_id)
+    VALUES 
+      ($1, $2, $3, $4, $5, $6, $7)`,
     [release, title, content, status, document, admin_id, building_id],
     (error, results) => {
       if (error) {
@@ -98,7 +111,19 @@ const updateCommunication = (req, res) => {
     building_id,
   } = req.body;
   pool.query(
-    'UPDATE communications SET release = $1, title = $2, content = $3, status = $4, document = $5, admin_id = $6, building_id = $7 WHERE id = $8',
+    `
+    UPDATE 
+      communications 
+    SET 
+      release = $1, 
+      title = $2, 
+      content = $3, 
+      status = $4, 
+      document = $5, 
+      admin_id = $6, 
+      building_id = $7 
+    WHERE 
+      id = $8`,
     [release, title, content, status, document, admin_id, building_id, id],
     (error, results) => {
       if (error) {

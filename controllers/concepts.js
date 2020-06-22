@@ -17,13 +17,17 @@ const getConcepts = (req, res) => {
       co.building_id,
       co.created_at,
       co.updated_at
-    FROM concepts 
+    FROM 
+      concepts 
       AS co
-    INNER JOIN categories
+    INNER JOIN 
+      categories
       AS ca
       ON co.category_id = ca.id
-    WHERE co.building_id IN (${building_id}) 
-    ORDER BY co.concept ASC;`,
+    WHERE 
+      co.building_id IN (${building_id}) 
+    ORDER BY 
+      co.concept ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -50,13 +54,18 @@ const getConceptsById = (req, res) => {
       co.building_id,
       co.created_at,
       co.updated_at
-    FROM concepts 
+    FROM 
+      concepts 
       AS co
-    INNER JOIN categories
+    INNER JOIN 
+      categories
       AS ca
       ON co.category_id = ca.id
-    WHERE co.id IN(${id}) 
-    ORDER BY concept ASC;`,
+    WHERE 
+      o.id 
+      IN(${id}) 
+    ORDER BY 
+      concept ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -70,7 +79,11 @@ const getConceptsById = (req, res) => {
 const createConcept = (req, res) => {
   const { code, concept, category_id, building_id } = req.body;
   pool.query(
-    'INSERT INTO concepts (code, concept, category_id, building_id) VALUES ($1, $2, $3, $4)',
+    `INSERT INTO 
+      concepts 
+      (code, concept, category_id, building_id) 
+    VALUES 
+      ($1, $2, $3, $4)`,
     [code, concept, category_id, building_id],
     (error, results) => {
       if (error) {
@@ -85,7 +98,16 @@ const createConcept = (req, res) => {
 const updateConcept = (req, res) => {
   const { id, code, concept, category_id, building_id } = req.body;
   pool.query(
-    'UPDATE concepts SET code = $1, concept = $2, category_id = $3, building_id = $4 WHERE id = $5',
+    `
+    UPDATE 
+      concepts 
+    SET 
+      code = $1, 
+      concept = $2, 
+      category_id = $3, 
+      building_id = $4 
+    WHERE 
+      id = $5`,
     [code, concept, category_id, building_id, id],
     (error, results) => {
       if (error) {

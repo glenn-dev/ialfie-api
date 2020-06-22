@@ -27,19 +27,25 @@ const getBills = (req, res) => {
         AS adm_last_n,
       bi.building_id,
       bu.name
-    FROM bills 
+    FROM 
+      bills 
       AS bi
-      INNER JOIN departments
-        AS de
-        ON bi.department_id = de.id
-      INNER JOIN admins
-        AS ad
-        ON bi.admin_id = ad.id
-      INNER JOIN buildings
-        AS bu
-        ON bi.building_id = bu.id
-    WHERE bi.building_id = ${building_id} 
-    ORDER BY bi.number ASC`,
+    INNER JOIN 
+      departments
+      AS de
+      ON bi.department_id = de.id
+    INNER JOIN 
+      admins
+      AS ad
+      ON bi.admin_id = ad.id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON bi.building_id = bu.id
+    WHERE 
+      bi.building_id = ${building_id} 
+    ORDER BY 
+      bi.number ASC`,
     (error, results) => {
       if (error) {
         throw error;
@@ -96,22 +102,29 @@ const getBillsById = (req, res) => {
       bd.amount,
       bd.quantity,
       bd.total
-    FROM bill_details
+    FROM 
+      bill_details
       AS bd
-      INNER JOIN concepts
-        AS co
-        ON bd.concept_id = co.id
-      INNER JOIN categories
-        AS ca
-        ON bd.category_id = ca.id
-      INNER JOIN bills
-        AS bi
-        ON bd.bill_id = bi.id
-      INNER JOIN departments
-        AS de
-        ON bi.department_id = de.id
-    WHERE bd.bill_id IN(${id}) 
-    ORDER BY bi.id ASC`,
+    INNER JOIN 
+      concepts
+      AS co
+      ON bd.concept_id = co.id
+    INNER JOIN 
+      categories
+      AS ca
+      ON bd.category_id = ca.id
+    INNER JOIN 
+      bills
+      AS bi
+      ON bd.bill_id = bi.id
+    INNER JOIN 
+      departments
+      AS de
+      ON bi.department_id = de.id
+    WHERE 
+      bd.bill_id IN(${id}) 
+    ORDER BY 
+      bi.id ASC`,
     (error, results) => {
       if (error) {
         throw error;
@@ -146,28 +159,32 @@ const insertBillDetails = (
   });
   pool.query(
     `
-    INSERT INTO bill_details (
-      category_id, 
-      concept_id, 
-      description, 
-      amount, 
-      quantity, 
-      total, 
-      bill_id, 
-      department_id, 
-      building_id,
-      admin_id) 
-    VALUES ${values}
+    INSERT INTO 
+      bill_details 
+      (
+        category_id, 
+        concept_id, 
+        description, 
+        amount, 
+        quantity, 
+        total, 
+        bill_id, 
+        department_id, 
+        building_id,
+        admin_id
+      ) 
+    VALUES 
+      ${values}
     RETURNING id`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res
-        .status(201)
-        .send(
-          `Bill "${id}" added successfully on department: ${department_id}, by admin: ${admin_id}`
-        );
+      res.status(201).send(
+        `Bill "${id}" 
+          added successfully on department: ${department_id}, 
+          by admin: ${admin_id}`
+      );
     }
   );
 };
@@ -212,8 +229,23 @@ const createBill = (req, res) => {
   } = req.body;
   pool.query(
     `
-    INSERT INTO bills (number, exp_date, ge_subtotal, in_subtotal, total, status, issued, document, department_id, building_id, admin_id) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+    INSERT INTO 
+      bills 
+      (
+        number, 
+        exp_date, 
+        ge_subtotal, 
+        in_subtotal, 
+        total, status, 
+        issued, 
+        document, 
+        department_id, 
+        building_id, 
+        admin_id
+      ) 
+    VALUES 
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+    RETURNING id`,
     [
       number,
       exp_date,
@@ -262,7 +294,8 @@ const updateBill = (req, res) => {
   } = req.body;
   pool.query(
     `
-    UPDATE bills 
+    UPDATE 
+      bills 
     SET 
       number = $1,
       exp_date = $2, 
@@ -275,7 +308,8 @@ const updateBill = (req, res) => {
       department_id = $9,
       building_id = $10,
       admin_id = $11
-    WHERE id = $12`,
+    WHERE 
+      id = $12`,
     [
       number,
       exp_date,

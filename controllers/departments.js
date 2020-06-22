@@ -35,16 +35,9 @@ const createDepartment = (req, res) => {
     `
     INSERT INTO 
       departments 
-      (
-        number, 
-        floor, 
-        aliquot, 
-        building_id, 
-        status, 
-        defaulting
-      ) 
-      VALUES 
-        ($1, $2, $3, $4, $5, $6)`,
+      (number, floor, aliquot, building_id, status, defaulting) 
+    VALUES 
+      ($1, $2, $3, $4, $5, $6)`,
     [number, floor, aliquot, building_id, status, defaulting],
     (error, results) => {
       if (error) {

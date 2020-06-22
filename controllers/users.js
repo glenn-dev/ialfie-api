@@ -95,7 +95,8 @@ const getUsersById = (req, res) => {
       AS bu
       ON dp.building_id = bu.id
     WHERE 
-      us.id IN(${id})
+      us.id 
+      IN(${id})
     ORDER BY 
       us.id ASC;`,
     (error, results) => {
@@ -123,7 +124,8 @@ const createUser = (req, res) => {
   pool.query(
     `
     INSERT INTO 
-      users (
+      users 
+      (
         first_n, 
         last_n, 
         email, 
@@ -132,15 +134,16 @@ const createUser = (req, res) => {
         id_number, 
         user_type
       ) 
-    VALUES (
-      '${first_n}', 
-      '${last_n}', 
-      '${email}', 
-      '${password}', 
-      '${phone}', 
-      '${id_number}', 
-      '${user_type}'
-    ) 
+    VALUES 
+      (
+        '${first_n}', 
+        '${last_n}', 
+        '${email}', 
+        '${password}', 
+        '${phone}', 
+        '${id_number}', 
+        '${user_type}'
+      ) 
     RETURNING id`,
     (error, results) => {
       if (error) {

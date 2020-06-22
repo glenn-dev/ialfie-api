@@ -12,9 +12,13 @@ const getCategories = (req, res) => {
       building_id,
       created_at,
       updated_at
-    FROM categories 
-    WHERE building_id IN (${building_id}) 
-    ORDER BY name ASC;`,
+    FROM 
+      categories 
+    WHERE 
+      building_id 
+      IN (${building_id}) 
+    ORDER BY 
+      name ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -36,10 +40,12 @@ const getCategoriesById = (req, res) => {
       building_id,
       created_at,
       updated_at
-    FROM categories 
-    WHERE id IN (${id})
-      AND 
-    ORDER BY name ASC;`,
+    FROM 
+      categories 
+    WHERE 
+      id IN (${id})
+    ORDER BY 
+      name ASC;`,
     (error, results) => {
       if (error) {
         throw error;

@@ -20,15 +20,19 @@ const getAdmins = (req, res) => {
       bu.name
         AS building,
 	    bu.address
-    FROM admins
+    FROM 
+      admins
       AS ad
-      INNER JOIN admins_buildings
-        AS ab
-        ON ad.id = ab.admin_id
-      INNER JOIN buildings
-        AS bu
-        ON ab.building_id = bu.id
-    ORDER BY ad.first_n ASC;`,
+    INNER JOIN 
+      admins_buildings
+      AS ab
+      ON ad.id = ab.admin_id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON ab.building_id = bu.id
+    ORDER BY 
+      ad.first_n ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -43,7 +47,7 @@ const getAdminsById = (req, res) => {
   const id = req.body;
   pool.query(
     `
-  SELECT 
+    SELECT 
 	    ad.id,
 	    ad.first_n,
 	    ad.last_n,
@@ -58,16 +62,21 @@ const getAdminsById = (req, res) => {
       bu.name
         AS building,
 	    bu.address
-    FROM admins
+    FROM 
+      admins
       AS ad
-      INNER JOIN admins_buildings
-        AS ab
-        ON ad.id = ab.admin_id
-      INNER JOIN buildings
-        AS bu
-        ON ab.building_id = bu.id
-    WHERE ad.id IN(${id})
-    ORDER BY ad.first_n ASC;`,
+    INNER JOIN 
+      admins_buildings
+      AS ab
+      ON ad.id = ab.admin_id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON ab.building_id = bu.id
+    WHERE 
+      ad.id IN(${id})
+    ORDER BY 
+      ad.first_n ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -126,7 +135,13 @@ const createAdmin = (req, res) => {
     status,
   } = req.body;
   pool.query(
-    'INSERT INTO admins (first_n, last_n, email, password, phone, id_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+    `
+    INSERT INTO 
+      admins 
+      (first_n, last_n, email, password, phone, id_number, status) 
+    VALUES 
+      ($1, $2, $3, $4, $5, $6, $7) 
+    RETURNING id`,
     [first_n, last_n, email, password, phone, id_number, status],
     (error, results) => {
       if (error) {
@@ -151,7 +166,19 @@ const updateAdmin = (req, res) => {
     buildings,
   } = req.body;
   pool.query(
-    'UPDATE admins SET first_n = $1, last_n = $2, email = $3, password = $4, phone = $5, id_number = $6, status = $7 WHERE id = $8',
+    `
+    UPDATE 
+      admins 
+    SET 
+      first_n = $1, 
+      last_n = $2, 
+      email = $3, 
+      password = $4, 
+      phone = $5, 
+      id_number = $6, 
+      status = $7 
+    WHERE 
+      id = $8`,
     [first_n, last_n, email, password, phone, id_number, status, id],
     (error, results) => {
       if (error) {

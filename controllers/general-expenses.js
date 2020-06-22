@@ -20,19 +20,25 @@ const getGeneralExpenses = (req, res) => {
       ge.building_id,
       bu.name
         AS building
-    FROM general_expenses 
+    FROM 
+      general_expenses 
       AS ge
-      INNER JOIN concepts
-        AS co
-        ON ge.concept_id = co.id
-      INNER JOIN admins
-        AS ad
-        ON ge.admin_id = ad.id
-      INNER JOIN buildings
-        AS bu
-        ON ge.building_id = bu.id
-    WHERE ge.building_id = ${building_id} 
-    ORDER BY ge.ge_date ASC`,
+    INNER JOIN 
+      concepts
+      AS co
+      ON ge.concept_id = co.id
+    INNER JOIN 
+      admins
+      AS ad
+      ON ge.admin_id = ad.id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON ge.building_id = bu.id
+    WHERE 
+      ge.building_id = ${building_id} 
+    ORDER BY 
+      ge.ge_date ASC`,
     (error, results) => {
       if (error) {
         throw error;
@@ -62,19 +68,26 @@ const getGeneralExpensesById = (req, res) => {
       ge.building_id,
       bu.name
         AS building
-    FROM general_expenses 
+    FROM 
+      general_expenses 
       AS ge
-      INNER JOIN concepts
-        AS co
-        ON ge.concept_id = co.id
-      INNER JOIN admins
-        AS ad
-        ON ge.admin_id = ad.id
-      INNER JOIN buildings
-        AS bu
-        ON ge.building_id = bu.id
-    WHERE ge.id IN(${id})  
-    ORDER BY ge.ge_date ASC`,
+    INNER JOIN 
+      concepts
+      AS co
+      ON ge.concept_id = co.id
+    INNER JOIN 
+      admins
+      AS ad
+      ON ge.admin_id = ad.id
+    INNER JOIN 
+      buildings
+      AS bu
+      ON ge.building_id = bu.id
+    WHERE 
+      ge.id 
+      IN(${id})  
+    ORDER BY 
+      ge.ge_date ASC`,
     (error, results) => {
       if (error) {
         throw error;
@@ -131,9 +144,9 @@ const createGeneralExpense = (req, res) => {
         throw error;
       }
       res.status(201).send(`
-          General Expenses "${results.rows[0].id}" 
-          added successfully on building: ${building_id} 
-          by admin ${admin_id}`);
+        General Expenses "${results.rows[0].id}" 
+        added successfully on building: ${building_id} 
+        by admin ${admin_id}`);
     }
   );
 };
@@ -154,7 +167,8 @@ const updateGeneralExpense = (req, res) => {
   } = req.body;
   pool.query(
     `
-    UPDATE general_expenses 
+    UPDATE 
+      general_expenses 
     SET 
       number = $1,
       concept_id = $2, 
@@ -165,7 +179,8 @@ const updateGeneralExpense = (req, res) => {
       date = $7, 
       admin_id = $8, 
       building_id = $9 
-    WHERE id = $10`,
+    WHERE 
+      id = $10`,
     [
       number,
       concept_id,
