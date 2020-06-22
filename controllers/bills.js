@@ -134,83 +134,6 @@ const getBillsById = (req, res) => {
   );
 };
 
-/* CREATE RELATIONS */
-const insertBillDetails = (
-  id,
-  details,
-  department_id,
-  building_id,
-  admin_id,
-  res
-) => {
-  let values = [];
-  details.forEach((detail) => {
-    values.push(`(
-      ${detail.category_id}, 
-      ${detail.concept_id}, 
-      '${detail.description}', 
-      ${detail.amount}, 
-      ${detail.quantity}, 
-      ${detail.total}, 
-      ${id}, 
-      ${department_id}, 
-      ${building_id},
-      ${admin_id})`);
-  });
-  pool.query(
-    `
-    INSERT INTO 
-      bill_details 
-      (
-        category_id, 
-        concept_id, 
-        description, 
-        amount, 
-        quantity, 
-        total, 
-        bill_id, 
-        department_id, 
-        building_id,
-        admin_id
-      ) 
-    VALUES 
-      ${values}
-    RETURNING id`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(201).send(
-        `Bill "${id}" 
-          added successfully on department: ${department_id}, 
-          by admin: ${admin_id}`
-      );
-    }
-  );
-};
-
-/* DELETE RELATIONS */
-const deleteBillDetails = (id, res, data = false) => {
-  pool.query(
-    `DELETE FROM bill_details WHERE bill_id IN(${id})`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      data
-        ? insertBillDetails(
-            id,
-            data.details,
-            data.department_id,
-            data.building_id,
-            data.admin_id,
-            res
-          )
-        : deleteBillsMethod(id, res);
-    }
-  );
-};
-
 /* CREATE BILL */
 const createBill = (req, res) => {
   const {
@@ -328,27 +251,99 @@ const updateBill = (req, res) => {
       if (error) {
         throw error;
       }
-      deleteBillDetails(id, res, {
-        details,
-        department_id,
+      deleteBillDetails(id)
+        .then(
+          insertBillDetails(
+            id,
+            details,
+            department_id,
+            building_id,
+            admin_id,
+            res
+          )
+        )
+        .catch((err) => {
+          throw err;
+        });
+    }
+  );
+};
+
+/* CREATE RELATIONS */
+const insertBillDetails = (
+  id,
+  details,
+  department_id,
+  building_id,
+  admin_id,
+  res
+) => {
+  let values = [];
+  details.forEach((detail) => {
+    values.push(`(
+      ${detail.category_id}, 
+      ${detail.concept_id}, 
+      '${detail.description}', 
+      ${detail.amount}, 
+      ${detail.quantity}, 
+      ${detail.total}, 
+      ${id}, 
+      ${department_id}, 
+      ${building_id},
+      ${admin_id})`);
+  });
+  pool.query(
+    `
+    INSERT INTO 
+      bill_details 
+      (
+        category_id, 
+        concept_id, 
+        description, 
+        amount, 
+        quantity, 
+        total, 
+        bill_id, 
+        department_id, 
         building_id,
-        admin_id,
-      });
+        admin_id
+      ) 
+    VALUES 
+      ${values}
+    RETURNING id`,
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(201).send(
+        `Bill "${id}" 
+          added successfully on department: ${department_id}, 
+          by admin: ${admin_id}`
+      );
     }
   );
 };
 
 /* DELETE BILLS */
-const deleteBillsMethod = (id, res) => {
-  pool.query(`DELETE FROM bills WHERE id IN(${id})`, (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(`Bills deleted with ID: ${id}`);
-  });
-};
 const deleteBills = (req, res) => {
-  deleteBillDetails(req.body, res);
+  const id = req.body;
+  deleteBillDetails(id)
+    .then(
+      pool.query(`DELETE FROM bills WHERE id IN(${id})`, (error, results) => {
+        if (error) {
+          throw error;
+        }
+        res.status(200).send(`Bills deleted with ID: ${id}`);
+      })
+    )
+    .catch((err) => {
+      throw err;
+    });
+};
+
+/* DELETE RELATIONS */
+const deleteBillDetails = (id) => {
+  return pool.query(`DELETE FROM bill_details WHERE bill_id IN(${id})`);
 };
 
 /* EXPORTS */

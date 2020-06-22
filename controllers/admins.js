@@ -152,20 +152,19 @@ const insertAdminBuilding = (id, res, buildings) => {
 const deleteAdmins = (req, res) => {
   const id = req.body;
   deleteAdminBuilding(id)
-    .then(deleteAdminsMethod(id, res))
+    .then(
+      pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {
+        if (error) {
+          throw error;
+        }
+        res
+          .status(200)
+          .send(`Admins deleted with ID: ${id}. All relations removed.`);
+      })
+    )
     .catch((err) => {
       throw err;
     });
-};
-const deleteAdminsMethod = (id, res) => {
-  pool.query(`DELETE FROM admins WHERE id IN(${id})`, (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res
-      .status(200)
-      .send(`Admins deleted with ID: ${id}. All relations removed.`);
-  });
 };
 
 /* DELETE RELATION ADMIN-BUILDING */
