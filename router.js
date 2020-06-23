@@ -7,6 +7,7 @@ const categories = require('./controllers/categories');
 const concepts = require('./controllers/concepts');
 const generalExpenses = require('./controllers/general-expenses');
 const bills = require('./controllers/bills');
+const payments = require('./controllers/payments');
 
 function createRouter(app) {
   /* BUILDINGS */
@@ -71,6 +72,13 @@ function createRouter(app) {
   app.post('/bills/create', bills.createBill);
   app.put('/bills/update', bills.updateBill);
   app.delete('/bills/delete', bills.deleteBills);
+
+  /* PAYMENTS */
+  app.get('/payments', payments.getPayments);
+  app.get('/payments/id', payments.getPaymentsById);
+  app.post('/payments/create', payments.createPayment);
+  app.put('/payments/update', payments.updatePayment);
+  app.delete('/payments/delete', payments.deletePayments);
 }
 
 module.exports = createRouter;
