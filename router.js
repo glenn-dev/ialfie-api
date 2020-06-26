@@ -1,4 +1,5 @@
 const countries = require('./controllers/countries');
+const regions = require('./controllers/regions');
 const users = require('./controllers/users');
 const buildings = require('./controllers/buildings');
 const departments = require('./controllers/departments');
@@ -15,6 +16,12 @@ function createRouter(app) {
   app.post('/countries/create', countries.createCountry);
   app.put('/countries/update', countries.updateCountry);
   app.delete('/countries/delete', countries.deleteCountry);
+
+  /* REGIONS */
+  app.get('/regions', regions.getRegions);
+  app.post('/regions/create', regions.createRegion);
+  app.put('/regions/update', regions.updateRegion);
+  app.delete('/regions/delete', regions.deleteRegion);
 
   /* BUILDINGS */
   app.get('/buildings', buildings.getBuildings);
