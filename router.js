@@ -3,6 +3,7 @@ const regions = require('./controllers/regions');
 const municipalities = require('./controllers/municipalities');
 const buildings = require('./controllers/buildings');
 const users = require('./controllers/users');
+const userTypes = require('./controllers/user-types');
 const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
@@ -43,6 +44,12 @@ function createRouter(app) {
   app.post('/users/create', users.createUser);
   app.put('/users/update', users.updateUser);
   app.delete('/users/delete', users.deleteUsers);
+
+  /* USER-TYPES */
+  app.get('/user-types', userTypes.getUserTypes);
+  app.post('/user-types/create', userTypes.createUserType);
+  app.put('/user-types/update', userTypes.updateUserType);
+  app.delete('/user-types/delete', userTypes.deleteUserType);
 
   /* DEPARTMENTS */
   app.get('/departments', departments.getDepartments);
