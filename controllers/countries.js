@@ -2,33 +2,36 @@ const pool = require('../database/db');
 
 /* GET COUNTRIES */
 const getCountries = (req, res) => {
-  pool.query('SELECT * FROM countries ORDER BY name ASC;', (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).json(results.rows);
-  });
-};
-
-/* CREATE COUNTRY */
-const createCountry = (req, res) => {
-  const { name } = req.body;
   pool.query(
-    `INSERT INTO countries (name) VALUES ${name}`,
+    'SELECT * FROM countries ORDER BY country ASC;',
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Country "${name}" added successfully.`);
+      res.status(200).json(results.rows);
+    }
+  );
+};
+
+/* CREATE COUNTRY */
+const createCountry = (req, res) => {
+  const { country } = req.body;
+  pool.query(
+    `INSERT INTO countries (country) VALUES ${country}`,
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(201).send(`Country "${country}" added successfully.`);
     }
   );
 };
 
 /* UPDATE COUNTRY */
 const updateCountry = (req, res) => {
-  const { id, name } = req.body;
+  const { id, country } = req.body;
   pool.query(
-    `UPDATE countries SET name = ${name} WHERE id = ${id}`,
+    `UPDATE countries SET country = ${country} WHERE id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;

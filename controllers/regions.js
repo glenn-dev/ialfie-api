@@ -56,7 +56,7 @@ const updateRegion = (req, res) => {
       country_id = $2,
     WHERE 
       id = $3`,
-    [region, country_id, id]
+    [region, country_id, id],
     (error, results) => {
       if (error) {
         throw error;
