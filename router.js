@@ -1,11 +1,10 @@
 const users = require('./controllers/users');
 const buildings = require('./controllers/buildings');
-const admins = require('./controllers/admins');
 const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
 const concepts = require('./controllers/concepts');
-const generalExpenses = require('./controllers/general-expenses');
+const expenses = require('./controllers/expenses');
 const bills = require('./controllers/bills');
 const payments = require('./controllers/payments');
 
@@ -23,13 +22,6 @@ function createRouter(app) {
   app.post('/users/create', users.createUser);
   app.put('/users/update', users.updateUser);
   app.delete('/users/delete', users.deleteUsers);
-
-  /* ADMINS */
-  app.get('/admins', admins.getAdmins);
-  app.get('/admins/id', admins.getAdminsById);
-  app.post('/admins/create', admins.createAdmin);
-  app.put('/admins/update', admins.updateAdmin);
-  app.delete('/admins/delete', admins.deleteAdmins);
 
   /* DEPARTMENTS */
   app.get('/departments', departments.getDepartments);
@@ -59,12 +51,12 @@ function createRouter(app) {
   app.put('/concepts/update', concepts.updateConcept);
   app.delete('/concepts/delete', concepts.deleteConcepts);
 
-  /* GENERAL-EXPENSES */
-  app.get('/general-expenses', generalExpenses.getGeneralExpenses);
-  app.get('/general-expenses/id', generalExpenses.getGeneralExpensesById);
-  app.post('/general-expenses/create', generalExpenses.createGeneralExpense);
-  app.put('/general-expenses/update', generalExpenses.updateGeneralExpense);
-  app.delete('/general-expenses/delete', generalExpenses.deleteGeneralExpenses);
+  /* EXPENSES */
+  app.get('/expenses', expenses.getExpenses);
+  app.get('/expenses/id', expenses.getExpensesById);
+  app.post('/expenses/create', expenses.createExpense);
+  app.put('/expenses/update', expenses.updateExpense);
+  app.delete('/expenses/delete', expenses.deleteExpenses);
 
   /* BILLS */
   app.get('/bills', bills.getBills);
