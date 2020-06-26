@@ -1,7 +1,8 @@
 const countries = require('./controllers/countries');
 const regions = require('./controllers/regions');
-const users = require('./controllers/users');
+const municipalities = require('./controllers/municipalities');
 const buildings = require('./controllers/buildings');
+const users = require('./controllers/users');
 const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
@@ -22,6 +23,12 @@ function createRouter(app) {
   app.post('/regions/create', regions.createRegion);
   app.put('/regions/update', regions.updateRegion);
   app.delete('/regions/delete', regions.deleteRegion);
+
+  /* MUNICIPALITIES */
+  app.get('/municipalities', municipalities.getMunicipalities);
+  app.post('/municipalities/create', municipalities.createMunicipality);
+  app.put('/municipalities/update', municipalities.updateMunicipality);
+  app.delete('/municipalities/delete', municipalities.deleteMunicipality);
 
   /* BUILDINGS */
   app.get('/buildings', buildings.getBuildings);
