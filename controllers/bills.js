@@ -122,7 +122,8 @@ const getBillsById = (req, res) => {
       AS de
       ON bi.department_id = de.id
     WHERE 
-      bd.bill_id IN(${id}) 
+      bd.bill_id 
+      IN(${id}) 
     ORDER BY 
       bi.id ASC`,
     (error, results) => {

@@ -3,51 +3,37 @@ const parseUser = require('../helpers/users-helper');
 
 /* GET ALL USERS */
 const getUsers = (req, res) => {
+  const building_id = req.body;
   pool.query(
     `
     SELECT 
       us.id,
-      us.first_n,
-      us.last_n,
+      us.first_name,
+      us.last_name,
       us.email,
-      us.password,
-      us.id_number,
+      us.identity_card,
       us.phone,
+      us.user_type_id,
+      ut.user_type,
       us.status,
       us.created_at,
-      us.updated_at,
-      dp.building_id,
-      bu.name
-        AS building,
-      bu.address,
-      ud.department_id,
-      dp.number,
-      dp.floor,
-      dp.status,
-      dp.defaulting,
-      dp.aliquot
     FROM 
       users 
       AS us
     INNER JOIN 
-      users_departments
-      AS ud
-      ON us.id = ud.user_id
-    INNER JOIN 
-      departments
-      AS dp
-      ON ud.department_id = dp.id
-    INNER JOIN 
-      buildings
-      AS bu
-      ON dp.building_id = bu.id
+      user_types
+      AS ut
+      ON us.user_type_id = ut.id
+    WHERE
+      us.building_id 
+      IN(${building_id})
     ORDER BY 
-      us.id ASC;`,
+      us.first_name ASC;`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(parseUser(results.rows));
+      res.status(200).json(results.rows);
     }
   );
 };
@@ -60,25 +46,28 @@ const getUsersById = (req, res) => {
     `
     SELECT 
       us.id,
-      us.first_n,
-      us.last_n,
+      us.first_name,
+      us.middle_name,
+      us.last_name,
+      us.maternal_surname,
+      us.identity_card,
       us.email,
-      us.password,
-      us.id_number,
       us.phone,
+      us.image,
       us.status,
-      us.created_at,
-      us.updated_at,
+      us.user_type_id,
+      ut.user_type,
       dp.building_id,
       bu.name
         AS building,
       bu.address,
       ud.department_id,
-      dp.number,
-      dp.floor,
+      dp.number
+        AS dep_number,
       dp.status,
       dp.defaulting,
-      dp.aliquot
+      us.created_at,
+      us.updated_at
     FROM 
       users
       AS us
@@ -111,12 +100,15 @@ const getUsersById = (req, res) => {
 /* CREATE USER */
 const createUser = (req, res) => {
   const {
-    first_n,
-    last_n,
+    first_name,
+    middle_name,
+    last_name,
+    maternal_surname,
+    identity_card,
+    phone,
     email,
     password,
-    phone,
-    id_number,
+    image,
     user_type,
     buildings,
     departments,
@@ -126,22 +118,28 @@ const createUser = (req, res) => {
     INSERT INTO 
       users 
       (
-        first_n, 
-        last_n, 
-        email, 
-        password, 
-        phone, 
-        id_number, 
+        first_name,
+        middle_name,
+        last_name,
+        maternal_surname,
+        identity_card,
+        phone,
+        email,
+        password,
+        image,
         user_type
       ) 
     VALUES 
       (
-        '${first_n}', 
-        '${last_n}', 
+        '${first_name}', 
+        '${middle_name}', 
+        '${last_name}', 
+        '${maternal_surname}', 
+        '${identity_card},
+        '${phone}', 
         '${email}', 
         '${password}', 
-        '${phone}', 
-        '${id_number}', 
+        '${image}', 
         '${user_type}'
       ) 
     RETURNING id`,
@@ -185,12 +183,15 @@ const createUser = (req, res) => {
 const updateUser = (req, res) => {
   const {
     id,
-    first_n,
-    last_n,
+    first_name,
+    middle_name,
+    last_name,
+    maternal_surname,
+    identity_card,
+    phone,
     email,
     password,
-    phone,
-    id_number,
+    image,
     user_type,
     buildings,
     departments,
@@ -200,12 +201,15 @@ const updateUser = (req, res) => {
     UPDATE 
       users 
     SET 
-      first_n = ${first_n}, 
-      last_n = ${last_n}, 
+      first_name = ${first_name}, 
+      middle_name = ${middle_name}, 
+      last_name = ${last_name}, 
+      maternal_surname = ${maternal_surname}, 
+      identity_card = ${identity_card}, 
+      phone = ${phone}, 
       email = ${email}, 
       password = ${password}, 
-      phone = ${phone}, 
-      id_number = ${id_number}, 
+      image = ${image}, 
       user_type = ${user_type} 
     WHERE 
       id = ${id}`,
