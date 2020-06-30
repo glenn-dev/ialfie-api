@@ -7,16 +7,16 @@ const getCategories = (req, res) => {
     `
     SELECT
       id,
-      name,
       code,
+      category,
+      category_flag,
       building_id,
-      created_at,
-      updated_at
+      updated_at,
+      created_at
     FROM 
       categories 
     WHERE 
-      building_id 
-      IN (${building_id}) 
+      building_id = ${building_id} 
     ORDER BY 
       name ASC;`,
     (error, results) => {
@@ -34,18 +34,30 @@ const getCategoriesById = (req, res) => {
   pool.query(
     `
     SELECT
-      id,
-      name,
-      code,
-      building_id,
-      created_at,
-      updated_at
+      ca.id,
+      ca.code,
+      ca.category,
+      ca.category_flag,
+      ca.building_id,
+      ca.updated_at,
+      ca.created_at,
+      co.id
+        AS concept_id,
+      co.code
+        AS concept_code,
+      co.concept,
+      co.concept_flag
     FROM 
-      categories 
+      categories
+      AS ca 
+    INNER JOIN
+      concepts
+      AS co
+      ON co.category_id = ca.id
     WHERE 
-      id IN (${id})
+      ca.id = ${id}
     ORDER BY 
-      name ASC;`,
+      category ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -57,25 +69,36 @@ const getCategoriesById = (req, res) => {
 
 /* CREATE CATEGORY */
 const createCategory = (req, res) => {
-  const { name, code, building_id } = req.body;
+  const { category, code, building_id } = req.body;
   pool.query(
-    'INSERT INTO categories (name, code, building_id) VALUES ($1, $2, $3)',
-    [name, code, building_id],
+    `
+    INSERT INTO 
+      categories 
+      (category, code, category_flag, building_id) 
+    VALUES 
+      ($1, $2, $3, $4)`,
+    [category, code, category_flag, building_id],
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Category "${name}" added successfully.`);
+      res.status(201).send(`Category "${category}" added successfully.`);
     }
   );
 };
 
 /* UPDATE CATEGORY */
 const updateCategory = (req, res) => {
-  const { id, name, code, building_id } = req.body;
+  const { id, category, code, category_flag, building_id } = req.body;
   pool.query(
-    'UPDATE categories SET name = $1, code = $2, building_id = $3 WHERE id = $4',
-    [name, code, building_id, id],
+    `
+    UPDATE 
+      categories 
+    SET 
+      category = $1, code = $2, category_flag = $3, building_id = $4 
+    WHERE 
+      id = $5`,
+    [category, code, category_flag, building_id, id],
     (error, results) => {
       if (error) {
         throw error;
