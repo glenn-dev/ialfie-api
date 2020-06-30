@@ -9,11 +9,11 @@ const getConcepts = (req, res) => {
       co.id,
       co.code,
       co.concept, 
+      co.concept_flag,
       co.category_id,
       ca.code
         AS cat_code,
-      ca.name
-        AS cat_name,
+      ca.category,
       co.building_id,
       co.created_at,
       co.updated_at
@@ -25,7 +25,7 @@ const getConcepts = (req, res) => {
       AS ca
       ON co.category_id = ca.id
     WHERE 
-      co.building_id IN (${building_id}) 
+      co.building_id = ${building_id}
     ORDER BY 
       co.concept ASC;`,
     (error, results) => {
@@ -45,12 +45,12 @@ const getConceptsById = (req, res) => {
     SELECT
       co.id,
       co.code,
-      co.concept, 
+      co.concept,
+      co.concept_flag, 
       co.category_id,
       ca.code
         AS cat_code,
-      ca.name
-        AS cat_name,
+      ca.category,
       co.building_id,
       co.created_at,
       co.updated_at
@@ -77,14 +77,14 @@ const getConceptsById = (req, res) => {
 
 /* CREATE CONCEPT */
 const createConcept = (req, res) => {
-  const { code, concept, category_id, building_id } = req.body;
+  const { code, concept, concept_flag, category_id, building_id } = req.body;
   pool.query(
     `INSERT INTO 
       concepts 
-      (code, concept, category_id, building_id) 
+      (code, concept, concept_flag, category_id, building_id) 
     VALUES 
-      ($1, $2, $3, $4)`,
-    [code, concept, category_id, building_id],
+      ($1, $2, $3, $4, $5)`,
+    [code, concept, concept_flag, category_id, building_id],
     (error, results) => {
       if (error) {
         throw error;
@@ -96,7 +96,14 @@ const createConcept = (req, res) => {
 
 /* UPDATE CONCEPT */
 const updateConcept = (req, res) => {
-  const { id, code, concept, category_id, building_id } = req.body;
+  const {
+    id,
+    code,
+    concept,
+    concept_flag,
+    category_id,
+    building_id,
+  } = req.body;
   pool.query(
     `
     UPDATE 
@@ -104,11 +111,12 @@ const updateConcept = (req, res) => {
     SET 
       code = $1, 
       concept = $2, 
-      category_id = $3, 
-      building_id = $4 
+      concept_flag = $3
+      category_id = $4, 
+      building_id = $5 
     WHERE 
-      id = $5`,
-    [code, concept, category_id, building_id, id],
+      id = $6`,
+    [code, concept, concept_flag, category_id, building_id, id],
     (error, results) => {
       if (error) {
         throw error;
