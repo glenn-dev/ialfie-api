@@ -12,9 +12,35 @@ const getBuildings = (req, res) => {
 
 /* GET BUILDINGS BY ID */
 const getBuildingsById = (req, res) => {
-  const id = req.body;
   pool.query(
-    `SELECT * FROM buildings WHERE id IN(${id}) ORDER BY name ASC`,
+    `
+    SELECT 
+      bu.id,
+      bu.name,
+      bu.image,
+      bu.status,
+      bu.street,
+      bu.block_number,
+      mu.municipality,
+      re.region,
+      co.country
+    FROM 
+      buildings 
+      AS bu
+    INNER JOIN
+      municipalities
+      AS mu
+      ON bu.municipality_id = mu.id
+    INNER JOIN
+      regions
+      AS re
+      ON bu.region_id = re.id
+    INNER JOIN
+      countries
+      AS co
+      ON bu.country_id = co.id
+    WHERE 
+      id = ${req.body}`,
     (error, results) => {
       if (error) {
         throw error;
@@ -26,30 +52,111 @@ const getBuildingsById = (req, res) => {
 
 /* CREATE BUILDING */
 const createBuilding = (req, res) => {
-  const { name, address, image, status } = req.body;
+  const {
+    name,
+    image,
+    status,
+    street,
+    block_number,
+    municipality_id,
+    region_id,
+    country_id,
+  } = req.body;
   pool.query(
-    'INSERT INTO buildings (name, address, image, status) VALUES ($1, $2, $3)',
-    [name, address, image],
+    `
+    INSERT INTO 
+      buildings 
+      (
+        name, 
+        image, 
+        status, 
+        street, 
+        block_number, 
+        municipality_id, 
+        region_id, 
+        country_id
+      ) 
+    VALUES 
+      (
+        ${name}, 
+        ${image}, 
+        ${status}, 
+        ${street}, 
+        ${block_number}, 
+        ${municipality_id}, 
+        ${region_id}, 
+        ${country_id}
+      ) 
+    RETURNING id`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Building "${name}" added successfully`);
+      insertRelations(results.rows[0].id, cutoff_date)
+        .then(res.status(201).send(`Building "${name}" added successfully`))
+        .catch((err) => {
+          throw err;
+        });
     }
+  );
+};
+
+/* CREATE BUILDING RELATIONS */
+const insertRelations = (building_id, cutoff_date) => {
+  pool.query(
+    `
+    INSERT INTO 
+      building_setups 
+      (cutoff_date, building_id) 
+    VALUES 
+      (${cutoff_date}, ${building_id})`
   );
 };
 
 /* UPDATE BUILDING */
 const updateBuilding = (req, res) => {
-  const { id, name, address, image, status } = req.body;
+  const {
+    id,
+    name,
+    image,
+    status,
+    street,
+    block_number,
+    municipality_id,
+    region_id,
+    country_id,
+    cutoff_date,
+  } = req.body;
   pool.query(
-    'UPDATE buildings SET name = $1, address = $2, image = $3 WHERE id = $4',
-    [name, address, image, id, status],
+    `
+    UPDATE 
+      buildings 
+    SET 
+      name ${name},
+      image ${image},
+      status ${status},
+      street ${street},
+      block_number ${block_number},
+      municipality_id ${municipality_id},
+      region_id ${region_id},
+      country_id ${country_id}
+    WHERE 
+      id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Building modified with ID: ${id}`);
+      deleteRelations(id)
+        .then(
+          insertRelations(id, cutoff_date)
+            .then(res.status(200).send(`Building modified with ID: ${id}`))
+            .catch((err) => {
+              throw err;
+            })
+        )
+        .catch((err) => {
+          throw err;
+        });
     }
   );
 };
@@ -57,12 +164,26 @@ const updateBuilding = (req, res) => {
 /* DELETE BUILDINGS */
 const deleteBuildings = (req, res) => {
   const id = req.body;
-  pool.query(`DELETE FROM buildings WHERE id IN(${id})`, (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(`Building deleted with ID: ${id}`);
-  });
+  deleteRelations(id)
+    .then(
+      pool.query(
+        `DELETE FROM buildings WHERE id IN(${id})`,
+        (error, results) => {
+          if (error) {
+            throw error;
+          }
+          res.status(200).send(`Building deleted with ID: ${id}`);
+        }
+      )
+    )
+    .catch((err) => {
+      throw err;
+    });
+};
+
+/* DELETE BUILDING RELATIONS */
+const deleteRelations = (building_id) => {
+  pool.query(`DELETE FROM building_setups WHERE building_id = ${building_id}`);
 };
 
 /* EXPORTS */
