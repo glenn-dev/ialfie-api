@@ -60,12 +60,14 @@ const getUsersById = (req, res) => {
       dp.building_id,
       bu.name
         AS building,
-      bu.address,
+      bu.street,
+      bu.block_number,
       ud.department_id,
       dp.number
         AS dep_number,
-      dp.status,
       dp.defaulting,
+      dp.status
+        AS dep_status,
       us.created_at,
       us.updated_at
     FROM 

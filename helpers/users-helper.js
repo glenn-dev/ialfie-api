@@ -5,28 +5,33 @@ const goParseUsers = (data) => {
   const pushUser = (user, users) => {
     users.push({
       id: user.id,
-      first_n: user.first_n,
-      last_n: user.last_n,
+      first_name: user.first_name,
+      middle_name: user.middle_name,
+      last_name: user.last_name,
+      maternal_surname: user.maternal_surname,
+      identity_card: user.identity_card,
       email: user.email,
-      password: user.password,
-      id_number: user.id_number,
       phone: user.phone,
+      image: user.image,
       status: user.status,
-      created_at: user.created_at,
+      user_type_id: user.user_type_id,
+      user_type: user.user_type,
       updated_at: user.updated_at,
+      created_at: user.created_at,
       buildings: [
         {
           building_id: user.building_id,
           building_name: user.building,
-          building_address: user.address,
+          street: user.street,
+          block_number: user.block_number,
           departments: [
             {
               dep_id: user.department_id,
               dep_number: user.number,
               dep_floor: user.floor,
-              dep_habitability: user.habitability,
-              dep_defaulting: user.defaulting,
               dep_aliquot: user.aliquot,
+              dep_defaulting: user.defaulting,
+              dep_status: user.dep_status,
             },
           ],
         },
@@ -39,15 +44,16 @@ const goParseUsers = (data) => {
     users[index].buildings.push({
       building_id: user.building_id,
       building_name: user.building,
-      building_address: user.address,
+      street: user.street,
+      block_number: user.block_number,
       departments: [
         {
           dep_id: user.department_id,
           dep_number: user.number,
           dep_floor: user.floor,
-          dep_habitability: user.habitability,
-          dep_defaulting: user.defaulting,
           dep_aliquot: user.aliquot,
+          dep_defaulting: user.defaulting,
+          dep_status: user.dep_status,
         },
       ],
     });
@@ -60,9 +66,9 @@ const goParseUsers = (data) => {
       dep_id: user.department_id,
       dep_number: user.number,
       dep_floor: user.floor,
-      dep_habitability: user.habitability,
-      dep_defaulting: user.defaulting,
       dep_aliquot: user.aliquot,
+      dep_defaulting: user.defaulting,
+      dep_status: user.dep_status,
     });
   };
 

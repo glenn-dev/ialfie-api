@@ -30,15 +30,15 @@ const getDepartmentsById = (req, res) => {
 
 /* CREATE DEPARTMENT */
 const createDepartment = (req, res) => {
-  const { number, floor, aliquot, building_id, status, defaulting } = req.body;
+  const { number, floor, aliquot, status, defaulting, building_id } = req.body;
   pool.query(
     `
     INSERT INTO 
       departments 
-      (number, floor, aliquot, building_id, status, defaulting) 
+      (number, floor, aliquot, status, defaulting, building_id) 
     VALUES 
       ($1, $2, $3, $4, $5, $6)`,
-    [number, floor, aliquot, building_id, status, defaulting],
+    [number, floor, aliquot, status, defaulting, building_id],
     (error, results) => {
       if (error) {
         throw error;
@@ -59,9 +59,9 @@ const updateDepartment = (req, res) => {
     number,
     floor,
     aliquot,
-    building_id,
     status,
     defaulting,
+    building_id,
   } = req.body;
   pool.query(
     `
@@ -71,12 +71,12 @@ const updateDepartment = (req, res) => {
       number = $1, 
       floor = $2, 
       aliquot = $3, 
-      building_id = $4, 
-      status = $5, 
-      defaulting = $6 
+      status = $4, 
+      defaulting = $5 
+      building_id = $6, 
     WHERE 
       id = $7`,
-    [number, floor, aliquot, building_id, status, defaulting, id],
+    [number, floor, aliquot, status, defaulting, building_id, id],
     (error, results) => {
       if (error) {
         throw error;
