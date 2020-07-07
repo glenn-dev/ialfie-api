@@ -59,6 +59,8 @@ const getBillsById = (req, res) => {
     `
     SELECT
       bi.id,
+      bi.created_at,
+      bi.updated_at,
       bi.building_subtotal,
       bi.property_subtotal,
       pr.defaulting
