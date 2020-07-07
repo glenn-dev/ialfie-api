@@ -7,20 +7,29 @@ const getCommunications = (req, res) => {
     `
     SELECT
       cm.id,
+      cm.created_at,
+      cm.updated_at,
+      cm.document,
       cm.release,
       cm.title,
+      cm.content,
+      cm.validity,
       cm.status,
+      cm.user_type_id
+        AS sent_to_user_type_id,
+      cm.admin_user_id,
+      us.first_name,
+      us.last_name,
+      us.user_type_id
+        AS admin_user_type_id,
       cm.building_id,
-      cm.admin_id,
-      ad.first_n,
-      ad.last_n
     FROM 
       communications 
       AS cm
     INNER JOIN 
-      admins
-      AS ad
-      ON cm.admin_id = ad.id
+      users
+      AS us
+      ON cm.admin_user_id = ad.id
     WHERE 
       building_id = ${building_id} 
     ORDER BY 
@@ -36,20 +45,27 @@ const getCommunications = (req, res) => {
 
 /* GET COMMUNICATIONS BY ID */
 const getCommunicationsById = (req, res) => {
-  const id = req.body;
+  const { column, id } = req.body;
   pool.query(
     `
     SELECT
       cm.id,
+      cm.created_at,
+      cm.updated_at,
+      cm.document,
       cm.release,
       cm.title,
       cm.content,
+      cm.validity,
       cm.status,
-      cm.document,
+      cm.user_type_id
+        AS sent_to_user_type_id,
+      cm.admin_user_id,
+      us.first_name,
+      us.last_name,
+      us.user_type_id
+        AS admin_user_type_id,
       cm.building_id,
-      cm.admin_id,
-      ad.first_n,
-      ad.last_n
     FROM 
       communications 
       AS cm
@@ -58,7 +74,7 @@ const getCommunicationsById = (req, res) => {
       AS ad
       ON cm.admin_id = ad.id
     WHERE 
-      cm.id IN (${id})
+      cm.${column} IN (${id})
     ORDER BY 
       release ASC;`,
     (error, results) => {
@@ -73,27 +89,49 @@ const getCommunicationsById = (req, res) => {
 /* CREATE COMMUNICATION */
 const createCommunication = (req, res) => {
   const {
+    document,
     release,
     title,
     content,
+    validity,
     status,
-    document,
-    admin_id,
+    user_type_id,
+    admin_user_id,
     building_id,
   } = req.body;
   pool.query(
     `
     INSERT INTO 
       communications 
-      (release, title, content, status, document, admin_id, building_id)
+      (
+        document, 
+        release, 
+        title, 
+        content,
+        validity, 
+        status, 
+        user_type_id, 
+        admin_user_id, 
+        building_id
+      )
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7)`,
-    [release, title, content, status, document, admin_id, building_id],
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+    [
+      document,
+      release,
+      title,
+      content,
+      validity,
+      status,
+      user_type_id,
+      admin_user_id,
+      building_id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Communication "${release}" added successfully.}`);
+      res.status(201).send(`Communication "${release}" added successfully.`);
     }
   );
 };
@@ -102,12 +140,14 @@ const createCommunication = (req, res) => {
 const updateCommunication = (req, res) => {
   const {
     id,
+    document,
     release,
     title,
     content,
+    validity,
     status,
-    document,
-    admin_id,
+    user_type_id,
+    admin_user_id,
     building_id,
   } = req.body;
   pool.query(
@@ -115,16 +155,29 @@ const updateCommunication = (req, res) => {
     UPDATE 
       communications 
     SET 
-      release = $1, 
-      title = $2, 
-      content = $3, 
-      status = $4, 
-      document = $5, 
-      admin_id = $6, 
-      building_id = $7 
+      document = $1, 
+      release = $2, 
+      title = $3, 
+      content = $4,
+      validity = 5, 
+      status = $6,
+      user_type_id = $7, 
+      admin_user_id = $8, 
+      building_id = $9 
     WHERE 
-      id = $8`,
-    [release, title, content, status, document, admin_id, building_id, id],
+      id = $10`,
+    [
+      document,
+      release,
+      title,
+      content,
+      validity,
+      status,
+      user_type_id,
+      admin_user_id,
+      building_id,
+      id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
