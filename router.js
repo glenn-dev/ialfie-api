@@ -8,6 +8,7 @@ const departments = require('./controllers/departments');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
 const concepts = require('./controllers/concepts');
+const defaultConcepts = require('./controllers/default-concepts');
 const expenses = require('./controllers/expenses');
 const bills = require('./controllers/bills');
 const payments = require('./controllers/payments');
@@ -78,6 +79,13 @@ function createRouter(app) {
   app.post('/concepts/create', concepts.createConcept);
   app.put('/concepts/update', concepts.updateConcept);
   app.delete('/concepts/delete', concepts.deleteConcepts);
+
+  /* DEFAULT CONCEPTS */
+  app.get('/default-concepts', defaultConcepts.getDefaultConcepts);
+  app.get('/default-concepts/id', defaultConcepts.getDefaultConceptsById);
+  app.post('/default-concepts/create', defaultConcepts.createDefaultConcept);
+  app.put('/default-concepts/update', defaultConcepts.updateDefaultConcept);
+  app.delete('/default-concepts/delete', defaultConcepts.deleteDefaultConcepts);
 
   /* EXPENSES */
   app.get('/expenses', expenses.getExpenses);
