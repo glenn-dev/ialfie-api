@@ -7,6 +7,7 @@ const getConcepts = (req, res) => {
     `
     SELECT
       co.id,
+      co.created_at,
       co.code,
       co.concept, 
       co.concept_flag,
@@ -15,8 +16,6 @@ const getConcepts = (req, res) => {
         AS cat_code,
       ca.category,
       co.building_id,
-      co.created_at,
-      co.updated_at
     FROM 
       concepts 
       AS co
@@ -39,7 +38,7 @@ const getConcepts = (req, res) => {
 
 /* GET CONCEPTS BY ID */
 const getConceptsById = (req, res) => {
-  const id = req.body;
+  const {column, id} = req.body;
   pool.query(
     `
     SELECT
@@ -62,7 +61,7 @@ const getConceptsById = (req, res) => {
       AS ca
       ON co.category_id = ca.id
     WHERE 
-      o.id 
+      co.${column} 
       IN(${id}) 
     ORDER BY 
       concept ASC;`,
