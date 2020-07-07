@@ -38,8 +38,7 @@ const getDefaultConcepts = (req, res) => {
       AS pr
       ON dc.property_id = pr.id
     WHERE 
-      dc.${column} 
-      IN(${id}) 
+      dc.${column} = ${id}
     ORDER BY 
       co.concept ASC;`,
     (error, results) => {
