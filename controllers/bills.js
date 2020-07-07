@@ -3,47 +3,44 @@ const goParseBills = require('../helpers/bills-helper');
 
 /* GET ALL BILLS */
 const getBills = (req, res) => {
-  const building_id = req.body;
+  const { column, id } = req.body;
   pool.query(
     `
     SELECT
       bi.id,
-      bi.number,
-      bi.exp_date,
-      bi.ge_subtotal,
-      bi.in_subtotal,
-      bi.total,
-      bi.issued,
-      bi.status,
+      bi.number
+        AS bill_number,
       bi.document,
-      bi.department_id,
-      de.number
-        AS dep_number,
-      de.defaulting,
-      bi.admin_id,
-      ad.first_n
-        AS adm_first_n,
-      ad.last_n
-        AS adm_last_n,
-      bi.building_id,
-      bu.name
+      bi.total,
+      bi.exp_date,
+      bi.status,
+      bi.issued,
+      bi.property_id,
+      pr.number
+        AS property_number,
+      pr.status
+        AS property_status,
+      pr.defaulting,
+      bi.admin_user_id,
+      us.first_name,
+      us.last_name
     FROM 
       bills 
       AS bi
     INNER JOIN 
-      departments
-      AS de
-      ON bi.department_id = de.id
+      properties
+      AS pr
+      ON bi.property_id = pr.id
     INNER JOIN 
-      admins
-      AS ad
-      ON bi.admin_id = ad.id
+      users
+      AS us
+      ON bi.admin_user_id = us.id
     INNER JOIN 
       buildings
       AS bu
       ON bi.building_id = bu.id
     WHERE 
-      bi.building_id = ${building_id} 
+      bi.${column} = ${id} 
     ORDER BY 
       bi.number ASC`,
     (error, results) => {
@@ -57,73 +54,50 @@ const getBills = (req, res) => {
 
 /* GET BILLS BY ID */
 const getBillsById = (req, res) => {
-  const id = req.body;
+  const bill_id = req.body;
   pool.query(
     `
     SELECT
-      bi.id
-        AS bill_id,
-      bi.number
-        AS bill_number,
-      bi.status
-        AS bill_status,
-      bi.issued
-        AS bill_issued,
-      bi.ge_subtotal
-        AS general_expense_subtotal,
-      bi.in_subtotal
-        AS individual_expense_subtotal,
-      bi.total
-        AS bill_total,
-      bi.exp_date,
-      de.id
-        AS department_id,
-      de.number
-        AS department_number,
-      de.floor
-        AS department_floor,
-      de.status
-        AS department_status,
-      de.defaulting
-        AS department_defaulting,
-      de.aliquot
-        AS department_aliquot,
-      ca.code
-        AS category_code,
-      ca.name
-        As category_name,
-      co.code
-        AS concept_code,
-      co.name
-        AS concept_name,
-      bd.id
-        AS bill_detail_id,
-      bd.description,
-      bd.amount,
-      bd.quantity,
-      bd.total
+      bi.building_subtotal,
+      bi.property_subtotal,
+      pr.defaulting
+        AS property_defaulting,
+      pr.aliquot
+        AS property_aliquot,
+      ex.id
+        AS expense_id,
+      ex.number
+        AS expense_number,
+      ex.document
+        AS expense_document,
+      ex.category_code,
+      ex.category,
+      ex.concept_code,
+      ex.concept,
+      ex.description,
+      ex.amount,
+      ex.quantity,
+      ex.total,
+      ex.status
+        AS expense_status,
+      ex.expense_flag
     FROM 
       bill_details
       AS bd
-    INNER JOIN 
-      concepts
-      AS co
-      ON bd.concept_id = co.id
-    INNER JOIN 
-      categories
-      AS ca
-      ON bd.category_id = ca.id
     INNER JOIN 
       bills
       AS bi
       ON bd.bill_id = bi.id
     INNER JOIN 
-      departments
-      AS de
-      ON bi.department_id = de.id
+      properties
+      AS pr
+      ON bi.property_id = pr.id
+    INNER JOIN  
+      expenses
+      AS ex
+      ON bd.expense_id = ex.id
     WHERE 
-      bd.bill_id 
-      IN(${id}) 
+      bd.bill_id = ${bill_id}
     ORDER BY 
       bi.id ASC`,
     (error, results) => {
@@ -140,16 +114,16 @@ const createBill = (req, res) => {
   const {
     number,
     exp_date,
-    ge_subtotal,
-    in_subtotal,
+    building_subtotal,
+    property_subtotal,
     total,
     status,
     issued,
     document,
-    department_id,
-    building_id,
-    admin_id,
     details,
+    admin_user_id,
+    property_id,
+    building_id,
   } = req.body;
   pool.query(
     `
@@ -158,14 +132,15 @@ const createBill = (req, res) => {
       (
         number, 
         exp_date, 
-        ge_subtotal, 
-        in_subtotal, 
-        total, status, 
+        building_subtotal, 
+        property_subtotal, 
+        total, 
+        status, 
         issued, 
         document, 
-        department_id, 
+        admin_user_id, 
+        property_id, 
         building_id, 
-        admin_id
       ) 
     VALUES 
       ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
@@ -173,94 +148,27 @@ const createBill = (req, res) => {
     [
       number,
       exp_date,
-      ge_subtotal,
-      in_subtotal,
+      building_subtotal,
+      property_subtotal,
       total,
       status,
       issued,
       document,
-      department_id,
+      admin_user_id,
+      property_id,
       building_id,
-      admin_id,
     ],
     (error, results) => {
       if (error) {
         throw error;
       }
-      insertBillDetails(
-        results.rows[0].id,
-        details,
-        department_id,
-        building_id,
-        admin_id,
-        res
-      );
-    }
-  );
-};
-
-/* UPDATE BILL */
-const updateBill = (req, res) => {
-  const {
-    id,
-    number,
-    exp_date,
-    ge_subtotal,
-    in_subtotal,
-    total,
-    status,
-    issued,
-    document,
-    department_id,
-    building_id,
-    admin_id,
-    details,
-  } = req.body;
-  pool.query(
-    `
-    UPDATE 
-      bills 
-    SET 
-      number = $1,
-      exp_date = $2, 
-      ge_subtotal = $3, 
-      in_subtotal = $4, 
-      total = $5, 
-      status = $6, 
-      issued = $7, 
-      document = $8,
-      department_id = $9,
-      building_id = $10,
-      admin_id = $11
-    WHERE 
-      id = $12`,
-    [
-      number,
-      exp_date,
-      ge_subtotal,
-      in_subtotal,
-      total,
-      status,
-      issued,
-      document,
-      department_id,
-      building_id,
-      admin_id,
-      id,
-    ],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      deleteBillDetails(id)
+      const id = results.rows[0].id;
+      insertBillDetails(id, details)
         .then(
-          insertBillDetails(
-            id,
-            details,
-            department_id,
-            building_id,
-            admin_id,
-            res
+          res.status(201).send(
+            `Bill: ${id}, 
+              added successfully for property: ${property_id}, 
+              by admin: ${admin_user_id}.`
           )
         )
         .catch((err) => {
@@ -271,56 +179,92 @@ const updateBill = (req, res) => {
 };
 
 /* CREATE RELATIONS */
-const insertBillDetails = (
-  id,
-  details,
-  department_id,
-  building_id,
-  admin_id,
-  res
-) => {
+const insertBillDetails = (bill_id, details) => {
   let values = [];
-  details.forEach((detail) => {
-    values.push(`(
-      ${detail.category_id}, 
-      ${detail.concept_id}, 
-      '${detail.description}', 
-      ${detail.amount}, 
-      ${detail.quantity}, 
-      ${detail.total}, 
-      ${id}, 
-      ${department_id}, 
-      ${building_id},
-      ${admin_id})`);
+  details.forEach((expense_id) => {
+    values.push(`(${bill_id}, ${expense_id})`);
   });
-  pool.query(
+  return pool.query(
     `
     INSERT INTO 
       bill_details 
-      (
-        category_id, 
-        concept_id, 
-        description, 
-        amount, 
-        quantity, 
-        total, 
-        bill_id, 
-        department_id, 
-        building_id,
-        admin_id
-      ) 
+      (bill_id, expense_id) 
     VALUES 
       ${values}
-    RETURNING id`,
+    RETURNING id`
+  );
+};
+
+/* UPDATE BILL */
+const updateBill = (req, res) => {
+  const {
+    id,
+    number,
+    exp_date,
+    building_subtotal,
+    property_subtotal,
+    total,
+    status,
+    issued,
+    document,
+    details,
+    admin_user_id,
+    property_id,
+    building_id,
+  } = req.body;
+  pool.query(
+    `
+    UPDATE 
+      bills 
+    SET 
+      number = $1,
+      exp_date = $2, 
+      building_subtotal = $3, 
+      property_subtotal = $4, 
+      total = $5, 
+      status = $6, 
+      issued = $7, 
+      document = $8,
+      admin_user_id = $9
+      property_id = $10,
+      building_id = $11,
+    WHERE 
+      id = $12`,
+    [
+      number,
+      exp_date,
+      building_subtotal,
+      property_subtotal,
+      total,
+      status,
+      issued,
+      document,
+      admin_user_id,
+      property_id,
+      building_id,
+      id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(
-        `Bill "${id}" 
-          added successfully on department: ${department_id}, 
-          by admin: ${admin_id}`
-      );
+      deleteBillDetails(id)
+        .then(
+          insertBillDetails(id, details)
+            .then(
+              res.status(201).send(
+                `Bill: ${id}, 
+              added successfully for property: ${property_id}, 
+              by admin: ${admin_user_id}.`
+              )
+            )
+            .catch((err) => {
+              throw err;
+            })
+        )
+        .catch((err) => {
+          throw err;
+        });
     }
   );
 };
