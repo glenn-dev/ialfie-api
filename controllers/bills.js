@@ -58,12 +58,16 @@ const getBillsById = (req, res) => {
   pool.query(
     `
     SELECT
+      bi.id,
       bi.building_subtotal,
       bi.property_subtotal,
       pr.defaulting
         AS property_defaulting,
       pr.aliquot
         AS property_aliquot,
+      bd.id
+      bd.bill_id,
+      bd.bd_expense_id,
       ex.id
         AS expense_id,
       ex.number
@@ -99,7 +103,7 @@ const getBillsById = (req, res) => {
     WHERE 
       bd.bill_id = ${bill_id}
     ORDER BY 
-      bi.id ASC`,
+      bi.id ASC`, // Delete bi.id, bd.id, bd.bill_id and bd.bd_expense_id.
     (error, results) => {
       if (error) {
         throw error;

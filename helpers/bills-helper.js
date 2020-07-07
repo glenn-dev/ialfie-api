@@ -4,48 +4,46 @@ const goParseBills = (data) => {
   /* Push new 'bill' object into 'bills' array. */
   const pushBill = (bill, bills) => {
     bills.push({
-      department_id: bill.department_id,
-      department_number: bill.department_number,
-      department_floor: bill.department_floor,
-      department_status: bill.department_status,
-      department_defaulting: bill.department_defaulting,
-      department_aliquot: bill.department_aliquot,
-      bill_id: bill.bill_id,
-      bill_number: bill.bill_number,
-      bill_status: bill.bill_status,
-      bill_issued: bill.bill_issued,
-      general_expense_subtotal: bill.general_expense_subtotal,
-      individual_expense_subtotal: bill.individual_expense_subtotal,
-      bill_total: bill.bill_total,
-      exp_date: bill.exp_date,
+      property_defaulting: bill.property_defaulting,
+      property_aliquot: bill.property_aliquot,
+      building_subtotal: bill.building_subtotal,
+      property_subtotal: bill.property_subtotal,
       bill_details: [
         {
-          bill_detail_id: bill.bill_detail_id,
+          expense_id: bill.expense_id,
+          expense_number: bill.expense_number,
+          expense_document: bill.expense_document,
           category_code: bill.category_code,
-          category_name: bill.category_name,
+          category: bill.category,
           concept_code: bill.concept_code,
-          concept_name: bill.concept_name,
+          concept: bill.concept,
           description: bill.description,
           amount: bill.amount,
           quantity: bill.quantity,
           total: bill.total,
+          expense_status: bill.expense_status,
+          expense_flag: bill.expense_flag
         },
       ],
     });
   };
 
-  /* Push 'bill_detail' object into a 'bill_details' array into 'bill' object on 'bills' array. */
+  /* Push 'expense' object into 'bill_details' array of 'bill' object. */
   const pushBillDetail = (bill, bills, index) => {
     bills[index].bill_details.push({
-      bill_detail_id: bill.bill_detail_id,
+      expense_id: bill.expense_id,
+      expense_number: bill.expense_number,
+      expense_document: bill.expense_document,
       category_code: bill.category_code,
-      category_name: bill.category_name,
+      category: bill.category,
       concept_code: bill.concept_code,
-      concept_name: bill.concept_name,
+      concept: bill.concept,
       description: bill.description,
       amount: bill.amount,
       quantity: bill.quantity,
       total: bill.total,
+      expense_status: bill.expense_status,
+      expense_flag: bill.expense_flag
     });
   };
 
