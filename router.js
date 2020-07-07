@@ -82,7 +82,6 @@ function createRouter(app) {
 
   /* DEFAULT CONCEPTS */
   app.get('/default-concepts', defaultConcepts.getDefaultConcepts);
-  app.get('/default-concepts/id', defaultConcepts.getDefaultConceptsById);
   app.post('/default-concepts/create', defaultConcepts.createDefaultConcept);
   app.put('/default-concepts/update', defaultConcepts.updateDefaultConcept);
   app.delete('/default-concepts/delete', defaultConcepts.deleteDefaultConcepts);

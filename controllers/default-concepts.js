@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL DEFAULT CONCEPTS */
 const getDefaultConcepts = (req, res) => {
-  const building_id = req.body;
+  const { column, id } = req.body;
   pool.query(
     `
     SELECT
@@ -38,47 +38,10 @@ const getDefaultConcepts = (req, res) => {
       AS pr
       ON dc.property_id = pr.id
     WHERE 
-      co.building_id = ${building_id}
-    ORDER BY 
-      co.concept ASC;`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).json(results.rows);
-    }
-  );
-};
-
-/* GET CONCEPTS BY ID */
-const getDefaultConceptsById = (req, res) => {
-  const { column, id } = req.body;
-  pool.query(
-    `
-    SELECT
-      dc.id,
-      dc.code,
-      dc.concept,
-      dc.concept_flag, 
-      dc.category_id,
-      ca.code
-        AS cat_code,
-      ca.category,
-      dc.building_id,
-      dc.created_at,
-      dc.updated_at
-    FROM 
-      default_concepts 
-      AS dc
-    INNER JOIN 
-      categories
-      AS ca
-      ON co.category_id = ca.id
-    WHERE 
       dc.${column} 
       IN(${id}) 
     ORDER BY 
-      concept ASC;`,
+      co.concept ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -187,7 +150,6 @@ const deleteDefaultConcepts = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getDefaultConcepts,
-  getDefaultConceptsById,
   createDefaultConcept,
   updateDefaultConcept,
   deleteDefaultConcepts,
