@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET MUNICIPALITIES */
 const getMunicipalities = (req, res) => {
-  const country_id = req.body;
+  const {column, id} = req.body;
   pool.query(
     `
     SELECT 
@@ -22,7 +22,8 @@ const getMunicipalities = (req, res) => {
       AS co
       ON mu.country_id = co.id
     WHERE
-      mu.country_id = ${country_id}
+      mu.${column} 
+      IN(${id})
     ORDER BY 
       region ASC;`,
     (error, results) => {
@@ -51,7 +52,7 @@ const createMunicipality = (req, res) => {
       }
       res
         .status(201)
-        .send(`Municipality "${municipality}" added successfully.`);
+        .send(`Municipality "${municipality}" created.`);
     }
   );
 };
@@ -73,7 +74,7 @@ const updateMunicipality = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Municipality modified with ID: ${id}`);
+      res.status(200).send(`Municipality ${id} modified.`);
     }
   );
 };
@@ -87,7 +88,7 @@ const deleteMunicipality = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Municipality deleted with ID: ${id}`);
+      res.status(200).send(`Municipality ${id} deleted.`);
     }
   );
 };
