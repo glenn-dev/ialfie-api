@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL COMMUNICATIONS */
 const getCommunications = (req, res) => {
-  const building_id = req.body;
+  const {column, id} = req.body;
   pool.query(
     `
     SELECT
@@ -31,7 +31,8 @@ const getCommunications = (req, res) => {
       AS us
       ON cm.admin_user_id = ad.id
     WHERE 
-      building_id = ${building_id} 
+      cm.${column} 
+      IN(${id})
     ORDER BY 
       release ASC;`,
     (error, results) => {
@@ -74,7 +75,7 @@ const getCommunicationsById = (req, res) => {
       AS ad
       ON cm.admin_id = ad.id
     WHERE 
-      cm.${column} IN (${id})
+      cm.id = ${id}
     ORDER BY 
       release ASC;`,
     (error, results) => {
