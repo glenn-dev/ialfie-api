@@ -45,29 +45,48 @@
 // All Get by id: [1, 2, 3, 4, ...]
 // Update is the same as post but with "id".
 
-admin:
-{
-"first_n" : "Admin Name 4",
-"last_n" : "Admin Last Name 4",
-"email" : "admin4@mail.com",
-"password" : "123456",
-"phone" : "987654321",
-"id_number" : "123456789",
-"status": true,
-"buildings": [24, 23]
-}
 user:
 {
-"first_n" : "User 1",
-"last_n" : "User Last Name 1",
+"image": "image/path.png",
+"first_name" : "User First 1",
+"middle_name" : "User Middle 1",
+"last_name" : "User Last 1",
+"maternal_surname" : "User Surname 1",
+"identity_number" : "123456789",
+"phone" : "123456789",
 "email" : "user1@mail.com",
 "password" : "123456",
-"phone" : "123456789",
-"id_number" : "123456789",
-"user_type" : false,
-"buildings": [23],
-"departments": [1]
+"status" : false,
 }
+
+liabilities: 
+[
+  { 
+    "admin_user_id" : 256,
+    "user_id": 456,
+    "user_type_id": 3,
+    "building_id": 4,
+    "main_property_id" : 325,
+    "property_id": 556
+  },
+  { 
+    "admin_user_id" : 256,
+    "user_id": 456,
+    "user_type_id": 3,
+    "building_id": 4,
+    "main_property_id" : 325,
+    "property_id": 752
+  },
+  { 
+    "admin_user_id" : 256,
+    "user_id": 456,
+    "user_type_id": 3,
+    "building_id": 4,
+    "main_property_id" : 325,
+    "property_id": 894
+  }
+]
+
 Communications:
 {
 "release" : "B23-001",

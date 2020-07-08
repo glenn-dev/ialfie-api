@@ -3,30 +3,25 @@ const parseUser = require('../helpers/users-helper');
 
 /* GET ALL USERS */
 const getUsers = (req, res) => {
-  const building_id = req.body;
+  const { column, id } = req.body;
   pool.query(
     `
     SELECT 
       us.id,
+      us.created_at,
+      us.updated_at,
+      us.image,
       us.first_name,
       us.last_name,
-      us.email,
-      us.identity_card,
+      us.identity_number,
       us.phone,
-      us.user_type_id,
-      ut.user_type,
-      us.status,
-      us.created_at,
+      us.email,
+      us.status
     FROM 
       users 
-      AS us
-    INNER JOIN 
-      user_types
-      AS ut
-      ON us.user_type_id = ut.id
     WHERE
-      us.building_id 
-      IN(${building_id})
+      us.${column} 
+      IN(${id})
     ORDER BY 
       us.first_name ASC;`,
     (error, results) => {
@@ -41,55 +36,63 @@ const getUsers = (req, res) => {
 /* GET USER BY ID */
 const getUsersById = (req, res) => {
   const id = req.body;
-  console.log(id);
   pool.query(
     `
     SELECT 
       us.id,
+      us.created_at,
+      us.updated_at,
+      us.image,
       us.first_name,
       us.middle_name,
       us.last_name,
       us.maternal_surname,
-      us.identity_card,
-      us.email,
+      us.identity_number,
       us.phone,
-      us.image,
+      us.email,
       us.status,
-      us.user_type_id,
+      li.user_type_id,
       ut.user_type,
-      dp.building_id,
+      li.building_id,
       bu.name
         AS building,
       bu.street,
       bu.block_number,
-      ud.department_id,
-      dp.number
-        AS dep_number,
-      dp.defaulting,
-      dp.status
-        AS dep_status,
-      us.created_at,
-      us.updated_at
+      li.property_id,
+      pr.number
+        AS property_number,
+      pr.floor,
+      pr.defaulting,
+      pr.status
+        AS property_status,
+      pt.property_type
     FROM 
       users
       AS us
     INNER JOIN 
-      users_departments
-      AS ud
-      ON us.id = ud.user_id
+      liabilities
+      AS li
+      ON us.id = li.user_id
+    INNER JOIN
+      user_types
+      AS ut
+      ON li.user_type_id = ut.id
     INNER JOIN 
-      departments
-      AS dp
-      ON ud.department_id = dp.id
+      properties
+      AS pr
+      ON li.property_id = pr.id
+    INNER JOIN 
+      property_types
+      AS pt
+      ON pr.property_type_id = pt.id
     INNER JOIN 
       buildings
       AS bu
-      ON dp.building_id = bu.id
+      ON li.building_id = bu.id
     WHERE 
-      us.id 
-      IN(${id})
+      us.id = ${id}
     ORDER BY 
-      us.id ASC;`,
+      us.first_name ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -102,81 +105,52 @@ const getUsersById = (req, res) => {
 /* CREATE USER */
 const createUser = (req, res) => {
   const {
+    image,
     first_name,
     middle_name,
     last_name,
     maternal_surname,
-    identity_card,
+    identity_number,
     phone,
     email,
     password,
-    image,
-    user_type,
-    buildings,
-    departments,
+    status,
   } = req.body;
   pool.query(
     `
     INSERT INTO 
       users 
       (
+        image,
         first_name,
         middle_name,
         last_name,
         maternal_surname,
-        identity_card,
+        identity_number,
         phone,
         email,
         password,
-        image,
-        user_type
+        status
       ) 
     VALUES 
       (
+        '${image}', 
         '${first_name}', 
         '${middle_name}', 
         '${last_name}', 
         '${maternal_surname}', 
-        '${identity_card},
+        '${identity_number}, 
         '${phone}', 
         '${email}', 
         '${password}', 
-        '${image}', 
-        '${user_type}'
+        '${status}'
       ) 
     RETURNING id`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      /* Create relations */
-      const id = results.rows[0].id;
-      Promise.all([
-        insertRelations(
-          id,
-          buildings,
-          'users_buildings',
-          'user_id, building_id'
-        ),
-        insertRelations(
-          id,
-          departments,
-          'users_departments',
-          'user_id, department_id'
-        ),
-      ])
-        .then((results) => {
-          response(
-            res,
-            `User ID: ${id}, 
-            with buildings: ${buildings} 
-            and departments: ${departments} 
-            added successfully!`
-          );
-        })
-        .catch((err) => {
-          throw err;
-        });
+      res.status(200).send(`User ${results.rows[0].id} created.`);
     }
   );
 };
@@ -185,76 +159,39 @@ const createUser = (req, res) => {
 const updateUser = (req, res) => {
   const {
     id,
+    image,
     first_name,
     middle_name,
     last_name,
     maternal_surname,
-    identity_card,
+    identity_number,
     phone,
     email,
     password,
-    image,
-    user_type,
-    buildings,
-    departments,
+    status,
   } = req.body;
   pool.query(
     `
     UPDATE 
       users 
     SET 
+      image = ${image}, 
       first_name = ${first_name}, 
       middle_name = ${middle_name}, 
       last_name = ${last_name}, 
       maternal_surname = ${maternal_surname}, 
-      identity_card = ${identity_card}, 
+      identity_number = ${identity_number}, 
       phone = ${phone}, 
       email = ${email}, 
       password = ${password}, 
-      image = ${image}, 
-      user_type = ${user_type} 
+      status = ${status}
     WHERE 
       id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      /* Update relations */
-      Promise.all([
-        deleteRelations(id, 'users_buildings'),
-        deleteRelations(id, 'users_departments'),
-      ])
-        .then(
-          Promise.all([
-            insertRelations(
-              id,
-              buildings,
-              'users_buildings',
-              'user_id, building_id'
-            ),
-            insertRelations(
-              id,
-              departments,
-              'users_departments',
-              'user_id, department_id'
-            ),
-          ])
-            .then((results) => {
-              response(
-                res,
-                `User: ${id}, 
-                departments: ${departments} 
-                and buildings: ${buildings} 
-                modified successfully.`
-              );
-            })
-            .catch((err) => {
-              throw err;
-            })
-        )
-        .catch((err) => {
-          throw err;
-        });
+      res.status(200).send(`User ${id} updated.`);
     }
   );
 };
@@ -262,40 +199,15 @@ const updateUser = (req, res) => {
 /* DELETE USER */
 const deleteUsers = (req, res) => {
   const id = req.body;
-  Promise.all([
-    deleteRelations(id, 'users_buildings'),
-    deleteRelations(id, 'users_departments'),
-  ])
-    .then((results) => {
-      pool.query(`DELETE FROM users WHERE id IN(${id})`, (error, results) => {
-        if (error) {
-          throw error;
-        }
-        response(res, `User deleted with ID: ${id}. All relations removed.`);
-      });
-    })
-    .catch((err) => {
-      throw err;
-    });
-};
-
-/* INSERT RELATIONS */
-const insertRelations = (id, array, table, columns) => {
-  let values = [];
-  array.forEach((elem_id) => {
-    values.push(`(${id}, ${elem_id})`);
-  });
-  return pool.query(`INSERT INTO ${table} (${columns}) VALUES ${values}`);
-};
-
-/* DELETE RELATIONS */
-const deleteRelations = (id, table) => {
-  return pool.query(`DELETE FROM ${table} WHERE user_id IN(${id})`);
-};
-
-/* RESPONSE */
-const response = (res, message) => {
-  res.status(200).send(message);
+  pool.query(
+    `UPDATE users SET status = false WHERE id IN(${id})`,
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).send(`Users ${id} deleted!`);
+    }
+  );
 };
 
 /* EXPORTS */
