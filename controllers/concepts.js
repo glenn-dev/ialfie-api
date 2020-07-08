@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL CONCEPTS */
 const getConcepts = (req, res) => {
-  const building_id = req.body;
+  const {column, id} = req.body;
   pool.query(
     `
     SELECT
@@ -24,7 +24,8 @@ const getConcepts = (req, res) => {
       AS ca
       ON co.category_id = ca.id
     WHERE 
-      co.building_id = ${building_id}
+      co.${column} 
+      IN(${id}) 
     ORDER BY 
       co.concept ASC;`,
     (error, results) => {
@@ -38,7 +39,7 @@ const getConcepts = (req, res) => {
 
 /* GET CONCEPTS BY ID */
 const getConceptsById = (req, res) => {
-  const {column, id} = req.body;
+  const id = req.body;
   pool.query(
     `
     SELECT
@@ -61,8 +62,7 @@ const getConceptsById = (req, res) => {
       AS ca
       ON co.category_id = ca.id
     WHERE 
-      co.${column} 
-      IN(${id}) 
+      co.id = ${id}
     ORDER BY 
       concept ASC;`,
     (error, results) => {
@@ -120,7 +120,7 @@ const updateConcept = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Concept modified with ID: ${id}`);
+      res.status(200).send(`Concept ${id} modified.`);
     }
   );
 };
@@ -132,7 +132,7 @@ const deleteConcepts = (req, res) => {
     if (error) {
       throw error;
     }
-    res.status(200).send(`Concepts deleted with ID: ${id}`);
+    res.status(200).send(`Concepts ${id} deleted.`);
   });
 };
 
