@@ -69,7 +69,7 @@ const getCategoriesById = (req, res) => {
 
 /* CREATE CATEGORY */
 const createCategory = (req, res) => {
-  const { category, code, building_id } = req.body;
+  const { category, code, category_flag, building_id } = req.body;
   pool.query(
     `
     INSERT INTO 
