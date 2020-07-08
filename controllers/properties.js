@@ -133,9 +133,9 @@ const updateProperty = (req, res) => {
       floor = $2, 
       aliquot = $3, 
       status = $4, 
-      defaulting = $5 
-      property_type_id = $6
-      building_id = $7, 
+      defaulting = $5, 
+      property_type_id = $6, 
+      building_id = $7
     WHERE 
       id = $8`,
     [

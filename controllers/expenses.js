@@ -1,7 +1,7 @@
 const pool = require('../database/db');
 
-/* GET ALL GENERAL-EXPENSES */
-const getGeneralExpenses = (req, res) => {
+/* GET ALL EXPENSES */
+const getExpenses = (req, res) => {
   const building_id = req.body;
   pool.query(
     `
@@ -48,8 +48,8 @@ const getGeneralExpenses = (req, res) => {
   );
 };
 
-/* GET GENERAL-EXPENSES BY ID */
-const getGeneralExpensesById = (req, res) => {
+/* GET EXPENSES BY ID */
+const getExpensesById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -97,8 +97,8 @@ const getGeneralExpensesById = (req, res) => {
   );
 };
 
-/* CREATE GENERAL-EXPENSE */
-const createGeneralExpense = (req, res) => {
+/* CREATE EXPENSE */
+const createExpense = (req, res) => {
   const {
     number,
     concept_id,
@@ -151,8 +151,8 @@ const createGeneralExpense = (req, res) => {
   );
 };
 
-/* UPDATE GENERAL-EXPENSE */
-const updateGeneralExpense = (req, res) => {
+/* UPDATE EXPENSE */
+const updateExpense = (req, res) => {
   const {
     id,
     number,
@@ -202,8 +202,8 @@ const updateGeneralExpense = (req, res) => {
   );
 };
 
-/* DELETE GENERAL-EXPENSES */
-const deleteGeneralExpenses = (req, res) => {
+/* DELETE EXPENSES */
+const deleteExpenses = (req, res) => {
   const id = req.body;
   pool.query(
     `DELETE FROM general_expenses WHERE id IN(${id})`,
@@ -218,9 +218,9 @@ const deleteGeneralExpenses = (req, res) => {
 
 /* EXPORTS */
 module.exports = {
-  getGeneralExpenses,
-  getGeneralExpensesById,
-  createGeneralExpense,
-  updateGeneralExpense,
-  deleteGeneralExpenses,
+  getExpenses,
+  getExpensesById,
+  createExpense,
+  updateExpense,
+  deleteExpenses,
 };

@@ -4,7 +4,7 @@ const municipalities = require('./controllers/municipalities');
 const buildings = require('./controllers/buildings');
 const users = require('./controllers/users');
 const userTypes = require('./controllers/user-types');
-const departments = require('./controllers/properties');
+const properties = require('./controllers/properties');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
 const concepts = require('./controllers/concepts');
@@ -52,12 +52,12 @@ function createRouter(app) {
   app.put('/user-types/update', userTypes.updateUserType);
   app.delete('/user-types/delete', userTypes.deleteUserType);
 
-  /* DEPARTMENTS */
-  app.get('/departments', departments.getDepartments);
-  app.get('/departments/id', departments.getDepartmentsById);
-  app.post('/departments/create', departments.createDepartment);
-  app.put('/departments/update', departments.updateDepartment);
-  app.delete('/departments/delete', departments.deleteDepartments);
+  /* PROPERTIES */
+  app.get('/properties', properties.getProperties);
+  app.get('/properties/id', properties.getPropertiesById);
+  app.post('/properties/create', properties.createProperty);
+  app.put('/properties/update', properties.updateProperty);
+  app.delete('/properties/delete', properties.deleteProperties);
 
   /* COMMUNICATIONS */
   app.get('/communications', communications.getCommunications);
