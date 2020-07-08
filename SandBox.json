@@ -1,3 +1,5 @@
+// Ask: get queries should recive columns as params?? 
+
 {
   "number": "0001",
   "exp_date": "2020-03-25 11:26:14",

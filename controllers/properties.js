@@ -62,7 +62,7 @@ const getPropertiesById = (req, res) => {
       pr.${column}
       IN(${id}) 
     ORDER BY 
-      name ASC`,
+      number ASC`,
     (error, results) => {
       if (error) {
         throw error;
