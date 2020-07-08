@@ -38,7 +38,8 @@ const getDefaultConcepts = (req, res) => {
       AS pr
       ON dc.property_id = pr.id
     WHERE 
-      dc.${column} = ${id}
+      dc.${column} 
+      IN(${id})
     ORDER BY 
       co.concept ASC;`,
     (error, results) => {
@@ -88,7 +89,7 @@ const createDefaultConcept = (req, res) => {
       }
       res
         .status(201)
-        .send(`Default concept ${results.rows[0].id}, added successfully.`);
+        .send(`Default concept ${results.rows[0].id} created.`);
     }
   );
 };
@@ -130,7 +131,7 @@ const updateDefaultConcept = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Concept modified with ID: ${id}`);
+      res.status(200).send(`Default concept ${id} modified.`);
     }
   );
 };
@@ -142,7 +143,7 @@ const deleteDefaultConcepts = (req, res) => {
     if (error) {
       throw error;
     }
-    res.status(200).send(`Default concept deleted with ID: ${id}`);
+    res.status(200).send(`Default concept ${id} deleted.`);
   });
 };
 
