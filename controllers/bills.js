@@ -40,7 +40,8 @@ const getBills = (req, res) => {
       AS bu
       ON bi.building_id = bu.id
     WHERE 
-      bi.${column} = ${id} 
+      bi.${column}
+      IN(${id}) 
     ORDER BY 
       bi.number ASC`,
     (error, results) => {
@@ -105,7 +106,7 @@ const getBillsById = (req, res) => {
     WHERE 
       bd.bill_id = ${bill_id}
     ORDER BY 
-      bi.id ASC`, // Delete bi.id, bd.id, bd.bill_id and bd.bd_expense_id.
+      bi.id ASC`, // Delete bi.id, bd.id, bd.bill_id and bd.bd_expense_id at the end of the sprint.
     (error, results) => {
       if (error) {
         throw error;
@@ -149,34 +150,27 @@ const createBill = (req, res) => {
         building_id, 
       ) 
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+      (
+        ${number},
+        ${exp_date},
+        ${building_subtotal},
+        ${property_subtotal},
+        ${total},
+        ${status},
+        ${issued},
+        ${document},
+        ${admin_user_id},
+        ${property_id},
+        ${building_id},
+      ) 
     RETURNING id`,
-    [
-      number,
-      exp_date,
-      building_subtotal,
-      property_subtotal,
-      total,
-      status,
-      issued,
-      document,
-      admin_user_id,
-      property_id,
-      building_id,
-    ],
     (error, results) => {
       if (error) {
         throw error;
       }
       const id = results.rows[0].id;
       insertBillDetails(id, details)
-        .then(
-          res.status(201).send(
-            `Bill: ${id}, 
-              added successfully for property: ${property_id}, 
-              by admin: ${admin_user_id}.`
-          )
-        )
+        .then(res.status(201).send(`Bill ${id} created.`))
         .catch((err) => {
           throw err;
         });
@@ -223,33 +217,19 @@ const updateBill = (req, res) => {
     UPDATE 
       bills 
     SET 
-      number = $1,
-      exp_date = $2, 
-      building_subtotal = $3, 
-      property_subtotal = $4, 
-      total = $5, 
-      status = $6, 
-      issued = $7, 
-      document = $8,
-      admin_user_id = $9
-      property_id = $10,
-      building_id = $11,
+      number = ${number},
+      exp_date = ${exp_date},
+      building_subtotal = ${building_subtotal},
+      property_subtotal = ${property_subtotal},
+      total = ${total},
+      status = ${status},
+      issued = ${issued},
+      document = ${document},
+      admin_user_id =${admin_user_id},
+      property_id = ${property_id},
+      building_id = ${building_id},
     WHERE 
-      id = $12`,
-    [
-      number,
-      exp_date,
-      building_subtotal,
-      property_subtotal,
-      total,
-      status,
-      issued,
-      document,
-      admin_user_id,
-      property_id,
-      building_id,
-      id,
-    ],
+      id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
@@ -257,13 +237,7 @@ const updateBill = (req, res) => {
       deleteBillDetails(id)
         .then(
           insertBillDetails(id, details)
-            .then(
-              res.status(201).send(
-                `Bill: ${id}, 
-              added successfully for property: ${property_id}, 
-              by admin: ${admin_user_id}.`
-              )
-            )
+            .then(res.status(201).send(`Bill ${id} updated.`))
             .catch((err) => {
               throw err;
             })
