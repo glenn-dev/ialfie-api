@@ -178,7 +178,7 @@ const createExpense = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Expenses ${results.rows[0].id} added created.`);
+      res.status(201).send(`Expenses ${results.rows[0].id} created.`);
     }
   );
 };
@@ -235,7 +235,7 @@ const updateExpense = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Expense modified with ID: ${id}`);
+      res.status(200).send(`Expense ${id} modified.`);
     }
   );
 };
@@ -244,12 +244,12 @@ const updateExpense = (req, res) => {
 const deleteExpenses = (req, res) => {
   const id = req.body;
   pool.query(
-    `DELETE FROM general_expenses WHERE id IN(${id})`,
+    `DELETE FROM expenses WHERE id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`General Expenses deleted with ID: ${id}`);
+      res.status(200).send(`Expenses ${id} deleted.`);
     }
   );
 };
