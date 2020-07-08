@@ -15,7 +15,7 @@ const getCountries = (req, res) => {
 
 /* CREATE COUNTRY */
 const createCountry = (req, res) => {
-  const { country } = req.body;
+  const country = req.body;
   pool.query(
     `INSERT INTO countries (country) VALUES ${country}`,
     (error, results) => {
@@ -36,7 +36,7 @@ const updateCountry = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Country modified with ID: ${id}`);
+      res.status(200).send(`Country ${id} modified.`);
     }
   );
 };
@@ -48,7 +48,7 @@ const deleteCountry = (req, res) => {
     if (error) {
       throw error;
     }
-    res.status(200).send(`Country deleted with ID: ${id}`);
+    res.status(200).send(`Country ${id} deleted.`);
   });
 };
 
