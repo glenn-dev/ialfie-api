@@ -12,6 +12,7 @@ const getBuildings = (req, res) => {
 
 /* GET BUILDINGS BY ID */
 const getBuildingsById = (req, res) => {
+  const id = req.body;
   pool.query(
     `
     SELECT 
@@ -40,7 +41,7 @@ const getBuildingsById = (req, res) => {
       AS co
       ON bu.country_id = co.id
     WHERE 
-      id = ${req.body}`,
+      id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
@@ -53,8 +54,8 @@ const getBuildingsById = (req, res) => {
 /* CREATE BUILDING */
 const createBuilding = (req, res) => {
   const {
-    name,
     image,
+    name,
     status,
     street,
     block_number,
@@ -67,8 +68,8 @@ const createBuilding = (req, res) => {
     INSERT INTO 
       buildings 
       (
-        name, 
         image, 
+        name, 
         status, 
         street, 
         block_number, 
@@ -78,8 +79,8 @@ const createBuilding = (req, res) => {
       ) 
     VALUES 
       (
-        ${name}, 
         ${image}, 
+        ${name}, 
         ${status}, 
         ${street}, 
         ${block_number}, 
@@ -92,7 +93,7 @@ const createBuilding = (req, res) => {
       if (error) {
         throw error;
       }
-      insertRelations(results.rows[0].id, cutoff_date)
+      insertRelations(results.rows[0].id, cutoff_date, bill_exp_date)
         .then(res.status(201).send(`Building "${name}" added successfully`))
         .catch((err) => {
           throw err;
@@ -102,14 +103,14 @@ const createBuilding = (req, res) => {
 };
 
 /* CREATE BUILDING RELATIONS */
-const insertRelations = (building_id, cutoff_date) => {
+const insertRelations = (building_id, cutoff_date, bill_exp_date) => {
   pool.query(
     `
     INSERT INTO 
       building_setups 
-      (cutoff_date, building_id) 
+      (cutoff_date, bill_exp_date, building_id) 
     VALUES 
-      (${cutoff_date}, ${building_id})`
+      (${cutoff_date}, ${bill_exp_date}, ${building_id})`
   );
 };
 
@@ -148,7 +149,7 @@ const updateBuilding = (req, res) => {
       }
       deleteRelations(id)
         .then(
-          insertRelations(id, cutoff_date)
+          insertRelations(id, cutoff_date, bill_exp_date)
             .then(res.status(200).send(`Building modified with ID: ${id}`))
             .catch((err) => {
               throw err;
