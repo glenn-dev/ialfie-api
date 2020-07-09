@@ -12,16 +12,12 @@ const getProperties = (req, res) => {
       pr.aliquot,
       pr.status,
       pr.defaulting,
+      pr.property_type,
       pr.property_type_id,
-      pt.property_type,
       pr.building_id,
     FROM 
       properties 
       AS pr
-    INNER JOIN
-      property_types
-      AS pt
-      ON pr.property_type_id = pt.id
     WHERE 
       pr.${column}
       IN(${id}) 
@@ -48,16 +44,12 @@ const getPropertiesById = (req, res) => {
       pr.aliquot,
       pr.status,
       pr.defaulting,
+      pr.property_type,
       pr.property_type_id,
-      pt.property_type,
       pr.building_id,
     FROM 
       properties 
       AS pr
-    INNER JOIN
-      property_types
-      AS pt
-      ON pr.property_type_id = pt.id
     WHERE 
       pr.${column}
       IN(${id}) 
@@ -80,6 +72,7 @@ const createProperty = (req, res) => {
     aliquot,
     status,
     defaulting,
+    property_type,
     property_type_id,
     building_id,
   } = req.body;
@@ -92,13 +85,23 @@ const createProperty = (req, res) => {
         floor, 
         aliquot, 
         status, 
-        defaulting, 
+        defaulting,
+        property_type, 
         property_type_id, 
         building_id
       ) 
     VALUES 
       ($1, $2, $3, $4, $5, $6, $7)`,
-    [number, floor, aliquot, status, defaulting, property_type_id, building_id],
+    [
+      number,
+      floor,
+      aliquot,
+      status,
+      defaulting,
+      property_type,
+      property_type_id,
+      building_id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
@@ -121,6 +124,7 @@ const updateProperty = (req, res) => {
     aliquot,
     status,
     defaulting,
+    property_type,
     property_type_id,
     building_id,
   } = req.body;
@@ -134,16 +138,18 @@ const updateProperty = (req, res) => {
       aliquot = $3, 
       status = $4, 
       defaulting = $5, 
-      property_type_id = $6, 
-      building_id = $7
+      property_type = $6
+      property_type_id = $7, 
+      building_id = $8
     WHERE 
-      id = $8`,
+      id = $9`,
     [
       number,
       floor,
       aliquot,
       status,
       defaulting,
+      property_type,
       property_type_id,
       building_id,
       id,
