@@ -18,7 +18,7 @@ const getUsers = (req, res) => {
       us.email,
       us.status
     FROM 
-      users 
+      users
     WHERE
       us.${column} 
       IN(${id})

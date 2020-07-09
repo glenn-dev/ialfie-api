@@ -22,7 +22,7 @@ const createUserType = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`User-type "${user_type}" added successfully.`);
+      res.status(201).send(`User-type "${user_type}" created.`);
     }
   );
 };
@@ -36,7 +36,7 @@ const updateUserType = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`User-type modified with ID: ${id}`);
+      res.status(200).send(`User-type ${id} modified.`);
     }
   );
 };
@@ -48,7 +48,7 @@ const deleteUserType = (req, res) => {
     if (error) {
       throw error;
     }
-    res.status(200).send(`User-type deleted with ID: ${id}`);
+    res.status(200).send(`User-type ${id} deleted.`);
   });
 };
 
