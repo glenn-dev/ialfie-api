@@ -62,6 +62,8 @@ const createBuilding = (req, res) => {
     municipality_id,
     region_id,
     country_id,
+    cutoff_date,
+    bill_exp_date,
   } = req.body;
   pool.query(
     `
@@ -93,8 +95,9 @@ const createBuilding = (req, res) => {
       if (error) {
         throw error;
       }
-      insertRelations(results.rows[0].id, cutoff_date, bill_exp_date)
-        .then(res.status(201).send(`Building "${name}" added successfully`))
+      const id = results.rows[0].id;
+      insertRelations(id, cutoff_date, bill_exp_date)
+        .then(res.status(201).send(`Building ${id} created.`))
         .catch((err) => {
           throw err;
         });
@@ -104,7 +107,7 @@ const createBuilding = (req, res) => {
 
 /* CREATE BUILDING RELATIONS */
 const insertRelations = (building_id, cutoff_date, bill_exp_date) => {
-  pool.query(
+  return pool.query(
     `
     INSERT INTO 
       building_setups 
@@ -127,20 +130,21 @@ const updateBuilding = (req, res) => {
     region_id,
     country_id,
     cutoff_date,
+    bill_exp_date,
   } = req.body;
   pool.query(
     `
     UPDATE 
       buildings 
     SET 
-      name ${name},
-      image ${image},
-      status ${status},
-      street ${street},
-      block_number ${block_number},
-      municipality_id ${municipality_id},
-      region_id ${region_id},
-      country_id ${country_id}
+      name = ${name},
+      image = ${image},
+      status = ${status},
+      street = ${street},
+      block_number = ${block_number},
+      municipality_id = ${municipality_id},
+      region_id = ${region_id},
+      country_id = ${country_id}
     WHERE 
       id = ${id}`,
     (error, results) => {
@@ -150,7 +154,7 @@ const updateBuilding = (req, res) => {
       deleteRelations(id)
         .then(
           insertRelations(id, cutoff_date, bill_exp_date)
-            .then(res.status(200).send(`Building modified with ID: ${id}`))
+            .then(res.status(200).send(`Building ${id} modified.`))
             .catch((err) => {
               throw err;
             })
@@ -173,7 +177,7 @@ const deleteBuildings = (req, res) => {
           if (error) {
             throw error;
           }
-          res.status(200).send(`Building deleted with ID: ${id}`);
+          res.status(200).send(`Building ${id} deleted.`);
         }
       )
     )
@@ -184,7 +188,7 @@ const deleteBuildings = (req, res) => {
 
 /* DELETE BUILDING RELATIONS */
 const deleteRelations = (building_id) => {
-  pool.query(`DELETE FROM building_setups WHERE building_id = ${building_id}`);
+  return pool.query(`DELETE FROM building_setups WHERE building_id = ${building_id}`);
 };
 
 /* EXPORTS */
