@@ -39,7 +39,7 @@ const createRegion = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Region "${region}" added successfully.`);
+      res.status(201).send(`Region "${region}" created.`);
     }
   );
 };
@@ -54,7 +54,7 @@ const updateRegion = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Region modified with ID: ${id}`);
+      res.status(200).send(`Region ${id} modified.`);
     }
   );
 };
@@ -66,7 +66,7 @@ const deleteRegion = (req, res) => {
     if (error) {
       throw error;
     }
-    res.status(200).send(`Region deleted with ID: ${id}`);
+    res.status(200).send(`Region ${id} deleted.`);
   });
 };
 

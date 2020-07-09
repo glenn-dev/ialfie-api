@@ -109,7 +109,7 @@ const createProperty = (req, res) => {
       res
         .status(201)
         .send(
-          `Property ${number}, added successfully on building ${building_id}`
+          `Property ${number} created.`
         );
     }
   );
@@ -158,7 +158,7 @@ const updateProperty = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Property modified with ID: ${id}`);
+      res.status(200).send(`Property ${id} modified.`);
     }
   );
 };
@@ -170,7 +170,7 @@ const deleteProperties = (req, res) => {
     if (error) {
       throw error;
     }
-    res.status(200).send(`Property deleted with ID: ${id}`);
+    res.status(200).send(`Property ${id} deleted.`);
   });
 };
 
