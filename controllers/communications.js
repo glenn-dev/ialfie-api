@@ -44,8 +44,8 @@ const getCommunications = (req, res) => {
   );
 };
 
-/* GET COMMUNICATIONS BY ID */
-const getCommunicationsById = (req, res) => {
+/* GET COMMUNICATION BY ID */
+const getCommunicationById = (req, res) => {
   const { column, id } = req.body;
   pool.query(
     `
@@ -205,7 +205,7 @@ const deleteCommunications = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getCommunications,
-  getCommunicationsById,
+  getCommunicationById,
   createCommunication,
   updateCommunication,
   deleteCommunications,

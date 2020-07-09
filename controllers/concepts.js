@@ -37,8 +37,8 @@ const getConcepts = (req, res) => {
   );
 };
 
-/* GET CONCEPTS BY ID */
-const getConceptsById = (req, res) => {
+/* GET CONCEPT BY ID */
+const getConceptById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -139,7 +139,7 @@ const deleteConcepts = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getConcepts,
-  getConceptsById,
+  getConceptById,
   createConcept,
   updateConcept,
   deleteConcepts,

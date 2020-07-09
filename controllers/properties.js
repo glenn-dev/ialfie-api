@@ -32,8 +32,8 @@ const getProperties = (req, res) => {
   );
 };
 
-/* GET PROPERTIES BY ID */
-const getPropertiesById = (req, res) => {
+/* GET PROPERTY BY ID */
+const getPropertyById = (req, res) => {
   const { column, id } = req.body;
   pool.query(
     `
@@ -177,7 +177,7 @@ const deleteProperties = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getProperties,
-  getPropertiesById,
+  getPropertyById,
   createProperty,
   updateProperty,
   deleteProperties,

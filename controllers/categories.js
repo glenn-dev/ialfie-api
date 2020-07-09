@@ -28,8 +28,8 @@ const getCategories = (req, res) => {
   );
 };
 
-/* GET CATEGORIES BY ID */
-const getCategoriesById = (req, res) => {
+/* GET CATEGORY BY ID */
+const getCategoryById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -122,7 +122,7 @@ const deleteCategories = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getCategories,
-  getCategoriesById,
+  getCategoryById,
   createCategory,
   updateCategory,
   deleteCategories,

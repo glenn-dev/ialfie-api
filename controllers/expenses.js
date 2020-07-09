@@ -52,8 +52,8 @@ const getExpenses = (req, res) => {
   );
 };
 
-/* GET EXPENSES BY ID */
-const getExpensesById = (req, res) => {
+/* GET EXPENSE BY ID */
+const getExpenseById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -257,7 +257,7 @@ const deleteExpenses = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getExpenses,
-  getExpensesById,
+  getExpenseById,
   createExpense,
   updateExpense,
   deleteExpenses,

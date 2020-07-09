@@ -46,8 +46,8 @@ const getPayments = (req, res) => {
   );
 };
 
-/* GET PAYMENTS BY ID */
-const getPaymentsById = (req, res) => {
+/* GET PAYMENT BY ID */
+const getPaymentById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -182,7 +182,7 @@ const deletePayments = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getPayments,
-  getPaymentsById,
+  getPaymentById,
   createPayment,
   updatePayment,
   deletePayments,

@@ -54,7 +54,7 @@ const getBills = (req, res) => {
 };
 
 /* GET BILLS BY ID */
-const getBillsById = (req, res) => {
+const getBillById = (req, res) => {
   const bill_id = req.body;
   pool.query(
     `
@@ -274,7 +274,7 @@ const deleteBillDetails = (id) => {
 /* EXPORTS */
 module.exports = {
   getBills,
-  getBillsById,
+  getBillById,
   createBill,
   updateBill,
   deleteBills,

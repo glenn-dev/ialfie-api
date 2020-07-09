@@ -10,8 +10,8 @@ const getBuildings = (req, res) => {
   });
 };
 
-/* GET BUILDINGS BY ID */
-const getBuildingsById = (req, res) => {
+/* GET BUILDING BY ID */
+const getBuildingById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -194,7 +194,7 @@ const deleteRelations = (building_id) => {
 /* EXPORTS */
 module.exports = {
   getBuildings,
-  getBuildingsById,
+  getBuildingById,
   createBuilding,
   updateBuilding,
   deleteBuildings,

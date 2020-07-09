@@ -34,7 +34,7 @@ const getUsers = (req, res) => {
 };
 
 /* GET USER BY ID */
-const getUsersById = (req, res) => {
+const getUserById = (req, res) => {
   const id = req.body;
   pool.query(
     `
@@ -213,7 +213,7 @@ const deleteUsers = (req, res) => {
 /* EXPORTS */
 module.exports = {
   getUsers,
-  getUsersById,
+  getUserById,
   createUser,
   updateUser,
   deleteUsers,
