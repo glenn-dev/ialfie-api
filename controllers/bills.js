@@ -8,9 +8,11 @@ const getBills = (req, res) => {
     `
     SELECT
       bi.id,
+      bi.created_at,
+      bi.updated_at,
+      bi.document,
       bi.number
         AS bill_number,
-      bi.document,
       bi.total,
       bi.exp_date,
       bi.status,
@@ -18,8 +20,6 @@ const getBills = (req, res) => {
       bi.property_id,
       pr.number
         AS property_number,
-      pr.status
-        AS property_status,
       pr.defaulting,
       bi.admin_user_id,
       us.first_name,
@@ -62,15 +62,30 @@ const getBillById = (req, res) => {
       bi.id,
       bi.created_at,
       bi.updated_at,
+      bi.document,
+      bi.number
+        AS bill_number,
       bi.building_subtotal,
       bi.property_subtotal,
+      bi.total,
+      bi.exp_date,
+      bi.status,
+      bi.issued,
+      bi.property_id,
+      pr.number
+        AS property_number,
+      pr.defaulting,
+      pr.status
+        AS property_status,
       pr.defaulting
         AS property_defaulting,
       pr.aliquot
         AS property_aliquot,
-      bd.id
+      bi.admin_user_id,
+      us.first_name,
+      us.last_name
       bd.bill_id,
-      bd.bd_expense_id,
+      bd.expense_id,
       ex.id
         AS expense_id,
       ex.number
@@ -111,7 +126,7 @@ const getBillById = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(goParseBills(results.rows));
+      res.status(200).json(results.rows); // goParseBills(results.rows)
     }
   );
 };

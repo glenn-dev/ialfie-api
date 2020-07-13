@@ -1,50 +1,7 @@
 // Ask: get queries should recive columns as params?? 
 
-{
-  "number": "0001",
-  "exp_date": "2020-03-25 11:26:14",
-  "ge_subtotal": 25000.00,
-  "in_subtotal": 75000.00,
-  "total": 100000.00,
-  "status": false,
-  "issued": false,
-  "document": "/document/path/bill_001",
-  "department_id": "1",
-  "building_id": "23",
-  "admin_id": "30",
-  "details": [
-    {
-      "category_id": "1",
-      "concept_id": "8",
-      "description": "Optional description.",
-      "amount": 25000.00,
-      "quantity": 1.0,
-      "total": 25000.00
-    },
-    {
-      "category_id": "1",
-      "concept_id": "9",
-      "description": "Optional description.",
-      "amount": 10000.00,
-      "quantity": 2.0,
-      "total": 20000.00
-    },
-    {
-      "category_id": "2",
-      "concept_id": "11",
-      "description": "Optional description.",
-      "amount": 5000.00,
-      "quantity": 6.0,
-      "total": 30000.00
-    }
-  ]
-}
-
 
 // Body for querys:
-// All Get by id: [1, 2, 3, 4, ...]
-// Update is the same as post but with "id".
-
 user:
 {
 "image": "image/path.png",
@@ -97,12 +54,14 @@ Communications:
 "admin_id" : "29",
 "building_id" : "23"
 }
+
 Categories:
 {
 	"code" : "B24-CA02",
 	"name" : "Cat Name 2",
 	"building_id" : 24
 }
+
 Concepts:
 {
 	"code" : "B24-CA04-CO04",
@@ -110,30 +69,21 @@ Concepts:
 	"category_id" : 4,
 	"building_id" : 24
 }
+
 Bill:
 {
-	"number" : "B23-D01-A30-BI03",
-	"exp_date" : "2020-03-25 11:26:14",
+	"number" : "B23-P01-001",
+  "exp_date" : "2020-06-25 11:26:14",
+  "building_subtotal" : 45000,
+  "property_subtotal" : 50000,
 	"total" : 95000.00,
-	"status" : false,
-	"document" : "bill/document/path",
-	"department_id" : "1",
-	"building_id" : "23",
-	"admin_id" : "30"
+  "status" : false,
+  "issued" : true,
+  "document" : "bill/document/path.pdf",
+  "details" : ["506", "507", "508"],
+	"admin_user_id" : "21",
+	"property_id" : "48",
+	"building_id" : "23"
 }
 
-• 23: {
-	DEP: [1, 2, 3], 
-	ADM: [30, 31],
-	US: [27, 30],
-	CAT: [1 , 2],
-	CON: [8, 9, 10, 11]
-	}
-• 24: {
-	DEP: [4, 5, 6], 
-	ADM: [29, 31], 
-	US: [29, 30],
-	CAT: [3 , 4],
-	CON: [12, 13, 14, 15]
-	}
 	
