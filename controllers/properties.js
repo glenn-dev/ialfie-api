@@ -2,25 +2,26 @@ const pool = require('../database/db');
 
 /* GET ALL PROPERTIES */
 const getProperties = (req, res) => {
-  const { column, id } = req.body;
+  const {building_id, column, id} = req.body;
   pool.query(
     `
     SELECT 
-      pr.id,
-      pr.number,
-      pr.floor,
-      pr.aliquot,
-      pr.status,
-      pr.defaulting,
-      pr.property_type,
-      pr.property_type_id,
-      pr.building_id,
+      id,
+      number,
+      floor,
+      aliquot,
+      status,
+      defaulting,
+      property_type,
+      property_type_id,
+      building_id,
     FROM 
       properties 
-      AS pr
     WHERE 
-      pr.${column}
-      IN(${id}) 
+      building_id = ${building_id}
+      AND
+      ${column}
+      IN(${id})
     ORDER BY 
       number ASC`,
     (error, results) => {
@@ -34,7 +35,7 @@ const getProperties = (req, res) => {
 
 /* GET PROPERTY BY ID */
 const getPropertyById = (req, res) => {
-  const { column, id } = req.body;
+  const id = req.body;
   pool.query(
     `
     SELECT 
@@ -45,14 +46,45 @@ const getPropertyById = (req, res) => {
       pr.status,
       pr.defaulting,
       pr.property_type,
-      pr.property_type_id,
+      us.first_name,
+      us.last_name,
+      us.identity_number,
+      us.phone,
+      us.email,
+      us.status
+        AS user_status,
+      spr.id
+        AS sub_property_id,
+      spr.number
+        AS sub_property_number,
+      spr.floor
+        AS sub_property_floor,
+      spr.aliquot
+        AS sub_property_aliquot,
+      spr.status
+        AS sub_property_status,
+      spr.defaulting
+        AS sub_property_defaulting,
+      spr.property_type
+        AS sub_property_type,
       pr.building_id,
     FROM 
       properties 
       AS pr
+    INNER JOIN
+      liabilities
+      AS li
+      ON pr.id = li.property_id
+    INNER JOIN
+      users
+      AS us
+      ON li.user_id = us.id
+    INNER JOIN
+      properties
+      AS spr
+      ON li.sub_property_id = spr.id
     WHERE 
-      pr.${column}
-      IN(${id}) 
+      pr.id = ${id} 
     ORDER BY 
       number ASC`,
     (error, results) => {

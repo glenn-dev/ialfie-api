@@ -51,21 +51,21 @@ const getUserById = (req, res) => {
       us.phone,
       us.email,
       us.status,
-      li.user_type_id,
-      ut.user_type,
       li.building_id,
       bu.name
-        AS building,
+        AS building_name,
       bu.street,
       bu.block_number,
+      li.user_type_id,
+      ut.user_type,
       li.property_id,
+      pr.property_type,
       pr.number
         AS property_number,
       pr.floor,
       pr.defaulting,
       pr.status
-        AS property_status,
-      pt.property_type
+        AS property_status
     FROM 
       users
       AS us
@@ -82,22 +82,18 @@ const getUserById = (req, res) => {
       AS pr
       ON li.property_id = pr.id
     INNER JOIN 
-      property_types
-      AS pt
-      ON pr.property_type_id = pt.id
-    INNER JOIN 
       buildings
       AS bu
       ON li.building_id = bu.id
     WHERE 
       us.id = ${id}
     ORDER BY 
-      us.first_name ASC;`,
+      bu.name ASC;`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(parseUser(results.rows));
+      res.status(200).json(results.rows); // parseUser(results.rows)
     }
   );
 };
