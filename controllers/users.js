@@ -114,7 +114,7 @@ const createUser = (req, res) => {
     phone,
     email,
     password,
-    status,
+    status
   } = req.body;
   pool.query(
     `

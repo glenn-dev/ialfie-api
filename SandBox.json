@@ -14,35 +14,35 @@ user:
 "email" : "user1@mail.com",
 "password" : "123456",
 "status" : false,
-}
-
-liabilities: 
+"liabilities": 
 [
   { 
     "admin_user_id" : 256,
     "user_id": 456,
     "user_type_id": 3,
-    "building_id": 4,
-    "main_property_id" : 325,
-    "property_id": 556
+    "property_id": 556,
+    "sub_property_id" : 325,
+    "building_id": 4
   },
   { 
     "admin_user_id" : 256,
     "user_id": 456,
     "user_type_id": 3,
-    "building_id": 4,
-    "main_property_id" : 325,
-    "property_id": 752
+    "property_id": 752,
+    "sub_property_id" : 325,
+    "building_id": 4
   },
   { 
     "admin_user_id" : 256,
     "user_id": 456,
     "user_type_id": 3,
-    "building_id": 4,
-    "main_property_id" : 325,
-    "property_id": 894
+    "property_id": 894,
+    "sub_property_id" : 325,
+    "building_id": 4
   }
 ]
+}
+
 
 Communications:
 {
