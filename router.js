@@ -6,6 +6,7 @@ const users = require('./controllers/users');
 const userTypes = require('./controllers/user-types');
 const properties = require('./controllers/properties');
 const propertyTypes = require('./controllers/property-types');
+const liabilities = require('./controllers/liabilities');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
 const concepts = require('./controllers/concepts');
@@ -65,6 +66,12 @@ function createRouter(app) {
   app.post('/property-types/create', propertyTypes.createPropertyType);
   app.put('/property-types/update', propertyTypes.updatePropertyType);
   app.delete('/property-types/delete', propertyTypes.deletePropertyTypes);
+
+  /* LIABILITIES */
+  app.get('/liabilities', liabilities.getLiability);
+  app.post('/liabilities/create', liabilities.createLiability);
+  app.put('/liabilities/update', liabilities.updateLiability);
+  app.delete('/liabilities/delete', liabilities.deleteLiabilities);
 
   /* COMMUNICATIONS */
   app.get('/communications', communications.getCommunications);
