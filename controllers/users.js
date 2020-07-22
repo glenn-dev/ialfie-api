@@ -19,8 +19,13 @@ const getUsers = (req, res) => {
       us.status
     FROM 
       users
+      AS us
+    INNER JOIN
+      liabilities
+      AS li
+      ON li.user_id = us.id
     WHERE
-      us.${column} 
+      li.${column}
       IN(${id})
     ORDER BY 
       us.first_name ASC;`,
@@ -196,7 +201,7 @@ const updateUser = (req, res) => {
 const deleteUsers = (req, res) => {
   const id = req.body;
   pool.query(
-    `UPDATE users SET status = false WHERE id IN(${id})`,
+    `DELETE FROM users WHERE id IN(${id})`,
     (error, results) => {
       if (error) {
         throw error;

@@ -13,8 +13,10 @@ user:
 "phone" : "123456789",
 "email" : "user1@mail.com",
 "password" : "123456",
-"status" : false,
-"liabilities": 
+"status" : true
+}
+
+Liabilities: 
 [
   { 
     "admin_user_id" : 256,
@@ -41,7 +43,6 @@ user:
     "building_id": 4
   }
 ]
-}
 
 
 Communications:
