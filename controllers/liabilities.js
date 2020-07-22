@@ -86,24 +86,20 @@ const getLiability = (req, res) => {
 
 /* CREATE LIABILITY */
 const createLiability = (req, res) => {
-  const {
-    first_name,
-    last_name,
-    identity_number,
-    email,
-    password,
-    status,
-    building_id,
-    admin_user_id,
-    liabilities,
-  } = req.body;
+  const { member, user, liabilities, building_id, admin_user_id } = req.body;
 
-  // Function to insert liabilities.
+  member
+    ? // If user is already a member then just insert liabilities.
+      insertLiability(liabilities, admin_user_id, user.user_id, building_id)
+    : // If user is NOT a member then insert user (basic data) and liabilities.
+      insertUserLiabilities(user, liabilities, building_id, admin_user_id);
+
+  // Insert liabilities.
   const insertLiability = (
+    liabilities,
     admin_user_id,
     user_id,
-    building_id,
-    liabilities
+    building_id
   ) => {
     let values = [];
     liabilities.forEach((liability) => {
@@ -142,37 +138,39 @@ const createLiability = (req, res) => {
     );
   };
 
-  // Insert an user with basic data, then insert liabilities.
-  pool.query(
-    `
-    INSERT INTO 
-    users 
-      (
-        first_name,
-        last_name,
-        identity_number,
-        email,
-        password,
-        status
-      ) 
-    VALUES 
-      (
-        '${first_name}', 
-        '${last_name}', 
-        '${identity_number}, 
-        '${email}', 
-        '${password}', 
-        '${status}'
-      ) 
-    RETURNING id`,
-    (error, results) => {
-      if (error) {
-        throw error;
+  // Insert a user with basic data, then insert liabilities.
+  const insertUserLiabilities = (user) => {
+    pool.query(
+      `
+      INSERT INTO 
+      users 
+        (
+          first_name,
+          last_name,
+          identity_number,
+          email,
+          password,
+          status
+        ) 
+      VALUES 
+        (
+          '${user.first_name}', 
+          '${user.last_name}', 
+          '${user.identity_number}, 
+          '${user.email}', 
+          '${user.password}', 
+          '${user.status}'
+        ) 
+      RETURNING id`,
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        const user_id = results.rows[0].id;
+        insertLiability(liabilities, admin_user_id, user_id, building_id);
       }
-      const user_id = results.rows[0].id;
-      insertLiability(admin_user_id, user_id, building_id, liabilities);
-    }
-  );
+    );
+  };
 };
 
 /* UPDATE LIABILITY */

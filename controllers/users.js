@@ -40,7 +40,7 @@ const getUsers = (req, res) => {
 
 /* GET USER BY ID */
 const getUserById = (req, res) => {
-  const id = req.body;
+  const {column, id} = req.body;
   pool.query(
     `
     SELECT 
@@ -91,7 +91,7 @@ const getUserById = (req, res) => {
       AS bu
       ON li.building_id = bu.id
     WHERE 
-      us.id = ${id}
+      us.${column} = ${id}
     ORDER BY 
       bu.name ASC;`,
     (error, results) => {
