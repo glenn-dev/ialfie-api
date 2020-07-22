@@ -87,39 +87,90 @@ const getLiability = (req, res) => {
 /* CREATE LIABILITY */
 const createLiability = (req, res) => {
   const {
+    first_name,
+    last_name,
+    identity_number,
+    email,
+    password,
+    status,
+    building_id,
+    admin_user_id,
+    liabilities,
+  } = req.body;
+
+  // Function to insert liabilities.
+  const insertLiability = (
     admin_user_id,
     user_id,
-    user_type_id,
-    property_id,
-    sub_property_id,
     building_id,
-  } = req.body;
+    liabilities
+  ) => {
+    let values = [];
+    liabilities.forEach((liability) => {
+      values.push(
+        `
+        (
+          ${admin_user_id},
+          ${user_id},
+          ${building_id},
+          ${liability.user_type_id},
+          ${liability.property_id},
+          ${liability.status}
+        )`
+      );
+    });
+    pool.query(
+      `INSERT INTO 
+        liabilities 
+        (
+          admin_user_id,
+          user_id,
+          building_id,
+          user_type_id,
+          property_id,
+          status
+        ) 
+      VALUES 
+        ${values}
+      RETURNING id`,
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        res.status(201).send(`Liability ${results.rows[0].id} created.`);
+      }
+    );
+  };
+
+  // Insert an user with basic data, then insert liabilities.
   pool.query(
-    `INSERT INTO 
-      liabilities 
+    `
+    INSERT INTO 
+    users 
       (
-        admin_user_id,
-        user_id,
-        user_type_id,
-        property_id,
-        sub_property_id,
-        building_id,
+        first_name,
+        last_name,
+        identity_number,
+        email,
+        password,
+        status
       ) 
     VALUES 
       (
-        admin_user_id = ${admin_user_id},
-        user_id = ${user_id},
-        user_type_id = ${user_type_id},
-        property_id = ${property_id},
-        sub_property_id = ${sub_property_id},
-        building_id = ${building_id},
-      )
+        '${first_name}', 
+        '${last_name}', 
+        '${identity_number}, 
+        '${email}', 
+        '${password}', 
+        '${status}'
+      ) 
     RETURNING id`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Liability ${results.rows[0].id} added successfully.`);
+      const user_id = results.rows[0].id;
+      insertLiability(admin_user_id, user_id, building_id, liabilities);
     }
   );
 };
@@ -132,8 +183,8 @@ const updateLiability = (req, res) => {
     user_id,
     user_type_id,
     property_id,
-    sub_property_id,
     building_id,
+    status,
   } = req.body;
   pool.query(
     `
@@ -144,8 +195,8 @@ const updateLiability = (req, res) => {
       user_id = ${user_id},
       user_type_id = ${user_type_id},
       property_id = ${property_id},
-      sub_property_id = ${sub_property_id},
       building_id = ${building_id},
+      status = ${status}
     WHERE 
       id = ${id}`,
     (error, results) => {

@@ -2,47 +2,66 @@
 
 
 // Body for querys:
-user:
-{
-"image": "image/path.png",
-"first_name" : "User First 1",
-"middle_name" : "User Middle 1",
-"last_name" : "User Last 1",
-"maternal_surname" : "User Surname 1",
-"identity_number" : "123456789",
-"phone" : "123456789",
-"email" : "user1@mail.com",
-"password" : "123456",
-"status" : true
-}
+User:
+[
+  {
+    "image": "image/path.png",
+    "first_name" : "User First 1",
+    "middle_name" : "User Middle 1",
+    "last_name" : "User Last 1",
+    "maternal_surname" : "User Surname 1",
+    "identity_number" : "123456789",
+    "phone" : "123456789",
+    "email" : "user1@mail.com",
+    "password" : "123456",
+    "status" : true
+  }
+]
 
-Liabilities: 
+Liabilities(create): 
+[
+  {
+    "first_name": ".",
+    "last_name": ".",
+    "identity_number": ".",
+    "email": "user1@email.com",
+    "password": ".",
+    "status": false,
+    "building_id": 4,
+    "admin_user_id" : 256,
+    "liabilities":[
+      { 
+        "user_type_id": 3,
+        "property_id": 556,
+        "status": false,
+      },
+      { 
+        "user_type_id": 3,
+        "property_id": 556,
+        "status": false,
+      },
+      { 
+        "user_type_id": 3,
+        "property_id": 556,
+        "status": false,
+      }
+    ]
+  }
+]
+
+Liabilities(update):
 [
   { 
-    "admin_user_id" : 256,
-    "user_id": 456,
-    "user_type_id": 3,
-    "property_id": 556,
-    "sub_property_id" : 325,
-    "building_id": 4
-  },
-  { 
+    "id": 4,
     "admin_user_id" : 256,
     "user_id": 456,
     "user_type_id": 3,
     "property_id": 752,
-    "sub_property_id" : 325,
-    "building_id": 4
-  },
-  { 
-    "admin_user_id" : 256,
-    "user_id": 456,
-    "user_type_id": 3,
-    "property_id": 894,
-    "sub_property_id" : 325,
-    "building_id": 4
+    "building_id": 4,
+    "status": true
   }
 ]
+
 
 
 Communications:
