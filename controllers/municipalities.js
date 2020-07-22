@@ -65,11 +65,12 @@ const updateMunicipality = (req, res) => {
     UPDATE 
       municipalities 
     SET 
-      municipality = ${municipality}, 
-      region_id = ${region_id}, 
-      country_id = ${country_id} 
-    WHERE 
-      id = ${id}`,
+      municipality = $1,
+      region_id = $2,
+      country_id = $3
+    WHERE
+      id = $4`,
+    [municipality, region_id, country_id, id],
     (error, results) => {
       if (error) {
         throw error;

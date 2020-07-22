@@ -3,7 +3,25 @@
 
 // Body for querys:
 
-Buildings:[
+Regions:
+[
+  {
+    "region": "Metropolitana",
+    "country_id": "2"
+  }  
+]
+
+Municipalities:
+[
+  {
+    "municipality": "Santiago",
+    "region_id": "2",
+    "country_id": "2"
+  }
+]
+
+Buildings:
+[
   {
     "image": "building/image/path.png",
     "name": "Building 1",
@@ -19,6 +37,7 @@ Buildings:[
     }
   }
 ]
+
 User:
 [
   {
