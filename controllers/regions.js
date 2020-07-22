@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET REGIONS */
 const getRegions = (req, res) => {
-  const country_id = req.body;
+  const country_id = req.body.country_id;
   pool.query(
     `
     SELECT 
@@ -48,7 +48,7 @@ const createRegion = (req, res) => {
 const updateRegion = (req, res) => {
   const { id, region, country_id } = req.body;
   pool.query(
-    `UPDATE regions SET region = $1, country_id = $2, WHERE id = $3`,
+    `UPDATE regions SET region = $1, country_id = $2 WHERE id = $3`,
     [region, country_id, id],
     (error, results) => {
       if (error) {
