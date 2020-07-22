@@ -15,9 +15,12 @@ const getCountries = (req, res) => {
 
 /* CREATE COUNTRY */
 const createCountry = (req, res) => {
-  const country = req.body;
+  const country = req.body.country;
+
+  console.log(country);
   pool.query(
-    `INSERT INTO countries (country) VALUES ${country}`,
+    `INSERT INTO countries (country) VALUES ($1);`,
+    [country],
     (error, results) => {
       if (error) {
         throw error;
@@ -31,7 +34,9 @@ const createCountry = (req, res) => {
 const updateCountry = (req, res) => {
   const { id, country } = req.body;
   pool.query(
-    `UPDATE countries SET country = ${country} WHERE id = ${id}`,
+    `
+    UPDATE countries SET country = $1 WHERE id = $2`,
+    [country, id],
     (error, results) => {
       if (error) {
         throw error;

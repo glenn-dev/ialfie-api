@@ -62,8 +62,7 @@ const createBuilding = (req, res) => {
     municipality_id,
     region_id,
     country_id,
-    cutoff_date,
-    bill_exp_date,
+    setups
   } = req.body;
   pool.query(
     `
@@ -96,7 +95,7 @@ const createBuilding = (req, res) => {
         throw error;
       }
       const id = results.rows[0].id;
-      insertRelations(id, cutoff_date, bill_exp_date)
+      insertRelations(id, setups.cutoff_date, setups.bill_exp_date)
         .then(res.status(201).send(`Building ${id} created.`))
         .catch((err) => {
           throw err;

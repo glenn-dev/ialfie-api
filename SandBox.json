@@ -2,6 +2,23 @@
 
 
 // Body for querys:
+
+Buildings:[
+  {
+    "image": "building/image/path.png",
+    "name": "Building 1",
+    "status": true,
+    "street": "Building 1 street",
+    "block_number": "1234",
+    "municipality_id": "45",
+    "region_id": "5",
+    "country_id": "1",
+    "setups": {
+      "cutoff_date": "",
+      "bill_exp_date": ""
+    }
+  }
+]
 User:
 [
   {
@@ -18,17 +35,51 @@ User:
   }
 ]
 
-Liabilities(create): 
+Liabilities(create):
+When user doesn't exist: 
 [
   {
-    "first_name": ".",
-    "last_name": ".",
-    "identity_number": ".",
-    "email": "user1@email.com",
-    "password": ".",
-    "status": false,
+    "member": false,
     "building_id": 4,
     "admin_user_id" : 256,
+    "user": 
+    {
+      "first_name": ".",
+      "last_name": ".",
+      "identity_number": ".",
+      "email": "user1@email.com",
+      "password": ".",
+      "status": false,
+    },
+    "liabilities":[
+      { 
+        "user_type_id": 3,
+        "property_id": 556,
+        "status": false,
+      },
+      { 
+        "user_type_id": 3,
+        "property_id": 556,
+        "status": false,
+      },
+      { 
+        "user_type_id": 3,
+        "property_id": 556,
+        "status": false,
+      }
+    ]
+  }
+]
+When user exist:
+[
+  {
+    "flag": true,
+    "building_id": 4,
+    "admin_user_id" : 256,
+    "user": 
+      {
+        "user_id": 456,
+      },
     "liabilities":[
       { 
         "user_type_id": 3,
