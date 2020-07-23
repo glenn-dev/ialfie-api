@@ -32,8 +32,8 @@ Buildings:
     "region_id": "5",
     "country_id": "1",
     "setups": {
-      "cutoff_date": "",
-      "bill_exp_date": ""
+      "cutoff_date": "2020-06-25 11:26:14",
+      "bill_exp_date": "2020-06-25 11:26:14"
     }
   }
 ]

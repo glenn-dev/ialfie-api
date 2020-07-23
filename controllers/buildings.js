@@ -41,7 +41,7 @@ const getBuildingById = (req, res) => {
       AS co
       ON bu.country_id = co.id
     WHERE 
-      id = ${id}`,
+      bu.id = ${id}`,
     (error, results) => {
       if (error) {
         throw error;
@@ -62,7 +62,7 @@ const createBuilding = (req, res) => {
     municipality_id,
     region_id,
     country_id,
-    setups
+    setups,
   } = req.body;
   pool.query(
     `
@@ -79,17 +79,18 @@ const createBuilding = (req, res) => {
         country_id
       ) 
     VALUES 
-      (
-        ${image}, 
-        ${name}, 
-        ${status}, 
-        ${street}, 
-        ${block_number}, 
-        ${municipality_id}, 
-        ${region_id}, 
-        ${country_id}
-      ) 
+      ($1, $2, $3, $4, $5, $6, $7, $8) 
     RETURNING id`,
+    [
+      image,
+      name,
+      status,
+      street,
+      block_number,
+      municipality_id,
+      region_id,
+      country_id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
@@ -112,7 +113,8 @@ const insertRelations = (building_id, cutoff_date, bill_exp_date) => {
       building_setups 
       (cutoff_date, bill_exp_date, building_id) 
     VALUES 
-      (${cutoff_date}, ${bill_exp_date}, ${building_id})`
+      ($1, $2, $3)`,
+      [cutoff_date, bill_exp_date, building_id]
   );
 };
 
@@ -128,31 +130,41 @@ const updateBuilding = (req, res) => {
     municipality_id,
     region_id,
     country_id,
-    cutoff_date,
-    bill_exp_date,
+    setups
   } = req.body;
   pool.query(
     `
     UPDATE 
       buildings 
     SET 
-      name = ${name},
-      image = ${image},
-      status = ${status},
-      street = ${street},
-      block_number = ${block_number},
-      municipality_id = ${municipality_id},
-      region_id = ${region_id},
-      country_id = ${country_id}
+      name = $1,
+      image = $2,
+      status = $3,
+      street = $4,
+      block_number = $5,
+      municipality_id = $6,
+      region_id = $7,
+      country_id = $8
     WHERE 
-      id = ${id}`,
+      id = $9`,
+    [
+      name,
+      image,
+      status,
+      street,
+      block_number,
+      municipality_id,
+      region_id,
+      country_id,
+      id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
       }
       deleteRelations(id)
         .then(
-          insertRelations(id, cutoff_date, bill_exp_date)
+          insertRelations(id, setups.cutoff_date, setups.bill_exp_date)
             .then(res.status(200).send(`Building ${id} modified.`))
             .catch((err) => {
               throw err;
@@ -187,7 +199,9 @@ const deleteBuildings = (req, res) => {
 
 /* DELETE BUILDING RELATIONS */
 const deleteRelations = (building_id) => {
-  return pool.query(`DELETE FROM building_setups WHERE building_id = ${building_id}`);
+  return pool.query(
+    `DELETE FROM building_setups WHERE building_id = ${building_id}`
+  );
 };
 
 /* EXPORTS */
