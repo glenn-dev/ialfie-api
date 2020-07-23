@@ -5,7 +5,7 @@ const getPropertyTypes = (req, res) => {
   const building_id = req.body;
   pool.query(
     `
-    SELECT * FROM property_types WHERE building_id = ${id};`,
+    SELECT * FROM property_types WHERE building_id = ${building_id};`,
     (error, results) => {
       if (error) {
         throw error;
@@ -29,7 +29,7 @@ const createPropertyType = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(201).send(`Property type ${id} created.`);
+      res.status(201).send(`Property type ${property_type} created.`);
     }
   );
 };
