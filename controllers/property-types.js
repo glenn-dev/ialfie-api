@@ -5,7 +5,7 @@ const getPropertyTypes = (req, res) => {
   const building_id = req.body;
   pool.query(
     `
-    SELECT * FROM property_types WHERE building_id = ${building_id};`,
+    SELECT * FROM property_types;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -21,10 +21,10 @@ const createPropertyType = (req, res) => {
   pool.query(
     `INSERT INTO 
       property_types 
-      (property_type, building_id) 
+      (property_type) 
     VALUES 
-      ($1, $2)`,
-    [property_type, building_id],
+      ($1)`,
+    [property_type],
     (error, results) => {
       if (error) {
         throw error;
@@ -36,17 +36,16 @@ const createPropertyType = (req, res) => {
 
 /* UPDATE PROPERTY-TYPE */
 const updatePropertyType = (req, res) => {
-  const { id, property_type, building_id } = req.body;
+  const { id, property_type } = req.body;
   pool.query(
     `
     UPDATE 
       property_types 
     SET 
       property_type = $1, 
-      building_id = $2
     WHERE 
-      id = $3`,
-    [property_type, building_id, id],
+      id = $2`,
+    [property_type, id],
     (error, results) => {
       if (error) {
         throw error;
