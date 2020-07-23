@@ -38,6 +38,27 @@ Buildings:
   }
 ]
 
+Property types:[
+  {
+    "property_type": "Department",
+    "building_id": "29"
+  }
+]
+
+Properties:[
+  {
+    "number": "2003",
+    "floor": "20",
+    "aliquot": 0.0325,
+    "status": true,
+    "defaulting": false,
+    "main_property_flag": true,
+    "property_type": "Department",
+    "property_type_id": "1",
+    "building_id": "29"
+  }
+]
+
 User:
 [
   {
@@ -118,7 +139,6 @@ When user exist:
     ]
   }
 ]
-
 Liabilities(update):
 [
   { 
@@ -177,3 +197,98 @@ Bill:
 }
 
 	
+Data:
+{
+  "property_types": [
+    {
+      "id": "1",
+      "property_types": "Department"
+    },
+    {
+      "id": "2",
+      "property_types": "Cellar"
+    },
+    {
+      "id": "3",
+      "property_types": "Parking"
+    },
+    {
+      "id": "5",
+      "property_types": "Bodega"
+    },
+    {
+      "id": "6",
+      "property_types": "Departamento"
+    },
+    {
+      "id": "7",
+      "property_types": "Estacionamiento"
+    }
+  ],
+  "Buildings": 
+    [
+      {
+        "id": "29",
+        "name": "Building 1",
+        "street": "Building 1 street",
+        "image": "building/image/path.png",
+        "created_at": "2020-07-23T15:00:20.844Z",
+        "status": true,
+        "updated_at": "2020-07-23T15:00:20.844Z",
+        "block_number": "1234",
+        "municipality_id": "2",
+        "region_id": "2",
+        "country_id": "2",
+        "properties": 
+        [
+          {
+            "number": "2003",
+            "floor": "20",
+            "aliquot": 0.50,
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": true,
+            "property_type": "Department",
+            "property_type_id": "1",
+            "building_id": "29"
+          },
+          {
+            "number": "109",
+            "floor": "-1",
+            "aliquot": 0.25,
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": false,
+            "property_type": "Cellar",
+            "property_type_id": "2",
+            "building_id": "29"
+          },
+          {
+            "number": "24",
+            "floor": "-2",
+            "aliquot": 0.1,
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": false,
+            "property_type": "Parking",
+            "property_type_id": "3",
+            "building_id": "29"
+          },
+        ]
+      },
+      {
+        "id": "30",
+        "name": "Building 2",
+        "street": "Building 2 fancy street",
+        "image": "building/image/path.png",
+        "created_at": "2020-07-23T15:01:18.568Z",
+        "status": true,
+        "updated_at": "2020-07-23T15:01:18.568Z",
+        "block_number": "4321",
+        "municipality_id": "2",
+        "region_id": "2",
+        "country_id": "2"
+      }
+    ]
+  
+}

@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL PROPERTIES */
 const getProperties = (req, res) => {
-  const {building_id, column, id} = req.body;
+  const {column, id} = req.body;
   pool.query(
     `
     SELECT 
@@ -12,16 +12,14 @@ const getProperties = (req, res) => {
       aliquot,
       status,
       defaulting,
+      main_property_flag,
       property_type,
       property_type_id,
-      building_id,
-    FROM 
-      properties 
-    WHERE 
-      building_id = ${building_id}
-      AND
-      ${column}
-      IN(${id})
+      building_id
+    FROM
+      properties
+    WHERE
+      ${column} = ${id}
     ORDER BY 
       number ASC`,
     (error, results) => {
@@ -104,6 +102,7 @@ const createProperty = (req, res) => {
     aliquot,
     status,
     defaulting,
+    main_property_flag,
     property_type,
     property_type_id,
     building_id,
@@ -118,18 +117,20 @@ const createProperty = (req, res) => {
         aliquot, 
         status, 
         defaulting,
+        main_property_flag,
         property_type, 
         property_type_id, 
         building_id
       ) 
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7)`,
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
     [
       number,
       floor,
       aliquot,
       status,
       defaulting,
+      main_property_flag,
       property_type,
       property_type_id,
       building_id,
@@ -156,6 +157,7 @@ const updateProperty = (req, res) => {
     aliquot,
     status,
     defaulting,
+    main_property_flag,
     property_type,
     property_type_id,
     building_id,
@@ -170,17 +172,19 @@ const updateProperty = (req, res) => {
       aliquot = $3, 
       status = $4, 
       defaulting = $5, 
-      property_type = $6
-      property_type_id = $7, 
-      building_id = $8
+      main_property_flag = $6,
+      property_type = $7,
+      property_type_id = $8, 
+      building_id = $9
     WHERE 
-      id = $9`,
+      id = $10`,
     [
       number,
       floor,
       aliquot,
       status,
       defaulting,
+      main_property_flag,
       property_type,
       property_type_id,
       building_id,
@@ -190,7 +194,7 @@ const updateProperty = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Property ${id} modified.`);
+      res.status(200).send(`Property ${number} modified.`);
     }
   );
 };
