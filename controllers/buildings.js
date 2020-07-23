@@ -24,7 +24,9 @@ const getBuildingById = (req, res) => {
       bu.block_number,
       mu.municipality,
       re.region,
-      co.country
+      co.country,
+      bs.cutoff_date,
+      bs.bill_exp_date
     FROM 
       buildings 
       AS bu
@@ -40,6 +42,10 @@ const getBuildingById = (req, res) => {
       countries
       AS co
       ON bu.country_id = co.id
+    INNER JOIN
+      building_setups
+      AS bs
+      ON bs.building_id = bu.id
     WHERE 
       bu.id = ${id}`,
     (error, results) => {
@@ -114,7 +120,7 @@ const insertRelations = (building_id, cutoff_date, bill_exp_date) => {
       (cutoff_date, bill_exp_date, building_id) 
     VALUES 
       ($1, $2, $3)`,
-      [cutoff_date, bill_exp_date, building_id]
+    [cutoff_date, bill_exp_date, building_id]
   );
 };
 
@@ -130,7 +136,7 @@ const updateBuilding = (req, res) => {
     municipality_id,
     region_id,
     country_id,
-    setups
+    setups,
   } = req.body;
   pool.query(
     `
