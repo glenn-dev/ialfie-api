@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL PROPERTIES */
 const getProperties = (req, res) => {
-  const {column, id} = req.body;
+  const {building_id, column, id} = req.body;
   pool.query(
     `
     SELECT 
@@ -19,6 +19,7 @@ const getProperties = (req, res) => {
     FROM
       properties
     WHERE
+      building_id = ${building_id}
       ${column} = ${id}
     ORDER BY 
       number ASC`,
@@ -36,7 +37,7 @@ const getPropertyById = (req, res) => {
   const id = req.body;
   pool.query(
     `
-    SELECT 
+    SELECT
       pr.id,
       pr.number,
       pr.floor,
@@ -51,8 +52,7 @@ const getPropertyById = (req, res) => {
       us.email,
       us.status
         AS user_status,
-      spr.id
-        AS sub_property_id,
+      sp.sub_property_id,
       spr.number
         AS sub_property_number,
       spr.floor
@@ -65,9 +65,8 @@ const getPropertyById = (req, res) => {
         AS sub_property_defaulting,
       spr.property_type
         AS sub_property_type,
-      pr.building_id,
-    FROM 
-      properties 
+    FROM
+      properties
       AS pr
     INNER JOIN
       liabilities
@@ -78,12 +77,16 @@ const getPropertyById = (req, res) => {
       AS us
       ON li.user_id = us.id
     INNER JOIN
+      sub_properties
+      AS sp
+      ON sp.property_id = pr.id
+    INNER JOIN
       properties
       AS spr
-      ON li.sub_property_id = spr.id
-    WHERE 
-      pr.id = ${id} 
-    ORDER BY 
+      ON spr.sub_property_id = pr.id
+    WHERE
+      pr.id = ${id}
+    ORDER BY
       number ASC`,
     (error, results) => {
       if (error) {

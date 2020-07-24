@@ -2,10 +2,11 @@ const countries = require('./controllers/countries');
 const regions = require('./controllers/regions');
 const municipalities = require('./controllers/municipalities');
 const buildings = require('./controllers/buildings');
-const users = require('./controllers/users');
-const userTypes = require('./controllers/user-types');
-const properties = require('./controllers/properties');
 const propertyTypes = require('./controllers/property-types');
+const properties = require('./controllers/properties');
+const subProperties = require('./controllers/sub-properties');
+const userTypes = require('./controllers/user-types');
+const users = require('./controllers/users');
 const liabilities = require('./controllers/liabilities');
 const communications = require('./controllers/communications');
 const categories = require('./controllers/categories');
@@ -41,18 +42,11 @@ function createRouter(app) {
   app.put('/buildings/update', buildings.updateBuilding);
   app.delete('/buildings/delete', buildings.deleteBuildings);
 
-  /* USERS */
-  app.get('/users', users.getUsers);
-  app.get('/users/id', users.getUserById);
-  app.post('/users/create', users.createUser);
-  app.put('/users/update', users.updateUser);
-  app.delete('/users/delete', users.deleteUsers);
-
-  /* USER-TYPES */
-  app.get('/user-types', userTypes.getUserTypes);
-  app.post('/user-types/create', userTypes.createUserType);
-  app.put('/user-types/update', userTypes.updateUserType);
-  app.delete('/user-types/delete', userTypes.deleteUserType);
+  /* PROPERTY-TYPES */
+  app.get('/property-types', propertyTypes.getPropertyTypes);
+  app.post('/property-types/create', propertyTypes.createPropertyType);
+  app.put('/property-types/update', propertyTypes.updatePropertyType);
+  app.delete('/property-types/delete', propertyTypes.deletePropertyTypes);
 
   /* PROPERTIES */
   app.get('/properties', properties.getProperties);
@@ -61,11 +55,23 @@ function createRouter(app) {
   app.put('/properties/update', properties.updateProperty);
   app.delete('/properties/delete', properties.deleteProperties);
 
-  /* PROPERTY-TYPES */
-  app.get('/property-types', propertyTypes.getPropertyTypes);
-  app.post('/property-types/create', propertyTypes.createPropertyType);
-  app.put('/property-types/update', propertyTypes.updatePropertyType);
-  app.delete('/property-types/delete', propertyTypes.deletePropertyTypes);
+  /* SUB-PROPERTIES */
+  app.post('/sub-properties/create', subProperties.createSubProperty);
+  app.put('/sub-properties/update', subProperties.updateSubProperty);
+  app.delete('/sub-properties/delete', subProperties.deleteSubProperties);
+
+  /* USER-TYPES */
+  app.get('/user-types', userTypes.getUserTypes);
+  app.post('/user-types/create', userTypes.createUserType);
+  app.put('/user-types/update', userTypes.updateUserType);
+  app.delete('/user-types/delete', userTypes.deleteUserType);
+
+  /* USERS */
+  app.get('/users', users.getUsers);
+  app.get('/users/id', users.getUserById);
+  app.post('/users/create', users.createUser);
+  app.put('/users/update', users.updateUser);
+  app.delete('/users/delete', users.deleteUsers);
 
   /* LIABILITIES */
   app.get('/liabilities', liabilities.getLiability);
