@@ -15,9 +15,11 @@ const getUserTypes = (req, res) => {
 
 /* CREATE USER-TYPE */
 const createUserType = (req, res) => {
-  const { user_type } = req.body;
+  const user_type = req.body;
+  console.log(user_type);
   pool.query(
-    `INSERT INTO user_types (user_type) VALUES ${user_type}`,
+    `INSERT INTO user_types (user_type) VALUES ($1)`,
+    [user_type[0]],
     (error, results) => {
       if (error) {
         throw error;

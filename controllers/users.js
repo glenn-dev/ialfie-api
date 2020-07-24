@@ -40,7 +40,7 @@ const getUsers = (req, res) => {
 
 /* GET USER BY ID */
 const getUserById = (req, res) => {
-  const {column, id} = req.body;
+  const { column, id } = req.body;
   pool.query(
     `
     SELECT 
@@ -115,7 +115,7 @@ const createUser = (req, res) => {
     phone,
     email,
     password,
-    status
+    status,
   } = req.body;
   pool.query(
     `
@@ -134,19 +134,20 @@ const createUser = (req, res) => {
         status
       ) 
     VALUES 
-      (
-        '${image}', 
-        '${first_name}', 
-        '${middle_name}', 
-        '${last_name}', 
-        '${maternal_surname}', 
-        '${identity_number}, 
-        '${phone}', 
-        '${email}', 
-        '${password}', 
-        '${status}'
-      ) 
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
     RETURNING id`,
+    [
+      image,
+      first_name,
+      middle_name,
+      last_name,
+      maternal_surname,
+      identity_number,
+      phone,
+      email,
+      password,
+      status,
+    ],
     (error, results) => {
       if (error) {
         throw error;
@@ -200,15 +201,12 @@ const updateUser = (req, res) => {
 /* DELETE USER */
 const deleteUsers = (req, res) => {
   const id = req.body;
-  pool.query(
-    `DELETE FROM users WHERE id IN(${id})`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).send(`Users ${id} deleted!`);
+  pool.query(`DELETE FROM users WHERE id IN(${id})`, (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).send(`Users ${id} deleted!`);
+  });
 };
 
 /* EXPORTS */

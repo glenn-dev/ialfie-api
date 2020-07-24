@@ -56,6 +56,7 @@ function createRouter(app) {
   app.delete('/properties/delete', properties.deleteProperties);
 
   /* SUB-PROPERTIES */
+  app.get('/sub-properties/id', subProperties.getSubProperty);
   app.post('/sub-properties/create', subProperties.createSubProperty);
   app.put('/sub-properties/update', subProperties.updateSubProperty);
   app.delete('/sub-properties/delete', subProperties.deleteSubProperties);

@@ -2,7 +2,7 @@ const pool = require('../database/db');
 
 /* GET ALL PROPERTIES */
 const getProperties = (req, res) => {
-  const {building_id, column, id} = req.body;
+  const { building_id, column, id } = req.body;
   pool.query(
     `
     SELECT 
@@ -35,42 +35,95 @@ const getProperties = (req, res) => {
 
 /* GET PROPERTY BY ID */
 const getPropertyById = (req, res) => {
-  const id = req.body;
-  pool.query(
-    `
+  const { id, main_property_flag } = req.body;
+
+  let propertyIdToGet;
+  let givenIdProperty;
+
+  if (main_property_flag) {
+    givenIdProperty = 'property';
+    propertyIdToGet = 'sub_property';
+  } else {
+    givenIdProperty = 'sub_property';
+    propertyIdToGet = 'property';
+  }
+
+  const relatedProperties = (id, propertyIdToGet, givenIdProperty) => {
+    let relProperties;
+    return pool.query(
+      `
     SELECT 
-      sp.id,
-      sp.sub_property_id,
-      pr.number
-        AS sub_property_number,
-      pr.floor
-        AS sub_property_floor,
-      pr.aliquot
-        AS sub_property_aliquot,
-      pr.status
-        AS sub_property_status,
-      pr.defaulting
-        AS sub_property_defaulting,
-      pr.property_type
-        AS sub_property_type
+      pr.id,
+      pr.number,
+      pr.floor,
+      pr.aliquot,
+      pr.status,
+      pr.defaulting,
+      pr.main_property_flag,
+      pr.property_type,
+      pr.property_type_id
     FROM
       sub_properties
       AS sp
     INNER JOIN
       properties
       AS pr
-      ON sp.sub_property_id = pr.id
+      ON sp.${propertyIdToGet}_id = pr.id
     WHERE
-      sp.property_id = ${id}
+      sp.${givenIdProperty}_id = ${id}
     ORDER BY
-      pr.number ASC`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).json(results.rows);
-    }
-  );
+      pr.number ASC`
+    );
+  };
+
+  const propertyUsers = (id) => {
+    return pool.query(
+      `
+    SELECT 
+      us.id,
+      us.created_at,
+      us.updated_at,
+      us.image,
+      us.first_name,
+      us.last_name,
+      us.identity_number,
+      us.phone,
+      us.email,
+      us.status,
+      ut.user_type
+    FROM
+      liabilities
+      AS li
+    INNER JOIN
+      users
+      AS us
+      ON li.user_id = us.id
+    INNER JOIN
+      user_types
+      AS ut
+      ON li.user_type_id = ut.id
+    WHERE
+      li.property_id = ${id}
+    ORDER BY
+      us.first_name ASC`
+    );
+  };
+
+  Promise.all([
+    relatedProperties(id, propertyIdToGet, givenIdProperty),
+    propertyUsers(id),
+  ])
+    .then((values) => {
+      console.log(values);
+      const response = {
+        relatedPropertiesArr: values[0].rows,
+        propertyUsersArr: values[1].rows,
+      };
+      res.status(200).json(response);
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
 
 /* CREATE PROPERTY */
@@ -118,11 +171,7 @@ const createProperty = (req, res) => {
       if (error) {
         throw error;
       }
-      res
-        .status(201)
-        .send(
-          `Property ${number} created.`
-        );
+      res.status(201).send(`Property ${number} created.`);
     }
   );
 };

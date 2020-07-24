@@ -88,12 +88,6 @@ const getLiability = (req, res) => {
 const createLiability = (req, res) => {
   const { member, user, liabilities, building_id, admin_user_id } = req.body;
 
-  member
-    ? // If user is already a member then just insert liabilities.
-      insertLiability(liabilities, admin_user_id, user.user_id, building_id)
-    : // If user is NOT a member then insert user (basic data) and liabilities.
-      insertUserLiabilities(user, liabilities, building_id, admin_user_id);
-
   // Insert liabilities.
   const insertLiability = (
     liabilities,
@@ -115,6 +109,7 @@ const createLiability = (req, res) => {
         )`
       );
     });
+
     pool.query(
       `INSERT INTO 
         liabilities 
@@ -143,7 +138,7 @@ const createLiability = (req, res) => {
     pool.query(
       `
       INSERT INTO 
-      users 
+      users
         (
           first_name,
           last_name,
@@ -151,16 +146,16 @@ const createLiability = (req, res) => {
           email,
           password,
           status
-        ) 
-      VALUES 
+        )
+      VALUES
         (
-          '${user.first_name}', 
-          '${user.last_name}', 
-          '${user.identity_number}, 
-          '${user.email}', 
-          '${user.password}', 
+          '${user.first_name}',
+          '${user.last_name}',
+          '${user.identity_number},
+          '${user.email}',
+          '${user.password}',
           '${user.status}'
-        ) 
+        )
       RETURNING id`,
       (error, results) => {
         if (error) {
@@ -171,6 +166,12 @@ const createLiability = (req, res) => {
       }
     );
   };
+
+  member
+    ? // If user is already a member then just insert liabilities.
+      insertLiability(liabilities, admin_user_id, user.user_id, building_id)
+    : // If user is NOT a member then insert user (basic data) and liabilities.
+      insertUserLiabilities(user, liabilities, building_id, admin_user_id);
 };
 
 /* UPDATE LIABILITY */

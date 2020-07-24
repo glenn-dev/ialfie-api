@@ -1,5 +1,46 @@
 const pool = require('../database/db');
 
+/* GET SUB-PROPERTY BY ID */
+const getSubProperty = (req, res) => {
+  const id = req.body;
+  console.log(id);
+  pool.query(
+    `
+    SELECT
+      sp.id,
+      sp.sub_property_id,
+      pr.number
+        AS sub_property_number,
+      pr.floor
+        AS sub_property_floor,
+      pr.aliquot
+        AS sub_property_aliquot,
+      pr.status
+        AS sub_property_status,
+      pr.defaulting
+        AS sub_property_defaulting,
+      pr.property_type
+        AS sub_property_type
+    FROM
+      sub_properties
+      AS sp
+    INNER JOIN
+      properties
+      AS pr
+      ON sp.sub_property_id = pr.id
+    WHERE
+      sp.property_id = ${id}
+    ORDER BY
+      pr.number ASC`,
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+};
+
 /* CREATE SUB-PROPERTY */
 const createSubProperty = (req, res) => {
   const { property_id, sub_property_id } = req.body;
@@ -58,6 +99,7 @@ const deleteSubProperties = (req, res) => {
 
 /* EXPORTS */
 module.exports = {
+  getSubProperty,
   createSubProperty,
   updateSubProperty,
   deleteSubProperties,
