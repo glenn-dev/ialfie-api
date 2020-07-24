@@ -199,32 +199,6 @@ Bill:
 	
 Data:
 {
-  "property_types": [
-    {
-      "id": "1",
-      "property_types": "Department"
-    },
-    {
-      "id": "2",
-      "property_types": "Cellar"
-    },
-    {
-      "id": "3",
-      "property_types": "Parking"
-    },
-    {
-      "id": "5",
-      "property_types": "Bodega"
-    },
-    {
-      "id": "6",
-      "property_types": "Departamento"
-    },
-    {
-      "id": "7",
-      "property_types": "Estacionamiento"
-    }
-  ],
   "Buildings": 
     [
       {
@@ -239,9 +213,27 @@ Data:
         "municipality_id": "2",
         "region_id": "2",
         "country_id": "2",
+        "property_types": [
+          {
+            "id": "9",
+            "property_type": "Department",
+            "building_id": "29"
+          },
+          {
+            "id": "10",
+            "property_type": "Cellar",
+            "building_id": "29"
+          },
+          {
+            "id": "11",
+            "property_type": "Parking",
+            "building_id": "29"
+          },
+        ],
         "properties": 
         [
           {
+            "id": "11",
             "number": "2003",
             "floor": "20",
             "aliquot": 0.50,
@@ -249,10 +241,11 @@ Data:
             "defaulting": false,
             "main_property_flag": true,
             "property_type": "Department",
-            "property_type_id": "1",
+            "property_type_id": "9",
             "building_id": "29"
           },
           {
+            "id": "12",
             "number": "109",
             "floor": "-1",
             "aliquot": 0.25,
@@ -260,10 +253,11 @@ Data:
             "defaulting": false,
             "main_property_flag": false,
             "property_type": "Cellar",
-            "property_type_id": "2",
+            "property_type_id": "10",
             "building_id": "29"
           },
           {
+            "id": "13",
             "number": "24",
             "floor": "-2",
             "aliquot": 0.1,
@@ -271,7 +265,7 @@ Data:
             "defaulting": false,
             "main_property_flag": false,
             "property_type": "Parking",
-            "property_type_id": "3",
+            "property_type_id": "11",
             "building_id": "29"
           },
         ]
@@ -287,7 +281,63 @@ Data:
         "block_number": "4321",
         "municipality_id": "2",
         "region_id": "2",
-        "country_id": "2"
+        "country_id": "2",
+        "property_types": [
+          {
+            "id": "12",
+            "property_type": "Departamento",
+            "building_id": "30"
+          },
+          {
+            "id": "13",
+            "property_type": "Bodega",
+            "building_id": "30"
+          },
+          {
+            "id": "14",
+            "property_type": "Estacionamiento",
+            "building_id": "30"
+          }
+        ],
+        "properties": 
+        [
+          {
+            "id": "13",
+            "number": "1305",
+            "floor": "20",
+            "aliquot": 0.75,
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": true,
+            "property_type": "Departamento",
+            "property_type_id": "12",
+            "building_id": "30"
+          },
+          {
+            "id": "15",
+            "number": "202",
+            "floor": "-3",
+            "aliquot": 0.55,
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": false,
+            "property_type": "Bodega",
+            "property_type_id": "13",
+            "building_id": "30"
+          },
+          {
+            "id": "16",
+            "number": "38",
+            "floor": "-1",
+            "aliquot": 0.15,
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": false,
+            "property_type": "Estacionamiento",
+            "property_type_id": "14",
+            "building_id": "30"
+          },
+        ]
       }
     ]
   

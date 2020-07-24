@@ -20,6 +20,7 @@ const getProperties = (req, res) => {
       properties
     WHERE
       building_id = ${building_id}
+      AND
       ${column} = ${id}
     ORDER BY 
       number ASC`,
@@ -64,7 +65,7 @@ const getPropertyById = (req, res) => {
       spr.defaulting
         AS sub_property_defaulting,
       spr.property_type
-        AS sub_property_type,
+        AS sub_property_type
     FROM
       properties
       AS pr
@@ -197,7 +198,7 @@ const updateProperty = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).send(`Property ${number} modified.`);
+      res.status(200).send(`Property ${id} modified.`);
     }
   );
 };
