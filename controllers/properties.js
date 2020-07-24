@@ -38,57 +38,32 @@ const getPropertyById = (req, res) => {
   const id = req.body;
   pool.query(
     `
-    SELECT
-      pr.id,
-      pr.number,
-      pr.floor,
-      pr.aliquot,
-      pr.status,
-      pr.defaulting,
-      pr.property_type,
-      us.first_name,
-      us.last_name,
-      us.identity_number,
-      us.phone,
-      us.email,
-      us.status
-        AS user_status,
+    SELECT 
+      sp.id,
       sp.sub_property_id,
-      spr.number
+      pr.number
         AS sub_property_number,
-      spr.floor
+      pr.floor
         AS sub_property_floor,
-      spr.aliquot
+      pr.aliquot
         AS sub_property_aliquot,
-      spr.status
+      pr.status
         AS sub_property_status,
-      spr.defaulting
+      pr.defaulting
         AS sub_property_defaulting,
-      spr.property_type
+      pr.property_type
         AS sub_property_type
     FROM
-      properties
-      AS pr
-    INNER JOIN
-      liabilities
-      AS li
-      ON pr.id = li.property_id
-    INNER JOIN
-      users
-      AS us
-      ON li.user_id = us.id
-    INNER JOIN
       sub_properties
       AS sp
-      ON sp.property_id = pr.id
     INNER JOIN
       properties
-      AS spr
-      ON spr.sub_property_id = pr.id
+      AS pr
+      ON sp.sub_property_id = pr.id
     WHERE
-      pr.id = ${id}
+      sp.property_id = ${id}
     ORDER BY
-      number ASC`,
+      pr.number ASC`,
     (error, results) => {
       if (error) {
         throw error;

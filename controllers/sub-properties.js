@@ -2,15 +2,15 @@ const pool = require('../database/db');
 
 /* CREATE SUB-PROPERTY */
 const createSubProperty = (req, res) => {
-  const { property_id, sub_property_id, building_id } = req.body;
+  const { property_id, sub_property_id } = req.body;
   pool.query(
     `
     INSERT INTO 
       sub_properties 
-      (property_id, sub_property_id, building_id)
+      (property_id, sub_property_id)
     VALUES 
-      ($1, $2, $3)`,
-    [property_id, sub_property_id, building_id],
+      ($1, $2)`,
+    [property_id, sub_property_id],
     (error, results) => {
       if (error) {
         throw error;
@@ -22,7 +22,7 @@ const createSubProperty = (req, res) => {
 
 /* UPDATE SUB-PROPERTY */
 const updateSubProperty = (req, res) => {
-  const { id, property_id, sub_property_id, building_id } = req.body;
+  const { id, property_id, sub_property_id } = req.body;
   pool.query(
     `
     UPDATE 
@@ -30,10 +30,9 @@ const updateSubProperty = (req, res) => {
     SET 
       property_id = $1,
       sub_property_id = $2,
-      building_id = $3,
     WHERE 
-      id = $4`,
-    [property_id, sub_property_id, building_id, id],
+      id = $3`,
+    [property_id, sub_property_id, id],
     (error, results) => {
       if (error) {
         throw error;
