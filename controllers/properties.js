@@ -37,8 +37,8 @@ const getProperties = (req, res) => {
 const getPropertyById = (req, res) => {
   const { id, main_property_flag } = req.body;
 
-  let propertyIdToGet;
-  let givenIdProperty;
+  let propertyIdToGet = '';
+  let givenIdProperty = '';
 
   if (main_property_flag) {
     givenIdProperty = 'property';
@@ -49,63 +49,62 @@ const getPropertyById = (req, res) => {
   }
 
   const relatedProperties = (id, propertyIdToGet, givenIdProperty) => {
-    let relProperties;
     return pool.query(
       `
-    SELECT 
-      pr.id,
-      pr.number,
-      pr.floor,
-      pr.aliquot,
-      pr.status,
-      pr.defaulting,
-      pr.main_property_flag,
-      pr.property_type,
-      pr.property_type_id
-    FROM
-      sub_properties
-      AS sp
-    INNER JOIN
-      properties
-      AS pr
-      ON sp.${propertyIdToGet}_id = pr.id
-    WHERE
-      sp.${givenIdProperty}_id = ${id}
-    ORDER BY
-      pr.number ASC`
+      SELECT 
+        pr.id,
+        pr.number,
+        pr.floor,
+        pr.aliquot,
+        pr.status,
+        pr.defaulting,
+        pr.main_property_flag,
+        pr.property_type,
+        pr.property_type_id
+      FROM
+        sub_properties
+        AS sp
+      INNER JOIN
+        properties
+        AS pr
+        ON sp.${propertyIdToGet}_id = pr.id
+      WHERE
+        sp.${givenIdProperty}_id = ${id}
+      ORDER BY
+        pr.number ASC`
     );
   };
 
   const propertyUsers = (id) => {
     return pool.query(
       `
-    SELECT 
-      us.id,
-      us.created_at,
-      us.updated_at,
-      us.image,
-      us.first_name,
-      us.last_name,
-      us.identity_number,
-      us.phone,
-      us.email,
-      us.status,
-      ut.user_type
-    FROM
-      liabilities
-      AS li
-    INNER JOIN
-      users
-      AS us
-      ON li.user_id = us.id
-    INNER JOIN
-      user_types
-      AS ut
-      ON li.user_type_id = ut.id
-    WHERE
-      li.property_id = ${id}
-    ORDER BY
-      us.first_name ASC`
+      SELECT 
+        us.id,
+        us.created_at,
+        us.updated_at,
+        us.image,
+        us.first_name,
+        us.last_name,
+        us.identity_number,
+        us.phone,
+        us.email,
+        us.status,
+        ut.user_type
+      FROM
+        liabilities
+        AS li
+      INNER JOIN
+        users
+        AS us
+        ON li.user_id = us.id
+      INNER JOIN
+        user_types
+        AS ut
+        ON li.user_type_id = ut.id
+      WHERE
+        li.property_id = ${id}
+      ORDER BY
+        us.first_name ASC`
     );
   };
 
@@ -114,7 +113,6 @@ const getPropertyById = (req, res) => {
     propertyUsers(id),
   ])
     .then((values) => {
-      console.log(values);
       const response = {
         relatedPropertiesArr: values[0].rows,
         propertyUsersArr: values[1].rows,

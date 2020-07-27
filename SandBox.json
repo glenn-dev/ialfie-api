@@ -81,8 +81,8 @@ When user doesn't exist:
   {
     "member": false,
     "building_id": 4,
-    "admin_user_id" : 256,
-    "user": 
+    "admin_user_id": 256,
+    "user":
     {
       "first_name": ".",
       "last_name": ".",
@@ -113,7 +113,7 @@ When user doesn't exist:
 When user exist:
 [
   {
-    "flag": true,
+    "member": true,
     "building_id": 4,
     "admin_user_id" : 256,
     "user": 
@@ -124,16 +124,16 @@ When user exist:
       { 
         "user_type_id": 3,
         "property_id": 556,
+        "status": false, // This statement change when the liability is confirmed by the user via email.
+      },
+      { 
+        "user_type_id": 3,
+        "property_id": 789,
         "status": false,
       },
       { 
         "user_type_id": 3,
-        "property_id": 556,
-        "status": false,
-      },
-      { 
-        "user_type_id": 3,
-        "property_id": 556,
+        "property_id": 952,
         "status": false,
       }
     ]
@@ -304,7 +304,7 @@ Data:
           {
             "id": "13",
             "number": "1305",
-            "floor": "20",
+            "floor": "13",
             "aliquot": 0.75,
             "status": true,
             "defaulting": false,
