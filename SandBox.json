@@ -169,8 +169,8 @@ COMMUNICATIONS:
   "Get":
   {
     "building_id": "29",
-    // "get": ("1" release, "2" title, "3" status, "4" admin_user_id, "" created_at).
-    "get": "1",
+    "get": "1",     // "1" release, "2" title, "3" status, "4" admin_user_id, "" created_at.
+
     "params": "B29"
   }
 
@@ -178,11 +178,18 @@ COMMUNICATIONS:
 
 CATEGORIES:
 {
-	"code" : "B24-CA02",
-  "category" : "Cat Name 2",
-  // true if its building category, false for department category.
-  "category_flag": true,
-	"building_id" : 24
+  "Create":
+    {	
+      "code" : "B24-CA02",
+      "category" : "Cat Name 2",
+      "category_flag": true, // true for building expenses category, false for property expenses category.
+      "building_id" : 24
+    },
+  "Get":
+    {
+      "building_id": "29",
+      "category_flag": true // true for building expenses category, false for property expenses category.
+    }
 }
 
 CONCEPTS:
