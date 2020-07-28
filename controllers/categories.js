@@ -3,6 +3,7 @@ const pool = require('../database/db');
 /* GET ALL CATEGORIES */
 const getCategories = (req, res) => {
   const building_id = req.body;
+
   pool.query(
     `
     SELECT
@@ -12,11 +13,11 @@ const getCategories = (req, res) => {
       category,
       category_flag,
       building_id
-    FROM 
-      categories 
-    WHERE 
-      building_id = ${building_id} 
-    ORDER BY 
+    FROM
+      categories
+    WHERE
+      building_id = ${building_id}
+    ORDER BY
       category ASC;`,
     (error, results) => {
       if (error) {

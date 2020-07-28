@@ -3,27 +3,27 @@ const pool = require('../database/db');
 /* GET ALL COMMUNICATIONS */
 const getCommunications = (req, res) => {
   const { building_id, get, params } = req.body;
-  let query_params;
+  let secondary_params;
 
   switch (get) {
     case '1':
-      query_params = `release similar to '%${params}%'`;
+      secondary_params = `AND cm.release similar to '%${params}%'`;
       break;
 
     case '2':
-      query_params = `title similar to '%${params}%')`;
+      secondary_params = `AND cm.title similar to '%${params}%')`;
       break;
 
     case '3':
-      query_params = `status = ${params}`;
+      secondary_params = `AND cm.status = ${params}`;
       break;
 
     case '4':
-      query_params = `admin_user_id = ${params}`;
+      secondary_params = `AND cm.admin_user_id = ${params}`;
       break;
 
     default:
-      query_params = `created_at >= '${params}'`;
+      secondary_params = `AND cm.created_at >= '${params}'`;
       break;
   }
 
@@ -53,8 +53,7 @@ const getCommunications = (req, res) => {
       ON cm.admin_user_id = us.id
     WHERE
       cm.building_id = ${building_id}
-      AND
-      cm.${query_params}
+      ${secondary_params}
     ORDER BY 
       cm.release ASC;`,
     (error, results) => {
