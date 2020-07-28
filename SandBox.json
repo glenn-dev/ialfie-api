@@ -3,7 +3,7 @@
 
 // Body for querys:
 
-Regions:
+REGIONS:
 [
   {
     "region": "Metropolitana",
@@ -11,7 +11,7 @@ Regions:
   }  
 ]
 
-Municipalities:
+MUNICIPALITIES:
 [
   {
     "municipality": "Santiago",
@@ -20,7 +20,7 @@ Municipalities:
   }
 ]
 
-Buildings:
+BUILDINGS:
 [
   {
     "image": "building/image/path.png",
@@ -38,14 +38,14 @@ Buildings:
   }
 ]
 
-Property types:[
+PROPERTY TYPES:[
   {
     "property_type": "Department",
     "building_id": "29"
   }
 ]
 
-Properties:[
+PROPERTIES:[
   {
     "number": "2003",
     "floor": "20",
@@ -59,7 +59,7 @@ Properties:[
   }
 ]
 
-User:
+USER:
 [
   {
     "image": "image/path.png",
@@ -75,7 +75,7 @@ User:
   }
 ]
 
-Liabilities(create):
+LIABILITIES(create):
 When user doesn't exist: 
 [
   {
@@ -152,27 +152,46 @@ Liabilities(update):
   }
 ]
 
-
-
-Communications:
+COMMUNICATIONS: 
 {
-"release" : "B23-001",
-"title" : "1 comm for building 24",
-"content" : "Content 1 - 24",
-"status" : "true",
-"document" : "document/url",
-"admin_id" : "29",
-"building_id" : "23"
+  "Create":
+  {
+    "document": "document/url",
+    "release": "B23-001",
+    "title": "1 comm for building 24",
+    "content": "Content 1 - 24",
+    "validity": "2020-06-25 11:26:14",
+    "status": "true",
+    "user_type_id": "1", // Allows communications to be seen depending the user_type.
+    "admin_user_id": "29",
+    "building_id": "23"
+  },
+  "Get":
+  {
+    "building_id": "29",
+    // "get": ("1" release, "2" title, "3" status, "4" admin_user_id, "" created_at).
+    "get": "1",
+    "params": "B29"
+  }
+
 }
 
-Categories:
+
+
+{
+  "building_id": "29",
+  "get": "1",
+  "params": "B29"
+}
+
+CATEGORIES:
 {
 	"code" : "B24-CA02",
 	"name" : "Cat Name 2",
 	"building_id" : 24
 }
 
-Concepts:
+CONCEPTS:
 {
 	"code" : "B24-CA04-CO04",
 	"concept" : "Concept 4 B24",
@@ -180,7 +199,7 @@ Concepts:
 	"building_id" : 24
 }
 
-Bill:
+BILL:
 {
 	"number" : "B23-P01-001",
   "exp_date" : "2020-06-25 11:26:14",
@@ -196,8 +215,8 @@ Bill:
 	"building_id" : "23"
 }
 
-	
-Data:
+-------------------------------------------------
+DATA:
 {
   "Buildings": 
     [
@@ -213,7 +232,8 @@ Data:
         "municipality_id": "2",
         "region_id": "2",
         "country_id": "2",
-        "property_types": [
+        "property_types": 
+          [
           {
             "id": "9",
             "property_type": "Department",
@@ -229,9 +249,9 @@ Data:
             "property_type": "Parking",
             "building_id": "29"
           },
-        ],
+          ],
         "properties": 
-        [
+          [
           {
             "id": "11",
             "number": "2003",
@@ -268,7 +288,26 @@ Data:
             "property_type_id": "11",
             "building_id": "29"
           },
-        ]
+          ],
+        "communications":
+          [
+            {
+              "id": "3",
+              "created_at": "2020-07-27T15:32:52.159Z",
+              "updated_at": "2020-07-27T15:32:52.159Z",
+              "document": "document/url",
+              "release": "B29-001",
+              "title": "Communication Title for B-29",
+              "content": "Communication Content B-29",
+              "validity": "2020-06-25T15:26:14.000Z",
+              "status": true,
+              "sent_to_user_type_id": "1",
+              "admin_user_id": "36",
+              "first_name": "Glenn",
+              "last_name": "Marcano",
+              "building_id": "29"
+            }
+          ]
       },
       {
         "id": "30",
@@ -337,8 +376,72 @@ Data:
             "property_type_id": "14",
             "building_id": "30"
           },
-        ]
+        ],
+/*         "communications":
+          [
+            {
+              "id": "3",
+              "created_at": "2020-07-27T15:32:52.159Z",
+              "updated_at": "2020-07-27T15:32:52.159Z",
+              "document": "document/url",
+              "release": "B29-001",
+              "title": "Communication Title for B-29",
+              "content": "Communication Content B-29",
+              "validity": "2020-06-25T15:26:14.000Z",
+              "status": true,
+              "sent_to_user_type_id": "1",
+              "admin_user_id": "36",
+              "first_name": "Glenn",
+              "last_name": "Marcano",
+              "building_id": "29"
+            }
+          ] */
+      }
+    ],
+  "Users":
+    [
+      {
+        "id": "36",
+        "image": "glenn/image/path.png",
+        "fisrt_name": "Glenn",
+        "middle_name": "Andrés",
+        "last_name": "Marcano",
+        "maternal_surname": "Rada",
+        "identity_number": "258369147",
+        "phone": "987654321",
+        "email": "glenn@email.com",
+        "password": "123456",
+        "status": true,
+        "liabilities": 
+          [
+            {
+              "id": "1",
+              "status": true,
+              "user_type_id": "1",
+              "admin_user_id": "36",
+              "user_id": "36",
+              "property_id": "11",
+              "building_id": "29"
+            },
+            {
+              "id": "2",
+              "status": true,
+              "user_type_id": "1",
+              "admin_user_id": "36",
+              "user_id": "36",
+              "property_id": "12",
+              "building_id": "29"
+            },
+            {
+              "id": "3",
+              "status": true,
+              "user_type_id": "1",
+              "admin_user_id": "36",
+              "user_id": "36",
+              "property_id": "13",
+              "building_id": "29"
+            }
+          ]
       }
     ]
-  
 }

@@ -2,7 +2,31 @@ const pool = require('../database/db');
 
 /* GET ALL COMMUNICATIONS */
 const getCommunications = (req, res) => {
-  const {column, id} = req.body;
+  const { building_id, get, params } = req.body;
+  let query_params;
+
+  switch (get) {
+    case '1':
+      query_params = `release similar to '%${params}%'`;
+      break;
+
+    case '2':
+      query_params = `title similar to '%${params}%')`;
+      break;
+
+    case '3':
+      query_params = `status = ${params}`;
+      break;
+
+    case '4':
+      query_params = `admin_user_id = ${params}`;
+      break;
+
+    default:
+      query_params = `created_at >= '${params}'`;
+      break;
+  }
+
   pool.query(
     `
     SELECT
@@ -12,7 +36,6 @@ const getCommunications = (req, res) => {
       cm.document,
       cm.release,
       cm.title,
-      cm.content,
       cm.validity,
       cm.status,
       cm.user_type_id
@@ -20,21 +43,20 @@ const getCommunications = (req, res) => {
       cm.admin_user_id,
       us.first_name,
       us.last_name,
-      us.user_type_id
-        AS admin_user_type_id,
-      cm.building_id,
+      cm.building_id
     FROM 
       communications 
       AS cm
     INNER JOIN 
       users
       AS us
-      ON cm.admin_user_id = ad.id
-    WHERE 
-      cm.${column} 
-      IN(${id})
+      ON cm.admin_user_id = us.id
+    WHERE
+      cm.building_id = ${building_id}
+      AND
+      cm.${query_params}
     ORDER BY 
-      release ASC;`,
+      cm.release ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -46,7 +68,7 @@ const getCommunications = (req, res) => {
 
 /* GET COMMUNICATION BY ID */
 const getCommunicationById = (req, res) => {
-  const { column, id } = req.body;
+  const id = req.body;
   pool.query(
     `
     SELECT
@@ -64,20 +86,18 @@ const getCommunicationById = (req, res) => {
       cm.admin_user_id,
       us.first_name,
       us.last_name,
-      us.user_type_id
-        AS admin_user_type_id,
-      cm.building_id,
-    FROM 
-      communications 
+      cm.building_id
+    FROM
+      communications
       AS cm
-    INNER JOIN 
-      admins
-      AS ad
-      ON cm.admin_id = ad.id
-    WHERE 
+    INNER JOIN
+      users
+      AS us
+      ON cm.admin_user_id = us.id
+    WHERE
       cm.id = ${id}
-    ORDER BY 
-      release ASC;`,
+    ORDER BY
+      cm.release ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -160,7 +180,7 @@ const updateCommunication = (req, res) => {
       release = $2, 
       title = $3, 
       content = $4,
-      validity = 5, 
+      validity = $5, 
       status = $6,
       user_type_id = $7, 
       admin_user_id = $8, 
