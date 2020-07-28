@@ -7,18 +7,17 @@ const getCategories = (req, res) => {
     `
     SELECT
       id,
+      created_at,
       code,
       category,
       category_flag,
-      building_id,
-      updated_at,
-      created_at
+      building_id
     FROM 
       categories 
     WHERE 
       building_id = ${building_id} 
     ORDER BY 
-      name ASC;`,
+      category ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -39,7 +38,6 @@ const getCategoryById = (req, res) => {
       ca.category,
       ca.category_flag,
       ca.building_id,
-      ca.updated_at,
       ca.created_at,
       co.id
         AS concept_id,
@@ -47,17 +45,17 @@ const getCategoryById = (req, res) => {
         AS concept_code,
       co.concept,
       co.concept_flag
-    FROM 
+    FROM
       categories
-      AS ca 
+      AS ca
     INNER JOIN
       concepts
       AS co
       ON co.category_id = ca.id
-    WHERE 
+    WHERE
       ca.id = ${id}
-    ORDER BY 
-      category ASC;`,
+    ORDER BY
+      ca.category ASC;`,
     (error, results) => {
       if (error) {
         throw error;
@@ -69,15 +67,15 @@ const getCategoryById = (req, res) => {
 
 /* CREATE CATEGORY */
 const createCategory = (req, res) => {
-  const { category, code, category_flag, building_id } = req.body;
+  const { code, category, category_flag, building_id } = req.body;
   pool.query(
     `
     INSERT INTO 
       categories 
-      (category, code, category_flag, building_id) 
+      (code, category, category_flag, building_id) 
     VALUES 
       ($1, $2, $3, $4)`,
-    [category, code, category_flag, building_id],
+    [code, category, category_flag, building_id],
     (error, results) => {
       if (error) {
         throw error;
@@ -89,7 +87,7 @@ const createCategory = (req, res) => {
 
 /* UPDATE CATEGORY */
 const updateCategory = (req, res) => {
-  const { id, category, code, category_flag, building_id } = req.body;
+  const { id, code, category, category_flag, building_id } = req.body;
   pool.query(
     `
     UPDATE 
@@ -98,7 +96,7 @@ const updateCategory = (req, res) => {
       category = $1, code = $2, category_flag = $3, building_id = $4 
     WHERE 
       id = $5`,
-    [category, code, category_flag, building_id, id],
+    [code, category, category_flag, building_id, id],
     (error, results) => {
       if (error) {
         throw error;

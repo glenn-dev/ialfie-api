@@ -176,18 +176,12 @@ COMMUNICATIONS:
 
 }
 
-
-
-{
-  "building_id": "29",
-  "get": "1",
-  "params": "B29"
-}
-
 CATEGORIES:
 {
 	"code" : "B24-CA02",
-	"name" : "Cat Name 2",
+  "category" : "Cat Name 2",
+  // true if its building category, false for department category.
+  "category_flag": true,
 	"building_id" : 24
 }
 
@@ -306,6 +300,22 @@ DATA:
               "first_name": "Glenn",
               "last_name": "Marcano",
               "building_id": "29"
+            },
+            {
+              "id": "4",
+              "created_at": "2020-07-27T19:09:54.323Z",
+              "updated_at": "2020-07-27T20:26:01.890Z",
+              "document": "document/url",
+              "release": "B29-002",
+              "title": "Communication Title for B-29",
+              "content": "Communication Content B-29",
+              "validity": "2020-06-25T15:26:14.000Z",
+              "status": true,
+              "sent_to_user_type_id": "1",
+              "admin_user_id": "36",
+              "first_name": "Glenn",
+              "last_name": "Marcano",
+              "building_id": "29"
             }
           ]
       },
@@ -377,7 +387,7 @@ DATA:
             "building_id": "30"
           },
         ],
-/*         "communications":
+/*      "communications":
           [
             {
               "id": "3",
