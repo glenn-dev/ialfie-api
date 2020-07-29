@@ -2,31 +2,32 @@ const pool = require('../database/db');
 
 /* GET ALL CONCEPTS */
 const getConcepts = (req, res) => {
-  const {column, id} = req.body;
+  const { building_id, concept_flag } = req.body;
   pool.query(
     `
     SELECT
       co.id,
       co.created_at,
       co.code,
-      co.concept, 
+      co.concept,
       co.concept_flag,
       co.category_id,
       ca.code
         AS cat_code,
       ca.category,
-      co.building_id,
-    FROM 
-      concepts 
+      co.building_id
+    FROM
+      concepts
       AS co
-    INNER JOIN 
+    INNER JOIN
       categories
       AS ca
       ON co.category_id = ca.id
-    WHERE 
-      co.${column} 
-      IN(${id}) 
-    ORDER BY 
+    WHERE
+      co.building_id = ${building_id}
+      AND
+      co.concept_flag = ${concept_flag}
+    ORDER BY
       co.concept ASC;`,
     (error, results) => {
       if (error) {
@@ -105,15 +106,15 @@ const updateConcept = (req, res) => {
   } = req.body;
   pool.query(
     `
-    UPDATE 
-      concepts 
-    SET 
-      code = $1, 
-      concept = $2, 
-      concept_flag = $3
-      category_id = $4, 
-      building_id = $5 
-    WHERE 
+    UPDATE
+      concepts
+    SET
+      code = $1,
+      concept = $2,
+      concept_flag = $3,
+      category_id = $4,
+      building_id = $5
+    WHERE
       id = $6`,
     [code, concept, concept_flag, category_id, building_id, id],
     (error, results) => {

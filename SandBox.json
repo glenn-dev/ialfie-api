@@ -121,10 +121,14 @@ When user exist:
         "user_id": 456,
       },
     "liabilities":[
+      /* "status"(false) changes to true when 
+          the liability is confirmed by user 
+          via email. 
+      */
       { 
         "user_type_id": 3,
         "property_id": 556,
-        "status": false, // This statement change when the liability is confirmed by the user via email.
+        "status": false,
       },
       { 
         "user_type_id": 3,
@@ -167,10 +171,13 @@ COMMUNICATIONS:
     "building_id": "23"
   },
   "Get":
+  /* "get": 
+      "1"(release), "2"(title), "3"(status),
+      "4"(admin_user_id), ""(created_at). 
+  */
   {
     "building_id": "29",
-    "get": "1",     // "1" release, "2" title, "3" status, "4" admin_user_id, "" created_at.
-
+    "get": "1",
     "params": "B29"
   }
 
@@ -178,26 +185,42 @@ COMMUNICATIONS:
 
 CATEGORIES:
 {
+  /* "category_flag": 
+      true for building expenses category, 
+      false for property expenses category. 
+  */
   "Create":
     {	
       "code" : "B24-CA02",
       "category" : "Cat Name 2",
-      "category_flag": true, // true for building expenses category, false for property expenses category.
+      "category_flag": true,
       "building_id" : 24
     },
   "Get":
     {
       "building_id": "29",
-      "category_flag": true // true for building expenses category, false for property expenses category.
+      "category_flag": true
     }
 }
 
 CONCEPTS:
 {
-	"code" : "B24-CA04-CO04",
-	"concept" : "Concept 4 B24",
-	"category_id" : 4,
-	"building_id" : 24
+  /* "concept_flag": 
+      true for building expenses concept, 
+      false for property expenses concept. 
+  */
+  "Create": 
+    {	"code" : "CO-001 | B29-CA05",
+      "concept" : "Concept 4",
+      "concept_flag": true,
+    	"category_id" : 5,
+    	"building_id" : 24
+    },
+  "Get":
+    {
+      "building_id": "29",
+      "concept_flag": true
+    }
 }
 
 BILL:
@@ -323,6 +346,141 @@ DATA:
               "first_name": "Glenn",
               "last_name": "Marcano",
               "building_id": "29"
+            }
+          ],
+        "categories":
+          [
+            {
+              "id": "5",
+              "created_at": "2020-07-28T18:50:46.565Z",
+              "code": "B29-CA001",
+              "category": "Cat Name 1",
+              "category_flag": true,
+              "building_id": "29",
+              "concepts":
+                [
+                  {
+                    "id": "16",
+                    "created_at": "2020-07-28T21:35:09.836Z",
+                    "code": "CO-001 | B29-CA05",
+                    "concept": "Concept 1",
+                    "concept_flag": true,
+                    "category_id": "5",
+                    "cat_code": "B29-CA001",
+                    "category": "Cat Name 1",
+                    "building_id": "29"
+                  },
+                  {
+                    "id": "17",
+                    "created_at": "2020-07-29T19:36:41.389Z",
+                    "code": "CO-002 | B29-CA05",
+                    "concept": "Concept 2",
+                    "concept_flag": true,
+                    "category_id": "5",
+                    "cat_code": "B29-CA001",
+                    "category": "Cat Name 1",
+                    "building_id": "29"
+                  }
+                ]
+            },
+            {
+              "id": "6",
+              "created_at": "2020-07-28T19:23:33.023Z",
+              "code": "Cat Name 2",
+              "category": "B29-CA002",
+              "category_flag": true,
+              "building_id": "29",
+              "concepts":
+                [
+                  {
+                    "id": "18",
+                    "created_at": "2020-07-29T19:38:00.466Z",
+                    "code": "CO-003 | B29-CA06",
+                    "concept": "Concept 3",
+                    "concept_flag": true,
+                    "category_id": "6",
+                    "cat_code": "Cat Name 2",
+                    "category": "B29-CA002",
+                    "building_id": "29"
+                  },
+                  {
+                    "id": "19",
+                    "created_at": "2020-07-29T19:38:12.450Z",
+                    "code": "CO-004 | B29-CA06",
+                    "concept": "Concept 4",
+                    "concept_flag": true,
+                    "category_id": "6",
+                    "cat_code": "Cat Name 2",
+                    "category": "B29-CA002",
+                    "building_id": "29"
+                  }
+                ]
+            },
+            {
+              "id": "8",
+              "created_at": "2020-07-28T20:53:47.194Z",
+              "code": "B29-P001",
+              "category": "Property Cat Name 1",
+              "category_flag": false,
+              "building_id": "29",
+              "concepts":
+                [
+                  {
+                    "id": "20",
+                    "created_at": "2020-07-29T20:09:38.424Z",
+                    "code": "CO-005 | B29-CA08",
+                    "concept": "Concept 5",
+                    "concept_flag": false,
+                    "category_id": "8",
+                    "cat_code": "B29-P001",
+                    "category": "Property Cat Name 1",
+                    "building_id": "29"
+                  },
+                  {
+                    "id": "21",
+                    "created_at": "2020-07-29T20:09:57.051Z",
+                    "code": "CO-006 | B29-CA08",
+                    "concept": "Concept 6",
+                    "concept_flag": false,
+                    "category_id": "8",
+                    "cat_code": "B29-P001",
+                    "category": "Property Cat Name 1",
+                    "building_id": "29"
+                  }
+                ]
+            },
+            {
+              "id": "9",
+              "created_at": "2020-07-28T20:53:57.743Z",
+              "code": "B29-P002",
+              "category": "Property Cat Name 2",
+              "category_flag": false,
+              "building_id": "29",
+              "concepts":
+                [
+                  {
+                    "id": "22",
+                    "created_at": "2020-07-29T20:10:21.475Z",
+                    "code": "CO-007 | B29-CA09",
+                    "concept": "Concept 7",
+                    "concept_flag": false,
+                    "category_id": "9",
+                    "cat_code": "B29-P002",
+                    "category": "Property Cat Name 2",
+                    "building_id": "29"
+                  },
+                  {
+                    "id": "23",
+                    "created_at": "2020-07-29T20:10:47.212Z",
+                    "code": "CO-008 | B29-CA09",
+                    "concept": "Concept 8",
+                    "concept_flag": false,
+                    "category_id": "9",
+                    "cat_code": "B29-P002",
+                    "category": "Property Cat Name 2",
+                    "building_id": "29"
+                  }
+                ]
             }
           ]
       },
