@@ -2,7 +2,8 @@ const pool = require('../database/db');
 
 /* GET ALL DEFAULT CONCEPTS */
 const getDefaultConcepts = (req, res) => {
-  const { column, id } = req.body;
+  const property_id = req.body;
+
   pool.query(
     `
     SELECT
@@ -14,18 +15,19 @@ const getDefaultConcepts = (req, res) => {
       ca.code
         AS category_code,
       ca.category,
-      dc.concept_id, 
+      dc.concept_id,
       co.code
         AS concept_code,
       co.concept,
       dc.property_id,
+      pr.property_type,
       pr.number
         AS property_number,
-      dc.building_id,
-    FROM 
-      default_concepts 
+      dc.building_id
+    FROM
+      default_concepts
       AS dc
-    INNER JOIN 
+    INNER JOIN
       categories
       AS ca
       ON dc.category_id = ca.id
@@ -37,9 +39,8 @@ const getDefaultConcepts = (req, res) => {
       properties
       AS pr
       ON dc.property_id = pr.id
-    WHERE 
-      dc.${column} 
-      IN(${id})
+    WHERE
+      dc.building_id = ${property_id}
     ORDER BY 
       co.concept ASC;`,
     (error, results) => {
@@ -54,30 +55,30 @@ const getDefaultConcepts = (req, res) => {
 /* CREATE DEFAULT CONCEPT */
 const createDefaultConcept = (req, res) => {
   const {
-    default_amount,
     default_quantity,
+    default_amount,
     category_id,
     concept_id,
     property_id,
     building_id,
   } = req.body;
   pool.query(
-    `INSERT INTO 
-      default_concepts 
+    `INSERT INTO
+      default_concepts
       (
-        default_amount, 
-        default_quantity, 
-        category_id, 
-        concept_id, 
-        property_id, 
+        default_quantity,
+        default_amount,
+        category_id,
+        concept_id,
+        property_id,
         building_id
-      ) 
-    VALUES 
+      )
+    VALUES
       ($1, $2, $3, $4, $5, $6)
     RETURNING id`,
     [
-      default_amount,
       default_quantity,
+      default_amount,
       category_id,
       concept_id,
       property_id,
@@ -108,7 +109,7 @@ const updateDefaultConcept = (req, res) => {
   pool.query(
     `
     UPDATE 
-      concepts 
+      default_concepts 
     SET 
       default_amount = $1,
       default_quantity = $2,

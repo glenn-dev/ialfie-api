@@ -223,6 +223,19 @@ CONCEPTS:
     }
 }
 
+DEFAULT CONCEPTS:
+{
+  "Create":
+    {
+      "default_quantity": 3.17,
+      "default_amount": 25.5,
+      "category_id": "8",
+      "concept_id": "20",
+      "property_id": "11",
+      "building_id": "29"
+    }
+}
+
 BILL:
 {
 	"number" : "B23-P01-001",
@@ -240,6 +253,8 @@ BILL:
 }
 
 -------------------------------------------------
+// Data
+
 DATA:
 {
   "Buildings": 
@@ -286,7 +301,34 @@ DATA:
             "main_property_flag": true,
             "property_type": "Department",
             "property_type_id": "9",
-            "building_id": "29"
+            "building_id": "29",
+            "default_concepts":
+              [
+                {
+                  "id": "1",
+                  "created_at": "2020-07-30T16:16:16.449Z",
+                  "default_amount": "25.50",
+                  "default_quantity": "3.17000",
+                  "category_id": "8",
+                  "category_code": "B29-P001",
+                  "category": "Property Cat Name 1",
+                  "concept_id": "20",
+                  "concept_code": "CO-005 | B29-CA08",
+                  "concept": "Concept 5"
+                },
+                {
+                  "id": "2",
+                  "created_at": "2020-07-30T19:51:05.011Z",
+                  "default_amount": "4200.00",
+                  "default_quantity": "3.00000",
+                  "category_id": "8",
+                  "category_code": "B29-P001",
+                  "category": "Property Cat Name 1",
+                  "concept_id": "21",
+                  "concept_code": "CO-006 | B29-CA08",
+                  "concept": "Concept 6"
+                }
+              ]
           },
           {
             "id": "12",
