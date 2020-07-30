@@ -60,20 +60,37 @@ PROPERTIES:[
 ]
 
 USER:
-[
-  {
-    "image": "image/path.png",
-    "first_name" : "User First 1",
-    "middle_name" : "User Middle 1",
-    "last_name" : "User Last 1",
-    "maternal_surname" : "User Surname 1",
-    "identity_number" : "123456789",
-    "phone" : "123456789",
-    "email" : "user1@mail.com",
-    "password" : "123456",
-    "status" : true
-  }
-]
+
+{
+  "Create":
+    {
+      "image": "image/path.png",
+      "first_name" : "User First 1",
+      "middle_name" : "User Middle 1",
+      "last_name" : "User Last 1",
+      "maternal_surname" : "User Surname 1",
+      "identity_number" : "123456789",
+      "phone" : "123456789",
+      "email" : "user1@mail.com",
+      "password" : "123456",
+      "status" : true      
+    },
+  "Get":
+    {
+    /* "index": 
+        "0"(created_at), 
+        "1"(li.property_id), 
+        "2"(li.user_type_id), 
+        "3"(li.status), 
+        "4"(us.status). 
+    */
+      "building_id": "29",
+      "index": "3",
+      "params": true
+    }
+
+}
+
 
 LIABILITIES(create):
 When user doesn't exist: 

@@ -1,9 +1,17 @@
 const pool = require('../database/db');
-const parseUser = require('../helpers/users-helper');
+//const parseUser = require('../helpers/users-helper');
 
 /* GET ALL USERS */
 const getUsers = (req, res) => {
-  const { column, id } = req.body;
+  const { building_id, index, params } = req.body;
+  const queryArray = [
+    `AND li.created_at >= '${params}'`,
+    `AND li.property_id = ${params}`,
+    `AND li.user_type_id = ${params}`,
+    `AND li.status = ${params}`,
+    `AND us.status = ${params}`,
+  ];
+
   pool.query(
     `
     SELECT 
@@ -25,8 +33,8 @@ const getUsers = (req, res) => {
       AS li
       ON li.user_id = us.id
     WHERE
-      li.${column}
-      IN(${id})
+      li.building_id = ${building_id}
+      ${queryArray[index]}
     ORDER BY 
       us.first_name ASC;`,
     (error, results) => {
@@ -40,7 +48,7 @@ const getUsers = (req, res) => {
 
 /* GET USER BY ID */
 const getUserById = (req, res) => {
-  const { column, id } = req.body;
+  const id = req.body;
   pool.query(
     `
     SELECT 
@@ -91,7 +99,7 @@ const getUserById = (req, res) => {
       AS bu
       ON li.building_id = bu.id
     WHERE 
-      us.${column} = ${id}
+      us.id = ${id}
     ORDER BY 
       bu.name ASC;`,
     (error, results) => {
