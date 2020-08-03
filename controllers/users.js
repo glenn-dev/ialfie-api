@@ -1,5 +1,5 @@
 const pool = require('../database/db');
-//const parseUser = require('../helpers/users-helper');
+const { parseAllUsers, parseUserInfo } = require('../helpers/users-helper');
 
 /* GET ALL USERS */
 const getUsers = (req, res) => {
@@ -41,17 +41,17 @@ const getUsers = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(results.rows);
+      res.status(200).json(parseAllUsers(results.rows));
     }
   );
 };
 
 /* GET USER BY ID */
 const getUserById = (req, res) => {
-  const id = req.body;
+  const { id, building_id } = req.body;
   pool.query(
     `
-    SELECT 
+    SELECT
       us.id,
       us.created_at,
       us.updated_at,
@@ -64,21 +64,18 @@ const getUserById = (req, res) => {
       us.phone,
       us.email,
       us.status,
-      li.building_id,
-      bu.name
-        AS building_name,
-      bu.street,
-      bu.block_number,
       li.user_type_id,
       ut.user_type,
       li.property_id,
-      pr.property_type,
+      pr.property_type_id,
+      pt.property_type,
       pr.number
         AS property_number,
       pr.floor,
       pr.defaulting,
       pr.status
-        AS property_status
+        AS property_status,
+      pr.main_property_flag
     FROM 
       users
       AS us
@@ -94,19 +91,20 @@ const getUserById = (req, res) => {
       properties
       AS pr
       ON li.property_id = pr.id
-    INNER JOIN 
-      buildings
-      AS bu
-      ON li.building_id = bu.id
+    INNER JOIN
+      property_types
+      AS pt
+      ON pr.property_type_id = pt.id
     WHERE 
       us.id = ${id}
+      AND li.building_id = ${building_id}
     ORDER BY 
-      bu.name ASC;`,
+      pr.main_property_flag DESC;`,
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(200).json(results.rows); // parseUser(results.rows)
+      res.status(200).json(parseUserInfo(results.rows)); // parseUserInfo(results.rows)
     }
   );
 };
@@ -185,18 +183,31 @@ const updateUser = (req, res) => {
     UPDATE 
       users 
     SET 
-      image = ${image}, 
-      first_name = ${first_name}, 
-      middle_name = ${middle_name}, 
-      last_name = ${last_name}, 
-      maternal_surname = ${maternal_surname}, 
-      identity_number = ${identity_number}, 
-      phone = ${phone}, 
-      email = ${email}, 
-      password = ${password}, 
-      status = ${status}
+      image = $1, 
+      first_name = $2, 
+      middle_name = $3, 
+      last_name = $4, 
+      maternal_surname = $5, 
+      identity_number = $6, 
+      phone = $7, 
+      email = $8, 
+      password = $9, 
+      status = $10
     WHERE 
-      id = ${id}`,
+      id = $11`,
+      [ 
+        image,
+        first_name,
+        middle_name,
+        last_name,
+        maternal_surname,
+        identity_number,
+        phone,
+        email,
+        password,
+        status, 
+        id
+      ],
     (error, results) => {
       if (error) {
         throw error;

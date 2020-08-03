@@ -60,10 +60,9 @@ PROPERTIES:[
 ]
 
 USER:
-
 {
   "Create":
-    {
+    {    
       "image": "image/path.png",
       "first_name" : "User First 1",
       "middle_name" : "User Middle 1",
@@ -73,93 +72,97 @@ USER:
       "phone" : "123456789",
       "email" : "user1@mail.com",
       "password" : "123456",
-      "status" : true      
+      "status" : true
     },
   "Get":
     {
+
+    "All":
+      {
     /* "index": 
-        "0"(created_at), 
-        "1"(li.property_id), 
-        "2"(li.user_type_id), 
-        "3"(li.status), 
-        "4"(us.status). 
+      "0"(created_at), 
+      "1"(li.property_id), 
+      "2"(li.user_type_id), 
+      "3"(li.status), 
+      "4"(us.status). 
     */
-      "building_id": "29",
-      "index": "3",
-      "params": true
+        "building_id": "29",
+        "index": "3",
+        "params": true
+      },
+    "By ID":
+      {
+        "id": "36",
+        "building_id": "29"
+      }
     }
-
 }
-
 
 LIABILITIES(create):
 When user doesn't exist: 
-[
+{
+  "member": false,
+  "building_id": 4,
+  "admin_user_id": 256,
+  "user":
   {
-    "member": false,
-    "building_id": 4,
-    "admin_user_id": 256,
-    "user":
-    {
-      "first_name": ".",
-      "last_name": ".",
-      "identity_number": ".",
-      "email": "user1@email.com",
-      "password": ".",
+    "first_name": ".",
+    "last_name": ".",
+    "identity_number": ".",
+    "email": "user1@email.com",
+    "password": ".",
+    "status": false,
+  },
+  "liabilities":[
+    { 
+      "user_type_id": 3,
+      "property_id": 556,
       "status": false,
     },
-    "liabilities":[
-      { 
-        "user_type_id": 3,
-        "property_id": 556,
-        "status": false,
-      },
-      { 
-        "user_type_id": 3,
-        "property_id": 556,
-        "status": false,
-      },
-      { 
-        "user_type_id": 3,
-        "property_id": 556,
-        "status": false,
-      }
-    ]
-  }
-]
+    { 
+      "user_type_id": 3,
+      "property_id": 556,
+      "status": false,
+    },
+    { 
+      "user_type_id": 3,
+      "property_id": 556,
+      "status": false,
+    }
+  ]
+}
 When user exist:
-[
-  {
-    "member": true,
-    "building_id": 4,
-    "admin_user_id" : 256,
-    "user": 
-      {
-        "user_id": 456,
-      },
-    "liabilities":[
-      /* "status"(false) changes to true when 
-          the liability is confirmed by user 
-          via email. 
-      */
-      { 
-        "user_type_id": 3,
-        "property_id": 556,
-        "status": false,
-      },
-      { 
-        "user_type_id": 3,
-        "property_id": 789,
-        "status": false,
-      },
-      { 
-        "user_type_id": 3,
-        "property_id": 952,
-        "status": false,
-      }
-    ]
-  }
-]
+{
+  "member": true,
+  "building_id": 4,
+  "admin_user_id" : 256,
+  "user": 
+    {
+      "user_id": 456,
+    },
+  "liabilities":[
+    /* "status"(false) changes to true when 
+        the liability is confirmed by user 
+        via email. 
+    */
+    { 
+      "user_type_id": 3,
+      "property_id": 556,
+      "status": false,
+    },
+    { 
+      "user_type_id": 3,
+      "property_id": 789,
+      "status": false,
+    },
+    { 
+      "user_type_id": 3,
+      "property_id": 952,
+      "status": false,
+    }
+  ]
+}
+
 Liabilities(update):
 [
   { 
@@ -188,13 +191,13 @@ COMMUNICATIONS:
     "building_id": "23"
   },
   "Get":
-  /* "get": 
-      "1"(release), "2"(title), "3"(status),
-      "4"(admin_user_id), ""(created_at). 
+  /* "index": 
+      ""(created_at),"1"(release),"2"(title), 
+      "3"(status),"4"(admin_user_id). 
   */
   {
     "building_id": "29",
-    "get": "1",
+    "index": "1",
     "params": "B29"
   }
 
@@ -678,4 +681,33 @@ DATA:
           ]
       }
     ]
+}
+
+
+
+{
+  "id": "36",
+  "created_at": "2020-07-24T21:31:00.140Z",
+  "updated_at": "2020-07-24T21:31:00.140Z",
+  "image": "glenn/image/path.png",
+  "first_name": "Glenn",
+  "middle_name": "Andres",
+  "last_name": "Marcano",
+  "maternal_surname": "Rada",
+  "identity_number": "258369147",
+  "phone": "987654321",
+  "email": "glenn@email.com",
+  "status": true,
+  "building_id": "29",
+  "building_name": "Building 1",
+  "street": "Building 1 street",
+  "block_number": "1234",
+  "user_type_id": "1",
+  "user_type": "Admin",
+  "property_id": "11",
+  "property_type": "Department",
+  "property_number": "2003",
+  "floor": "20",
+  "defaulting": false,
+  "property_status": true
 }
