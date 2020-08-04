@@ -13,7 +13,6 @@ const getProperties = (req, res) => {
       status,
       defaulting,
       main_property_flag,
-      property_type,
       property_type_id,
       building_id
     FROM
@@ -59,7 +58,6 @@ const getPropertyById = (req, res) => {
         pr.status,
         pr.defaulting,
         pr.main_property_flag,
-        pr.property_type,
         pr.property_type_id
       FROM
         sub_properties
@@ -133,7 +131,6 @@ const createProperty = (req, res) => {
     status,
     defaulting,
     main_property_flag,
-    property_type,
     property_type_id,
     building_id,
   } = req.body;
@@ -148,12 +145,11 @@ const createProperty = (req, res) => {
         status, 
         defaulting,
         main_property_flag,
-        property_type, 
         property_type_id, 
         building_id
       ) 
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [
       number,
       floor,
@@ -161,7 +157,6 @@ const createProperty = (req, res) => {
       status,
       defaulting,
       main_property_flag,
-      property_type,
       property_type_id,
       building_id,
     ],
@@ -184,7 +179,6 @@ const updateProperty = (req, res) => {
     status,
     defaulting,
     main_property_flag,
-    property_type,
     property_type_id,
     building_id,
   } = req.body;
@@ -199,11 +193,10 @@ const updateProperty = (req, res) => {
       status = $4, 
       defaulting = $5, 
       main_property_flag = $6,
-      property_type = $7,
-      property_type_id = $8, 
-      building_id = $9
+      property_type_id = $7, 
+      building_id = $8
     WHERE 
-      id = $10`,
+      id = $9`,
     [
       number,
       floor,
@@ -211,7 +204,6 @@ const updateProperty = (req, res) => {
       status,
       defaulting,
       main_property_flag,
-      property_type,
       property_type_id,
       building_id,
       id,

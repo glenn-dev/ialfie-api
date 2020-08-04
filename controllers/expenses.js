@@ -2,46 +2,62 @@ const pool = require('../database/db');
 
 /* GET ALL EXPENSES */
 const getExpenses = (req, res) => {
-  const {column, id} = req.body;
+  const {
+    building_id,
+    startingDate,
+    endingDate,
+    expense_flag,
+    index = '0',
+    firstParam,
+    secondParam,
+  } = req.body;
+  const queryArray = [
+    '',
+    `AND ex.number similar to '%${firstParam}%'`,
+    `AND ex.total BETWEEN ${firstParam} AND ${secondParam}`,
+    `AND ex.status = ${firstParam}`,
+    `AND ex.property_id = ${firstParam}`,
+  ];
+
   pool.query(
     `
     SELECT
+      ex.id,
       ex.document,
       ex.number,
-      ex.category_id,
-      ex.category,
-      ex.concept_id,
-      ex.concept,
-      ex.amount,
-      ex.quantity,
       ex.total,
       ex.issue_date,
       ex.status,
       ex.expense_flag,
       ex.admin_user_id,
-      us.first_name,
-      us.last_name,
-      us.image,
       ex.property_id,
+      pt.property_type,
       pr.number
         AS property_number,
-      pr.property_type,
       ex.building_id
-    FROM 
-      expenses 
+    FROM
+      expenses
       AS ex
-    INNER JOIN 
+    INNER JOIN
       users
       AS us
       ON ex.admin_user_id = us.id
-    INNER JOIN 
+    INNER JOIN
       properties
       AS pr
       ON ex.property_id = pr.id
-    WHERE 
-      ex.${column} 
-      IN(${id})
-    ORDER BY 
+    INNER JOIN
+      property_types
+      AS pt
+      ON pr.property_type_id = pt.id
+    WHERE
+      ex.issue_date 
+        BETWEEN '${startingDate}' 
+        AND '${endingDate}'
+      AND ex.expense_flag = ${expense_flag}
+      AND ex.building_id = ${building_id}
+      ${queryArray[index]}
+    ORDER BY
       ex.number ASC`,
     (error, results) => {
       if (error) {
@@ -61,11 +77,13 @@ const getExpenseById = (req, res) => {
       ex.document,
       ex.number,
       ex.category_id,
-      ex.category_code,
-      ex.category,
+      ca.code
+        AS category_code,
+      ca.category,
       ex.concept_id,
-      ex.concept_code,
-      ex.concept,
+      co.code
+        AS concept_code,
+      co.concept,
       ex.description,
       ex.amount,
       ex.quantity,
@@ -78,13 +96,21 @@ const getExpenseById = (req, res) => {
       us.last_name,
       us.image,
       ex.property_id,
+      pt.property_type,
       pr.number
         AS property_number,
-      pr.property_type,
       ex.building_id
-    FROM 
-      expenses 
+    FROM
+      expenses
       AS ex
+    INNER JOIN
+      categories
+      AS ca
+      ON ex.category_id = ca.id
+    INNER JOIN
+      concepts
+      AS co
+      ON ex.concept_id = co.id
     INNER JOIN 
       users
       AS us
@@ -93,6 +119,10 @@ const getExpenseById = (req, res) => {
       properties
       AS pr
       ON ex.property_id = pr.id
+    INNER JOIN
+      property_types
+      AS pt
+      ON pr.property_type_id = pt.id
     WHERE 
       ex.id = ${id}
     ORDER BY 
@@ -111,12 +141,6 @@ const createExpense = (req, res) => {
   const {
     document,
     number,
-    category_id,
-    category_code,
-    category,
-    concept_id,
-    concept_code,
-    concept,
     description,
     amount,
     quantity,
@@ -124,6 +148,8 @@ const createExpense = (req, res) => {
     issue_date,
     status,
     expense_flag,
+    category_id,
+    concept_id,
     admin_user_id,
     property_id,
     building_id,
@@ -131,16 +157,10 @@ const createExpense = (req, res) => {
   pool.query(
     `
     INSERT INTO 
-      general_expenses 
+      expenses 
       (
         document,
         number,
-        category_id,
-        category_code,
-        category,
-        concept_id,
-        concept_code,
-        concept,
         description,
         amount,
         quantity,
@@ -148,32 +168,31 @@ const createExpense = (req, res) => {
         issue_date,
         status,
         expense_flag,
+        category_id,
+        concept_id,
         admin_user_id,
         property_id,
         building_id
       ) 
     VALUES 
-      ( 
-        ${document},
-        ${number},
-        ${category_id},
-        ${category_code},
-        ${category},
-        ${concept_id},
-        ${concept_code},
-        ${concept},
-        ${description},
-        ${amount},
-        ${quantity},
-        ${total},
-        ${issue_date},
-        ${status},
-        ${expense_flag},
-        ${admin_user_id},
-        ${property_id},
-        ${building_id}
-      ) 
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) 
     RETURNING id`,
+    [
+      document,
+      number,
+      description,
+      amount,
+      quantity,
+      total,
+      issue_date,
+      status,
+      expense_flag,
+      category_id,
+      concept_id,
+      admin_user_id,
+      property_id,
+      building_id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
@@ -189,12 +208,6 @@ const updateExpense = (req, res) => {
     id,
     document,
     number,
-    category_id,
-    category_code,
-    category,
-    concept_id,
-    concept_code,
-    concept,
     description,
     amount,
     quantity,
@@ -202,35 +215,50 @@ const updateExpense = (req, res) => {
     issue_date,
     status,
     expense_flag,
+    category_id,
+    concept_id,
     admin_user_id,
     property_id,
     building_id,
   } = req.body;
   pool.query(
     `
-    UPDATE 
-      expenses 
-    SET 
-      document = ${document},
-      number = ${number},
-      category_id = ${category_id},
-      category_code = ${category_code},
-      category = ${category},
-      concept_id = ${concept_id},
-      concept_code = ${concept_code},
-      concept = ${concept},
-      description = ${description},
-      amount = ${amount},
-      quantity = ${quantity},
-      total = ${total},
-      issue_date = ${issue_date},
-      status = ${status},
-      expense_flag = ${expense_flag},
-      admin_user_id = ${admin_user_id},
-      property_id = ${property_id},
-      building_id = ${building_id}
-    WHERE 
-      id = ${id}`,
+    UPDATE
+      expenses
+    SET
+      document = $1,
+      number = $2,
+      description = $3,
+      amount = $4,
+      quantity = $5,
+      total = $6,
+      issue_date = $7,
+      status = $8,
+      expense_flag = $9,
+      category_id = $10,
+      concept_id = $11,
+      admin_user_id = $12,
+      property_id = $13,
+      building_id = $14
+    WHERE
+      id = $15`,
+    [
+      document,
+      number,
+      description,
+      amount,
+      quantity,
+      total,
+      issue_date,
+      status,
+      expense_flag,
+      category_id,
+      concept_id,
+      admin_user_id,
+      property_id,
+      building_id,
+      id,
+    ],
     (error, results) => {
       if (error) {
         throw error;
@@ -243,15 +271,12 @@ const updateExpense = (req, res) => {
 /* DELETE EXPENSES */
 const deleteExpenses = (req, res) => {
   const id = req.body;
-  pool.query(
-    `DELETE FROM expenses WHERE id IN(${id})`,
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).send(`Expenses ${id} deleted.`);
+  pool.query(`DELETE FROM expenses WHERE id IN(${id})`, (error, results) => {
+    if (error) {
+      throw error;
     }
-  );
+    res.status(200).send(`Expenses ${id} deleted.`);
+  });
 };
 
 /* EXPORTS */

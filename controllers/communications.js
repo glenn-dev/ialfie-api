@@ -6,7 +6,7 @@ const getCommunications = (req, res) => {
   const queryArray = [
     `AND cm.created_at >= '${params}'`,
     `AND cm.release similar to '%${params}%'`,
-    `AND cm.title similar to '%${params}%')`,
+    `AND cm.title similar to '%${params}%'`,
     `AND cm.status = ${params}`,
     `AND cm.admin_user_id = ${params}`,
   ]; 

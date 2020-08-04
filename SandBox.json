@@ -4,60 +4,52 @@
 // Body for querys:
 
 REGIONS:
-[
-  {
-    "region": "Metropolitana",
-    "country_id": "2"
-  }  
-]
+{
+  "region": "Metropolitana",
+  "country_id": "2"
+}  
 
 MUNICIPALITIES:
-[
-  {
-    "municipality": "Santiago",
-    "region_id": "2",
-    "country_id": "2"
-  }
-]
+{
+  "municipality": "Santiago",
+  "region_id": "2",
+  "country_id": "2"
+}
 
 BUILDINGS:
-[
-  {
-    "image": "building/image/path.png",
-    "name": "Building 1",
-    "status": true,
-    "street": "Building 1 street",
-    "block_number": "1234",
-    "municipality_id": "45",
-    "region_id": "5",
-    "country_id": "1",
-    "setups": {
-      "cutoff_date": "2020-06-25 11:26:14",
-      "bill_exp_date": "2020-06-25 11:26:14"
-    }
+{
+  "image": "building/image/path.png",
+  "name": "Building 1",
+  "status": true,
+  "street": "Building 1 street",
+  "block_number": "1234",
+  "municipality_id": "45",
+  "region_id": "5",
+  "country_id": "1",
+  "setups": {
+    "cutoff_date": "2020-06-25 11:26:14",
+    "bill_exp_date": "2020-06-25 11:26:14"
   }
-]
+}
 
-PROPERTY TYPES:[
-  {
-    "property_type": "Department",
-    "building_id": "29"
-  }
-]
+PROPERTY TYPES:
+{
+  "property_type": "Department",
+  "building_id": "29"
+}
 
-PROPERTIES:[
-  {
-    "number": "2003",
-    "floor": "20",
-    "aliquot": 0.0325,
-    "status": true,
-    "defaulting": false,
-    "main_property_flag": true,
-    "property_type": "Department",
-    "property_type_id": "1",
-    "building_id": "29"
-  }
-]
+PROPERTIES:
+{
+  "number": "2003",
+  "floor": "20",
+  "aliquot": 0.0325,
+  "status": true,
+  "defaulting": false,
+  "main_property_flag": true,
+  "property_type": "Department",
+  "property_type_id": "1",
+  "building_id": "29"
+}
 
 USER:
 {
@@ -75,10 +67,10 @@ USER:
       "status" : true
     },
   "Get":
-    {
+  {
 
     "All":
-      {
+    {
     /* "index": 
       "0"(created_at), 
       "1"(li.property_id), 
@@ -86,16 +78,16 @@ USER:
       "3"(li.status), 
       "4"(us.status). 
     */
-        "building_id": "29",
-        "index": "3",
-        "params": true
-      },
+      "building_id": "29",
+      "index": "3",
+      "params": true
+    },
     "By ID":
-      {
-        "id": "36",
-        "building_id": "29"
-      }
+    {
+      "id": "36",
+      "building_id": "29"
     }
+  }
 }
 
 LIABILITIES(create):
@@ -210,17 +202,17 @@ CATEGORIES:
       false for property expenses category. 
   */
   "Create":
-    {	
-      "code" : "B24-CA02",
-      "category" : "Cat Name 2",
-      "category_flag": true,
-      "building_id" : 24
-    },
+  {	
+    "code" : "B24-CA02",
+    "category" : "Cat Name 2",
+    "category_flag": true,
+    "building_id" : 24
+  },
   "Get":
-    {
-      "building_id": "29",
-      "category_flag": true
-    }
+  {
+    "building_id": "29",
+    "category_flag": true
+  }
 }
 
 CONCEPTS:
@@ -230,30 +222,69 @@ CONCEPTS:
       false for property expenses concept. 
   */
   "Create": 
-    {	"code" : "CO-001 | B29-CA05",
-      "concept" : "Concept 4",
-      "concept_flag": true,
-    	"category_id" : 5,
-    	"building_id" : 24
-    },
+  {	"code" : "CO-001 | B29-CA05",
+    "concept" : "Concept 4",
+    "concept_flag": true,
+  	"category_id" : 5,
+  	"building_id" : 24
+  },
   "Get":
-    {
-      "building_id": "29",
-      "concept_flag": true
-    }
+  {
+    "building_id": "29",
+    "concept_flag": true
+  }
 }
 
 DEFAULT CONCEPTS:
 {
   "Create":
-    {
-      "default_quantity": 3.17,
-      "default_amount": 25.5,
-      "category_id": "8",
-      "concept_id": "20",
-      "property_id": "11",
-      "building_id": "29"
-    }
+  {
+    "default_quantity": 3.17,
+    "default_amount": 25.5,
+    "category_id": "8",
+    "concept_id": "20",
+    "property_id": "11",
+    "building_id": "29"
+  }
+}
+
+EXPENSES:
+{
+  "Create":
+  /* 
+    expense_flag: determine if the expense is general or particular.
+    issue_date: determine when the expense was issued. It can be edited by admins.
+  */
+  {
+    "document": "documwnt/path.pdf",
+    "number": "B29-ADM 001",
+    "description": "Expense description.",
+    "amount": 25000,
+    "quantity": 3,
+    "total": 75000,
+    "issue_date": "2017-03-31 9:30:20",
+    "status": false,
+    "expense_flag": true,
+    "category_id": "5",
+    "concept_id": "16",
+    "admin_user_id": "36",
+    "property_id": "20",
+    "building_id": "29",
+  },
+  "Get":
+  {
+  /* index: 
+    ""(), "1"(number),"2"(total),
+    "3"(status),"4"(property_id). 
+  */
+    "building_id": "29",
+    "startingDate": "2017-03-31 9:30:20",
+    "endingDate": "2017-03-31 9:30:20",
+    "expense_flag": true,
+    "index": "0",
+    "firstParam": "",
+    "secondParam": ""
+  }
 }
 
 BILL:
@@ -292,7 +323,7 @@ DATA:
         "region_id": "2",
         "country_id": "2",
         "property_types": 
-          [
+        [
           {
             "id": "9",
             "property_type": "Department",
@@ -308,7 +339,12 @@ DATA:
             "property_type": "Parking",
             "building_id": "29"
           },
-          ],
+          {
+            "id": "20",
+            "property_type": "Administracion",
+            "building_id": "29"
+          }
+        ],
         "properties": 
           [
           {
