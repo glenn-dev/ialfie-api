@@ -50,8 +50,7 @@ DATA:
             "property_type": "Department",
             "property_type_id": "9",
             "building_id": "29",
-            "default_concepts":
-              [
+            "default_concepts":[
                 {
                   "id": "1",
                   "created_at": "2020-07-30T16:16:16.449Z",
@@ -76,7 +75,39 @@ DATA:
                   "concept_code": "CO-006 | B29-CA08",
                   "concept": "Concept 6"
                 }
-              ]
+            ],
+            "expenses":[
+              {
+                "id": "8",
+                "document": "document/path.pdf",
+                "number": "0001",
+                "total": "16800.00",
+                "issue_date": "2017-03-31T12:30:20.000Z",
+                "status": false,
+                "expense_flag": false,
+                "admin_user_id": "36"
+              },
+              {
+                "id": "9",
+                "document": "document/path.pdf",
+                "number": "0002",
+                "total": "50000.00",
+                "issue_date": "2017-03-31T12:30:20.000Z",
+                "status": false,
+                "expense_flag": false,
+                "admin_user_id": "36"
+              },
+              {
+                "id": "10",
+                "document": "document/path.pdf",
+                "number": "0003",
+                "total": "20000.00",
+                "issue_date": "2017-03-31T12:30:20.000Z",
+                "status": false,
+                "expense_flag": false,
+                "admin_user_id": "36"
+              }
+            ]
           },
           {
             "id": "12",
@@ -88,7 +119,19 @@ DATA:
             "main_property_flag": false,
             "property_type": "Cellar",
             "property_type_id": "10",
-            "building_id": "29"
+            "building_id": "29",
+            "expenses":[
+              {
+                "id": "11",
+                "document": "document/path.pdf",
+                "number": "0001",
+                "total": "10000.00",
+                "issue_date": "2017-03-31T12:30:20.000Z",
+                "status": false,
+                "expense_flag": false,
+                "admin_user_id": "36"
+              }
+            ]
           },
           {
             "id": "13",
@@ -138,138 +181,134 @@ DATA:
             }
         ],
         "categories":[
-            {
-              "id": "5",
-              "created_at": "2020-07-28T18:50:46.565Z",
-              "code": "B29-CA001",
-              "category": "Cat Name 1",
-              "category_flag": true,
-              "building_id": "29",
-              "concepts":
-                [
-                  {
-                    "id": "16",
-                    "created_at": "2020-07-28T21:35:09.836Z",
-                    "code": "CO-001 | B29-CA05",
-                    "concept": "Concept 1",
-                    "concept_flag": true,
-                    "category_id": "5",
-                    "cat_code": "B29-CA001",
-                    "category": "Cat Name 1",
-                    "building_id": "29"
-                  },
-                  {
-                    "id": "17",
-                    "created_at": "2020-07-29T19:36:41.389Z",
-                    "code": "CO-002 | B29-CA05",
-                    "concept": "Concept 2",
-                    "concept_flag": true,
-                    "category_id": "5",
-                    "cat_code": "B29-CA001",
-                    "category": "Cat Name 1",
-                    "building_id": "29"
-                  }
-                ]
-            },
-            {
-              "id": "6",
-              "created_at": "2020-07-28T19:23:33.023Z",
-              "code": "Cat Name 2",
-              "category": "B29-CA002",
-              "category_flag": true,
-              "building_id": "29",
-              "concepts":
-                [
-                  {
-                    "id": "18",
-                    "created_at": "2020-07-29T19:38:00.466Z",
-                    "code": "CO-003 | B29-CA06",
-                    "concept": "Concept 3",
-                    "concept_flag": true,
-                    "category_id": "6",
-                    "cat_code": "Cat Name 2",
-                    "category": "B29-CA002",
-                    "building_id": "29"
-                  },
-                  {
-                    "id": "19",
-                    "created_at": "2020-07-29T19:38:12.450Z",
-                    "code": "CO-004 | B29-CA06",
-                    "concept": "Concept 4",
-                    "concept_flag": true,
-                    "category_id": "6",
-                    "cat_code": "Cat Name 2",
-                    "category": "B29-CA002",
-                    "building_id": "29"
-                  }
-                ]
-            },
-            {
-              "id": "8",
-              "created_at": "2020-07-28T20:53:47.194Z",
-              "code": "B29-P001",
-              "category": "Property Cat Name 1",
-              "category_flag": false,
-              "building_id": "29",
-              "concepts":
-                [
-                  {
-                    "id": "20",
-                    "created_at": "2020-07-29T20:09:38.424Z",
-                    "code": "CO-005 | B29-CA08",
-                    "concept": "Concept 5",
-                    "concept_flag": false,
-                    "category_id": "8",
-                    "cat_code": "B29-P001",
-                    "category": "Property Cat Name 1",
-                    "building_id": "29"
-                  },
-                  {
-                    "id": "21",
-                    "created_at": "2020-07-29T20:09:57.051Z",
-                    "code": "CO-006 | B29-CA08",
-                    "concept": "Concept 6",
-                    "concept_flag": false,
-                    "category_id": "8",
-                    "cat_code": "B29-P001",
-                    "category": "Property Cat Name 1",
-                    "building_id": "29"
-                  }
-                ]
-            },
-            {
-              "id": "9",
-              "created_at": "2020-07-28T20:53:57.743Z",
-              "code": "B29-P002",
-              "category": "Property Cat Name 2",
-              "category_flag": false,
-              "building_id": "29",
-              "concepts":
-                [
-                  {
-                    "id": "22",
-                    "created_at": "2020-07-29T20:10:21.475Z",
-                    "code": "CO-007 | B29-CA09",
-                    "concept": "Concept 7",
-                    "concept_flag": false,
-                    "category_id": "9",
-                    "cat_code": "B29-P002",
-                    "category": "Property Cat Name 2",
-                    "building_id": "29"
-                  },
-                  {
-                    "id": "23",
-                    "created_at": "2020-07-29T20:10:47.212Z",
-                    "code": "CO-008 | B29-CA09",
-                    "concept": "Concept 8",
-                    "concept_flag": false,
-                    "category_id": "9",
-                    "cat_code": "B29-P002",
-                    "category": "Property Cat Name 2",
-                    "building_id": "29"
-                  }
-                ]
-            }
+          {
+            "id": "5",
+            "created_at": "2020-07-28T18:50:46.565Z",
+            "code": "B29-CA001",
+            "category": "Cat Name 1",
+            "category_flag": true,
+            "building_id": "29",
+            "concepts":[
+              {
+                "id": "16",
+                "created_at": "2020-07-28T21:35:09.836Z",
+                "code": "CO-001 | B29-CA05",
+                "concept": "Concept 1",
+                "concept_flag": true,
+                "category_id": "5",
+                "cat_code": "B29-CA001",
+                "category": "Cat Name 1",
+                "building_id": "29"
+              },
+              {
+                "id": "17",
+                "created_at": "2020-07-29T19:36:41.389Z",
+                "code": "CO-002 | B29-CA05",
+                "concept": "Concept 2",
+                "concept_flag": true,
+                "category_id": "5",
+                "cat_code": "B29-CA001",
+                "category": "Cat Name 1",
+                "building_id": "29"
+              }
+            ]
+          },
+          {
+            "id": "6",
+            "created_at": "2020-07-28T19:23:33.023Z",
+            "code": "Cat Name 2",
+            "category": "B29-CA002",
+            "category_flag": true,
+            "building_id": "29",
+            "concepts":[
+              {
+                "id": "18",
+                "created_at": "2020-07-29T19:38:00.466Z",
+                "code": "CO-003 | B29-CA06",
+                "concept": "Concept 3",
+                "concept_flag": true,
+                "category_id": "6",
+                "cat_code": "Cat Name 2",
+                "category": "B29-CA002",
+                "building_id": "29"
+              },
+              {
+                "id": "19",
+                "created_at": "2020-07-29T19:38:12.450Z",
+                "code": "CO-004 | B29-CA06",
+                "concept": "Concept 4",
+                "concept_flag": true,
+                "category_id": "6",
+                "cat_code": "Cat Name 2",
+                "category": "B29-CA002",
+                "building_id": "29"
+              }
+            ]
+          },
+          {
+            "id": "8",
+            "created_at": "2020-07-28T20:53:47.194Z",
+            "code": "B29-P001",
+            "category": "Property Cat Name 1",
+            "category_flag": false,
+            "building_id": "29",
+            "concepts":[
+              {
+                "id": "20",
+                "created_at": "2020-07-29T20:09:38.424Z",
+                "code": "CO-005 | B29-CA08",
+                "concept": "Concept 5",
+                "concept_flag": false,
+                "category_id": "8",
+                "cat_code": "B29-P001",
+                "category": "Property Cat Name 1",
+                "building_id": "29"
+              },
+              {
+                "id": "21",
+                "created_at": "2020-07-29T20:09:57.051Z",
+                "code": "CO-006 | B29-CA08",
+                "concept": "Concept 6",
+                "concept_flag": false,
+                "category_id": "8",
+                "cat_code": "B29-P001",
+                "category": "Property Cat Name 1",
+                "building_id": "29"
+              }
+            ]
+          },
+          {
+            "id": "9",
+            "created_at": "2020-07-28T20:53:57.743Z",
+            "code": "B29-P002",
+            "category": "Property Cat Name 2",
+            "category_flag": false,
+            "building_id": "29",
+            "concepts":[
+              {
+                "id": "22",
+                "created_at": "2020-07-29T20:10:21.475Z",
+                "code": "CO-007 | B29-CA09",
+                "concept": "Concept 7",
+                "concept_flag": false,
+                "category_id": "9",
+                "cat_code": "B29-P002",
+                "category": "Property Cat Name 2",
+                "building_id": "29"
+              },
+              {
+                "id": "23",
+                "created_at": "2020-07-29T20:10:47.212Z",
+                "code": "CO-008 | B29-CA09",
+                "concept": "Concept 8",
+                "concept_flag": false,
+                "category_id": "9",
+                "cat_code": "B29-P002",
+                "category": "Property Cat Name 2",
+                "building_id": "29"
+              }
+            ]
+          }
         ]
       },
       {

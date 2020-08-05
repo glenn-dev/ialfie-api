@@ -61,6 +61,11 @@ PROPERTIES:
     "status": true,
     "index": "1",
     "params": "2003"
+  },
+  "GetById":
+  {
+    "id": "25",
+    "main_property_flag": true
   }
 }
 
@@ -302,16 +307,16 @@ EXPENSES:
 
 BILL:
 {
-	"number" : "B23-P01-001",
-  "exp_date" : "2020-06-25 11:26:14",
-  "building_subtotal" : 45000,
-  "property_subtotal" : 50000,
+  "document" : "bill/document/path.pdf",
+	"number" : "B29-P01-001",
+  "buildingSubtotal" : 45000,
+  "propertySubtotal" : 50000,
 	"total" : 95000.00,
+  "expirationDate" : "2020-06-25 11:26:14",
   "status" : false,
   "issued" : true,
-  "document" : "bill/document/path.pdf",
-  "details" : ["506", "507", "508"],
-	"admin_user_id" : "21",
-	"property_id" : "48",
-	"building_id" : "23"
+	"adminUserId" : "21",
+	"propertyId" : "48",
+	"buildingId" : "23",
+  "billDetails" : ["506", "507", "508"]
 }

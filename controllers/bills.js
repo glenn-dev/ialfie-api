@@ -55,7 +55,7 @@ const getBills = (req, res) => {
 
 /* GET BILLS BY ID */
 const getBillById = (req, res) => {
-  const bill_id = req.body;
+  const id = req.body;
   pool.query(
     `
     SELECT
@@ -119,7 +119,7 @@ const getBillById = (req, res) => {
       AS ex
       ON bd.expense_id = ex.id
     WHERE 
-      bd.bill_id = ${bill_id}
+      bd.bill_id = ${id}
     ORDER BY 
       bi.id ASC`, // Delete bi.id, bd.id, bd.bill_id and bd.bd_expense_id at the end of the sprint.
     (error, results) => {
@@ -134,57 +134,59 @@ const getBillById = (req, res) => {
 /* CREATE BILL */
 const createBill = (req, res) => {
   const {
+    document,
     number,
-    exp_date,
-    building_subtotal,
-    property_subtotal,
+    buildingSubtotal,
+    propertySubtotal,
     total,
+    expirationDate,
     status,
     issued,
-    document,
-    details,
-    admin_user_id,
-    property_id,
-    building_id,
+    adminUserId,
+    propertyId,
+    buildingId,
+    billDetails,
   } = req.body;
   pool.query(
     `
-    INSERT INTO 
-      bills 
+    INSERT INTO
+      bills
       (
-        number, 
-        exp_date, 
-        building_subtotal, 
-        property_subtotal, 
-        total, 
-        status, 
-        issued, 
-        document, 
-        admin_user_id, 
-        property_id, 
-        building_id, 
-      ) 
-    VALUES 
-      (
-        ${number},
-        ${exp_date},
-        ${building_subtotal},
-        ${property_subtotal},
-        ${total},
-        ${status},
-        ${issued},
-        ${document},
-        ${admin_user_id},
-        ${property_id},
-        ${building_id},
-      ) 
+        document,
+        number,
+        building_subtotal,
+        property_subtotal,
+        total,
+        exp_date,
+        status,
+        issued,
+        admin_user_id,
+        property_id,
+        building_id
+      )
+    VALUES
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
     RETURNING id`,
+    [
+      document,
+      number,
+      buildingSubtotal,
+      propertySubtotal,
+      total,
+      expirationDate,
+      status,
+      issued,
+      adminUserId,
+      propertyId,
+      buildingId,
+      billDetails,
+    ],
     (error, results) => {
       if (error) {
         throw error;
       }
       const id = results.rows[0].id;
-      insertBillDetails(id, details)
+      insertBillDetails(id, billDetails)
         .then(res.status(201).send(`Bill ${id} created.`))
         .catch((err) => {
           throw err;
@@ -194,10 +196,10 @@ const createBill = (req, res) => {
 };
 
 /* CREATE RELATIONS */
-const insertBillDetails = (bill_id, details) => {
+const insertBillDetails = (billId, details) => {
   let values = [];
-  details.forEach((expense_id) => {
-    values.push(`(${bill_id}, ${expense_id})`);
+  details.forEach((expenseId) => {
+    values.push(`(${billId}, ${expenseId})`);
   });
   return pool.query(
     `
