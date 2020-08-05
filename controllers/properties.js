@@ -2,27 +2,41 @@ const pool = require('../database/db');
 
 /* GET ALL PROPERTIES */
 const getProperties = (req, res) => {
-  const { building_id, column, id } = req.body;
+  const { building_id, status, index = 0, params } = req.body;
+  const queryArray = [
+    '',
+    `AND pr.number similar to '%${params}%'`,
+    `AND pr.floor = '${params}'`,
+    `AND pr.defaulting = ${params}`,
+    `AND pr.property_type_id = ${params}`,
+  ];
+
   pool.query(
     `
     SELECT 
-      id,
-      number,
-      floor,
-      aliquot,
-      status,
-      defaulting,
-      main_property_flag,
-      property_type_id,
-      building_id
+      pr.id,
+      pt.property_type,
+      pr.number,
+      pr.floor,
+      pr.aliquot,
+      pr.status,
+      pr.defaulting,
+      pr.main_property_flag,
+      pr.property_type_id,
+      pr.building_id
     FROM
       properties
+      AS pr
+    INNER JOIN
+      property_types
+      AS pt
+      ON pr.property_type_id = pt.id
     WHERE
-      building_id = ${building_id}
-      AND
-      ${column} = ${id}
+      pr.building_id = ${building_id}
+      AND pr.status = ${status}
+      ${queryArray[index]}
     ORDER BY 
-      number ASC`,
+      pr.number ASC`,
     (error, results) => {
       if (error) {
         throw error;
