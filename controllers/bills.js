@@ -103,7 +103,7 @@ const getBillById = (req, res) => {
       ex.status
         AS expense_status,
       ex.expense_flag
-    FROM 
+    FROM
       bill_details
       AS bd
     INNER JOIN 

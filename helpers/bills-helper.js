@@ -1,5 +1,7 @@
 /* PARSE BILL DETAILS QUERY */
 
+const pool = require('../database/db');
+
 const goParseBills = (data) => {
   /* Push new 'bill' object into 'bills' array. */
   const pushBill = (bill, bills) => {
@@ -22,7 +24,7 @@ const goParseBills = (data) => {
           quantity: bill.quantity,
           total: bill.total,
           expense_status: bill.expense_status,
-          expense_flag: bill.expense_flag
+          expense_flag: bill.expense_flag,
         },
       ],
     });
@@ -43,7 +45,7 @@ const goParseBills = (data) => {
       quantity: bill.quantity,
       total: bill.total,
       expense_status: bill.expense_status,
-      expense_flag: bill.expense_flag
+      expense_flag: bill.expense_flag,
     });
   };
 
