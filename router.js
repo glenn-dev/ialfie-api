@@ -120,6 +120,7 @@ function createRouter(app) {
   app.post('/bills/create', bills.createBill);
   app.put('/bills/update', bills.updateBill);
   app.delete('/bills/delete', bills.deleteBills);
+  app.post('/bills/monthly-billing', bills.monthlyBilling)
 
   /* PAYMENTS */
   app.get('/payments', payments.getPayments);

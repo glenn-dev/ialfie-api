@@ -1,5 +1,8 @@
 const pool = require('../database/db');
-const goParseBills = require('../helpers/bills-helper');
+const {
+  parseBills,
+  parsePropertiesExpenses,
+} = require('../helpers/bills-helper');
 
 /* GET ALL BILLS */
 const getBills = (req, res) => {
@@ -195,6 +198,132 @@ const createBill = (req, res) => {
   );
 };
 
+/* MONTHLY BILLING */
+const monthlyBilling = (req, res) => {
+  const { buildingId, adminUserId, firstParam, secondParam } = req.body;
+
+  /* Get all building expenses */
+  const getBuildingExpenses = (buildingId, firstParam, secondParam) => {
+    let secondaryQuery = 'AND status = false';
+    if (firstParam) {
+      secondaryQuery = `AND issue_date BETWEEN ${firstParam} AND ${secondParam}`;
+    }
+    return pool.query(
+      `
+      SELECT
+        id,
+        total
+      FROM
+        expenses
+      WHERE
+        building_id = ${buildingId}
+        AND expense_flag = true
+        ${secondaryQuery}
+      `
+    );
+  };
+
+  /* Get all properties and their expenses */
+  const getPropertiesExpenses = (buildingId) => {
+    return pool.query(
+      `
+      SELECT
+        pr.id
+          AS property_id,
+        pt.property_type
+          AS property_type,
+        pr.number
+          AS property_number,
+        pr.aliquot,
+        ex.id
+          AS expense_id,
+        ex.number
+          AS expense_number,
+        ex.total
+          AS expense_total
+      FROM
+        properties
+        AS pr
+      INNER JOIN
+        property_types
+        AS pt
+        ON pr.property_type_id = pt.id
+      INNER JOIN
+        expenses
+        AS ex
+        ON ex.property_id = pr.id
+      WHERE
+        pr.building_id = ${buildingId}
+        AND pr.main_property_flag = true
+      ORDER BY
+        pr.id ASC
+      `
+    );
+  };
+
+  /* CALLS */
+  Promise.all([
+    getBuildingExpenses(buildingId, firstParam, secondParam),
+    getPropertiesExpenses(buildingId),
+  ])
+    .then((expensesArray) => {
+
+      const propertiesExpensesArr = parsePropertiesExpenses(expensesArray);
+
+      res.status(201).send(propertiesExpensesArr);
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+  /*   pool.query(
+    `
+    INSERT INTO
+      bills
+      (
+        document,
+        number,
+        building_subtotal,
+        property_subtotal,
+        total,
+        exp_date,
+        status,
+        issued,
+        admin_user_id,
+        property_id,
+        building_id
+      )
+    VALUES
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+    RETURNING id`,
+    [
+      document,
+      number,
+      buildingSubtotal,
+      propertySubtotal,
+      total,
+      expirationDate,
+      status,
+      issued,
+      adminUserId,
+      propertyId,
+      buildingId,
+      billDetails,
+    ],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      const id = results.rows[0].id;
+      insertBillDetails(id, billDetails)
+        .then(res.status(201).send(`Bill ${id} created.`))
+        .catch((err) => {
+          throw err;
+        });
+    }
+  ); */
+};
+
 /* CREATE RELATIONS */
 const insertBillDetails = (billId, details) => {
   let values = [];
@@ -295,4 +424,5 @@ module.exports = {
   createBill,
   updateBill,
   deleteBills,
+  monthlyBilling,
 };

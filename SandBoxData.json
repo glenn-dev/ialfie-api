@@ -145,6 +145,42 @@ DATA:
             "property_type_id": "11",
             "building_id": "29"
           },
+          {
+            "id": "21",
+            "property_type": "Department",
+            "number": "1305",
+            "floor": "13",
+            "aliquot": "0.25000",
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": true,
+            "property_type_id": "9",
+            "building_id": "29"
+          },
+          {
+            "id": "22",
+            "property_type": "Cellar",
+            "number": "48",
+            "floor": "1",
+            "aliquot": "0.00300",
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": false,
+            "property_type_id": "10",
+            "building_id": "29"
+          },
+          {
+            "id": "23",
+            "property_type": "Parking",
+            "number": "91",
+            "floor": "-1",
+            "aliquot": "0.00800",
+            "status": true,
+            "defaulting": false,
+            "main_property_flag": false,
+            "property_type_id": "11",
+            "building_id": "29"
+          }
         ],
         "communications":[
             {
@@ -399,52 +435,89 @@ DATA:
           ] */
       }
     ],
-  "Users":
-    [
-      {
-        "id": "36",
-        "image": "glenn/image/path.png",
-        "fisrt_name": "Glenn",
-        "middle_name": "Andrés",
-        "last_name": "Marcano",
-        "maternal_surname": "Rada",
-        "identity_number": "258369147",
-        "phone": "987654321",
-        "email": "glenn@email.com",
-        "password": "123456",
-        "status": true,
-        "liabilities": 
-          [
-            {
-              "id": "1",
-              "status": true,
-              "user_type_id": "1",
-              "admin_user_id": "36",
-              "user_id": "36",
-              "property_id": "11",
-              "building_id": "29"
-            },
-            {
-              "id": "2",
-              "status": true,
-              "user_type_id": "1",
-              "admin_user_id": "36",
-              "user_id": "36",
-              "property_id": "12",
-              "building_id": "29"
-            },
-            {
-              "id": "3",
-              "status": true,
-              "user_type_id": "1",
-              "admin_user_id": "36",
-              "user_id": "36",
-              "property_id": "13",
-              "building_id": "29"
-            }
-          ]
-      }
-    ]
+  "Users":[
+    {
+      "id": "36",
+      "image": "glenn/image/path.png",
+      "fisrt_name": "Glenn",
+      "middle_name": "Andrés",
+      "last_name": "Marcano",
+      "maternal_surname": "Rada",
+      "identity_number": "258369147",
+      "phone": "987654321",
+      "email": "glenn@email.com",
+      "password": "123456",
+      "status": true,
+      "liabilities":[
+        {
+          "id": "1",
+          "status": true,
+          "user_type_id": "1",
+          "admin_user_id": "36",
+          "user_id": "36",
+          "property_id": "11",
+          "building_id": "29"
+        },
+        {
+          "id": "2",
+          "status": true,
+          "user_type_id": "1",
+          "admin_user_id": "36",
+          "user_id": "36",
+          "property_id": "12",
+          "building_id": "29"
+        },
+        {
+          "id": "3",
+          "status": true,
+          "user_type_id": "1",
+          "admin_user_id": "36",
+          "user_id": "36",
+          "property_id": "13",
+          "building_id": "29"
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "image": "image/path.png",
+      "firstName": "The ouner",
+      "lastName": "The very owner",
+      "identityNumber": "123456789",
+      "phone": "123456789",
+      "email": "owner@mail.com",
+      "status": true,
+      "properties":[
+        {
+            "id": "21",
+            "type": "Department",
+            "number": "1305",
+            "floor": "13",
+            "defaulting": false,
+            "status": true,
+            "mainProperty": true
+        },
+        {
+            "id": "22",
+            "type": "Cellar",
+            "number": "48",
+            "floor": "1",
+            "defaulting": false,
+            "status": true,
+            "mainProperty": false
+        },
+        {
+            "id": "23",
+            "type": "Parking",
+            "number": "91",
+            "floor": "-1",
+            "defaulting": false,
+            "status": true,
+            "mainProperty": false
+        }
+      ]
+    }
+  ]
 }
 
 
@@ -475,3 +548,15 @@ DATA:
   "defaulting": false,
   "property_status": true
 }
+
+
+
+
+
+// User Types
+1 - Super admin.
+3 - Admin.
+5 - Doorman.
+6 - Board of owners.
+7 - Owner.
+8 - Resident.

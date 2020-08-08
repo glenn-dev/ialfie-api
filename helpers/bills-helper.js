@@ -2,7 +2,7 @@
 
 const pool = require('../database/db');
 
-const goParseBills = (data) => {
+const parseBills = (data) => {
   /* Push new 'bill' object into 'bills' array. */
   const pushBill = (bill, bills) => {
     bills.push({
@@ -64,5 +64,58 @@ const goParseBills = (data) => {
   return bills;
 };
 
+const parseBuildingExpenses = (buildingExpenses) => {
+  return {
+    buildingExpensesId: buildingExpenses.map(
+      (buildingExpense) => buildingExpense.id
+    ),
+    buildingSubtotal: buildingExpenses.reduce(
+      (acum, elem) => acum + parseFloat(elem.total),
+      0
+    ),
+  };
+};
+
+const parsePropertiesExpenses = (expensesArray) => {
+  const buildingExpensesObj = parseBuildingExpenses(expensesArray[0].rows);
+
+  let propertiesExpensesArr = [];
+
+  expensesArray[1].rows.forEach((propertyExpense) => {
+    if (
+      propertiesExpensesArr.find(
+        (elem) => elem.id === propertyExpense.propertyId
+      ) === undefined
+    ) {
+      propertiesExpensesArr.push({
+        propertyId: propertyExpense.property_id,
+        propertyType: propertyExpense.property_type,
+        propertyNumber: propertyExpense.property_number,
+        aliquot: propertyExpense.aliquot,
+        expenses: {
+          buildingExpensesIdArr: buildingExpensesObj.buildingExpensesId,
+          propertyExpensesIdArr: [propertyExpense.expense_id],
+          buildingSubtotal:
+            parseFloat(propertyExpense.aliquot) *
+            buildingExpensesObj.buildingSubtotal,
+          propertySubtotal: parseFloat(propertyExpense.expense_total),
+        },
+      });
+    } else {
+      propertiesExpensesArr[
+        propertiesExpensesArr.length - 1
+      ].expenses.propertySubtotal += parseFloat(propertyExpense.expense_total);
+      propertiesExpensesArr[
+        propertiesExpensesArr.length - 1
+      ].expenses.propertyExpensesIdArr.push(propertyExpense.expense_id);
+    }
+  });
+
+  return propertiesExpensesArr;
+};
+
 /* EXPORTS */
-module.exports = goParseBills;
+module.exports = {
+  parseBills,
+  parsePropertiesExpenses,
+};
