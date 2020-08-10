@@ -97,9 +97,47 @@ const parsePropertiesExpenses = (expensesArray) => {
           propertyExpensesIdArr: [propertyExpense.expense_id],
           buildingSubtotal:
             parseFloat(propertyExpense.aliquot) *
-            buildingExpensesObj.buildingSubtotal,
+              buildingExpensesObj.buildingSubtotal +
+            parseFloat(propertyExpense.sub_property_aliquot) *
+              buildingExpensesObj.buildingSubtotal,
           propertySubtotal: parseFloat(propertyExpense.expense_total),
         },
+        subProperties: [
+          {
+            subPropertyId: propertyExpense.sub_property_id,
+            subPropertyType: propertyExpense.sub_property_type,
+            subPropertyNumber: propertyExpense.subproperty_number,
+            subPropertyAliquuot: propertyExpense.sub_property_aliquot,
+            subPropertyExpense:
+              parseFloat(propertyExpense.sub_property_aliquot) *
+              buildingExpensesObj.buildingSubtotal,
+          },
+        ],
+      });
+    } else if (
+      propertiesExpensesArr[
+        propertiesExpensesArr.length - 1
+      ].subProperties.find(
+        (elem) => elem.subPropertyId === propertyExpense.sub_property_id
+      ) === undefined
+    ) {
+
+      propertiesExpensesArr[
+        propertiesExpensesArr.length - 1
+      ].expenses.buildingSubtotal +=
+        parseFloat(propertyExpense.sub_property_aliquot) *
+        buildingExpensesObj.buildingSubtotal;
+
+      propertiesExpensesArr[
+        propertiesExpensesArr.length - 1
+      ].subProperties.push({
+        subPropertyId: propertyExpense.sub_property_id,
+        subPropertyType: propertyExpense.sub_property_type,
+        subPropertyNumber: propertyExpense.subproperty_number,
+        subPropertyAliquuot: propertyExpense.sub_property_aliquot,
+        subPropertyExpense:
+          parseFloat(propertyExpense.sub_property_aliquot) *
+          buildingExpensesObj.buildingSubtotal,
       });
     } else {
       propertiesExpensesArr[

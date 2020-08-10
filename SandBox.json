@@ -44,9 +44,17 @@ PROPERTIES:
     "aliquot": 0.0325,
     "status": true,
     "defaulting": false,
-    "main_property_flag": true,
-    "property_type_id": "1",
-    "building_id": "29"
+    "subProperties":[
+      {
+        "number": "2003",
+        "floor": "20",
+        "aliquot": 0.0325,
+        "status": true,
+        "propertyTypeId": "5"
+      }
+    ],
+    "propertyTypeId": "1",
+    "buildingId": "29"
   },
   "GetAll":
   {
@@ -57,15 +65,14 @@ PROPERTIES:
       "3"(pr.defaulting), 
       "4"(pr.property_type_id).
     */
-    "building_id": "29",
+    "buildingId": "29",
     "status": true,
     "index": "1",
     "params": "2003"
   },
   "GetById":
   {
-    "id": "25",
-    "main_property_flag": true
+    "id": "25"
   }
 }
 

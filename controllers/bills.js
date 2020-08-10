@@ -235,8 +235,15 @@ const monthlyBilling = (req, res) => {
         pr.number
           AS property_number,
         pr.aliquot,
+        sp.sub_property_id,
+        spt.property_type
+          AS sub_property_type,
+        spr.number
+          AS sub_property_number,
+        spr.aliquot
+          AS sub_property_aliquot,
         ex.id
-          AS expense_id,
+        AS expense_id,
         ex.number
           AS expense_number,
         ex.total
@@ -248,6 +255,18 @@ const monthlyBilling = (req, res) => {
         property_types
         AS pt
         ON pr.property_type_id = pt.id
+      INNER JOIN
+        sub_properties
+        AS sp
+        ON sp.property_id = pr.id
+      INNER JOIN
+        properties
+        AS spr
+        ON sp.sub_property_id = spr.id
+      INNER JOIN
+        property_types
+        AS spt
+        ON spr.property_type_id = spt.id
       INNER JOIN
         expenses
         AS ex
@@ -269,8 +288,9 @@ const monthlyBilling = (req, res) => {
     .then((expensesArray) => {
 
       const propertiesExpensesArr = parsePropertiesExpenses(expensesArray);
-
       res.status(201).send(propertiesExpensesArr);
+      //res.status(201).send(expensesArray[1].rows);
+      
     })
     .catch((error) => {
       throw error;
