@@ -1,4 +1,5 @@
 const pool = require('../database/db');
+const parsePropertyData = require('../helpers/properties-helper');
 
 /* GET ALL PROPERTIES */
 const getProperties = (req, res) => {
@@ -71,6 +72,7 @@ const getPropertyById = (req, res) => {
       spr.aliquot
         AS sub_property_aliquot,
       li.user_id,
+      li.user_type_id,
       us.image,
       us.first_name,
       us.last_name,
@@ -110,11 +112,14 @@ const getPropertyById = (req, res) => {
     (error, results) => {
       if (error) {
         throw error;
+      } else if (results.rows.length === 0) {
+        res.status(200).json(results.rows);
+      } else {
+        res.status(200).json(parsePropertyData(results.rows));
       }
-      res.status(200).json(results.rows);
     }
   );
-}
+};
 
 /* INSERT SUB-PROPERTIES */
 const insertSubProperties = (subProperties, propertyId) => {

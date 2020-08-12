@@ -119,31 +119,31 @@ LIABILITIES(create):
 When user doesn't exist: 
 {
   "member": false,
-  "building_id": 4,
-  "admin_user_id": 256,
+  "buildingId": 4,
+  "adminUserId": 256,
   "user":
   {
-    "first_name": ".",
-    "last_name": ".",
-    "identity_number": ".",
+    "firstName": ".",
+    "lastName": ".",
+    "identityNumber": ".",
     "email": "user1@email.com",
     "password": ".",
     "status": false,
   },
   "liabilities":[
     { 
-      "user_type_id": 3,
-      "property_id": 556,
+      "userTypeId": 3,
+      "propertyId": 556,
       "status": false,
     },
     { 
-      "user_type_id": 3,
-      "property_id": 556,
+      "userTypeId": 3,
+      "propertyId": 556,
       "status": false,
     },
     { 
-      "user_type_id": 3,
-      "property_id": 556,
+      "userTypeId": 3,
+      "propertyId": 556,
       "status": false,
     }
   ]
@@ -151,11 +151,11 @@ When user doesn't exist:
 When user exist:
 {
   "member": true,
-  "building_id": 4,
-  "admin_user_id" : 256,
+  "buildingId": 4,
+  "adminUserId" : 256,
   "user": 
     {
-      "user_id": 456,
+      "userId": 456,
     },
   "liabilities":[
     /* "status"(false) changes to true when 
@@ -163,18 +163,18 @@ When user exist:
         via email. 
     */
     { 
-      "user_type_id": 3,
-      "property_id": 556,
+      "userTypeId": 3,
+      "propertyId": 556,
       "status": false,
     },
     { 
-      "user_type_id": 3,
-      "property_id": 789,
+      "userTypeId": 3,
+      "propertyId": 789,
       "status": false,
     },
     { 
-      "user_type_id": 3,
-      "property_id": 952,
+      "userTypeId": 3,
+      "propertyId": 952,
       "status": false,
     }
   ]
@@ -184,11 +184,11 @@ Liabilities(update):
 [
   { 
     "id": 4,
-    "admin_user_id" : 256,
-    "user_id": 456,
-    "user_type_id": 3,
-    "property_id": 752,
-    "building_id": 4,
+    "adminUserId" : 256,
+    "userId": 456,
+    "userTypeId": 3,
+    "propertyId": 752,
+    "buildingId": 4,
     "status": true
   }
 ]
