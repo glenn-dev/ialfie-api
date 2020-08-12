@@ -21,7 +21,6 @@ const getProperties = (req, res) => {
       pr.aliquot,
       pr.status,
       pr.defaulting,
-      pr.main_property_flag,
       pr.property_type_id,
       pr.building_id
     FROM
@@ -48,93 +47,56 @@ const getProperties = (req, res) => {
 
 /* GET PROPERTY BY ID */
 const getPropertyById = (req, res) => {
-  const { id, main_property_flag } = req.body;
-
-  let propertyIdToGet = '';
-  let givenIdProperty = '';
-
-  if (main_property_flag) {
-    givenIdProperty = 'property';
-    propertyIdToGet = 'sub_property';
-  } else {
-    givenIdProperty = 'sub_property';
-    propertyIdToGet = 'property';
-  }
-
-  const relatedProperties = (id, propertyIdToGet, givenIdProperty) => {
-    return pool.query(
-      `
-      SELECT 
-        pr.id,
-        pr.number,
-        pr.floor,
-        pr.aliquot,
-        pr.status,
-        pr.defaulting,
-        pr.main_property_flag,
-        pr.property_type_id
-      FROM
-        sub_properties
-        AS sp
-      INNER JOIN
-        properties
-        AS pr
-        ON sp.${propertyIdToGet}_id = pr.id
-      WHERE
-        sp.${givenIdProperty}_id = ${id}
-      ORDER BY
-        pr.number ASC`
-    );
-  };
-
-  const propertyUsers = (id) => {
-    return pool.query(
-      `
-      SELECT 
-        us.id,
-        us.created_at,
-        us.updated_at,
-        us.image,
-        us.first_name,
-        us.last_name,
-        us.identity_number,
-        us.phone,
-        us.email,
-        us.status,
-        ut.user_type
-      FROM
-        liabilities
-        AS li
-      INNER JOIN
-        users
-        AS us
-        ON li.user_id = us.id
-      INNER JOIN
-        user_types
-        AS ut
-        ON li.user_type_id = ut.id
-      WHERE
-        li.property_id = ${id}
-      ORDER BY
-        us.first_name ASC`
-    );
-  };
-
-  Promise.all([
-    relatedProperties(id, propertyIdToGet, givenIdProperty),
-    propertyUsers(id),
-  ])
-    .then((values) => {
-      const response = {
-        relatedPropertiesArr: values[0].rows,
-        propertyUsersArr: values[1].rows,
-      };
-      res.status(200).json(response);
-    })
-    .catch((error) => {
-      throw error;
-    });
-};
+  const id = req.body;
+  pool.query(
+    `
+    SELECT 
+      pr.id,
+      pt.property_type,
+      pr.number,
+      pr.floor,
+      pr.aliquot,
+      pr.status,
+      pr.defaulting,
+      pr.property_type_id,
+      pr.building_id,
+      li.user_id,
+      us.image,
+      us.first_name,
+      us.last_name,
+      us.email,
+      ut.user_type
+    FROM
+      properties
+      AS pr
+    INNER JOIN
+      property_types
+      AS pt
+      ON pr.property_type_id = pt.id
+    LEFT JOIN
+      liabilities
+      AS li
+      ON li.property_id = pr.id
+    LEFT JOIN
+      users
+      AS us
+      ON li.user_id = us.id
+    LEFT JOIN
+      user_types
+      AS ut
+      ON li.user_type_id = ut.id
+    WHERE
+      pr.id = ${id}
+    ORDER BY 
+      pr.number ASC`,
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+}
 
 /* INSERT SUB-PROPERTIES */
 const insertSubProperties = (subProperties, propertyId) => {
@@ -207,7 +169,7 @@ const createProperty = (req, res) => {
           res
             .status(201)
             .send(
-              `Property ${propertyId} created. Relations ${response.rows} added.`
+              `Property ${propertyId} created. ${response.rows.length} Relations added.`
             );
         })
         .catch((error) => {
