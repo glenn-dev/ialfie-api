@@ -86,33 +86,33 @@ const getLiability = (req, res) => {
 
 /* CREATE LIABILITY */
 const createLiability = (req, res) => {
-  const { member, user, liabilities, building_id, admin_user_id } = req.body;
+  const { member, user, liabilities, buildingId, adminUserId } = req.body;
 
   // Insert liabilities.
   const insertLiability = (
     liabilities,
-    admin_user_id,
-    user_id,
-    building_id
+    adminUserId,
+    userId,
+    buildingId
   ) => {
     let values = [];
     liabilities.forEach((liability) => {
       values.push(
         `
         (
-          ${admin_user_id},
-          ${user_id},
-          ${building_id},
-          ${liability.user_type_id},
-          ${liability.property_id},
+          ${adminUserId},
+          ${userId},
+          ${buildingId},
+          ${liability.userTypeId},
+          ${liability.propertyId},
           ${liability.status}
         )`
       );
     });
 
     pool.query(
-      `INSERT INTO 
-        liabilities 
+      `INSERT INTO
+        liabilities
         (
           admin_user_id,
           user_id,
@@ -120,8 +120,8 @@ const createLiability = (req, res) => {
           user_type_id,
           property_id,
           status
-        ) 
-      VALUES 
+        )
+      VALUES
         ${values}
       RETURNING id`,
       (error, results) => {
@@ -149,9 +149,9 @@ const createLiability = (req, res) => {
         )
       VALUES
         (
-          '${user.first_name}',
-          '${user.last_name}',
-          '${user.identity_number},
+          '${user.firstName}',
+          '${user.lastName}',
+          '${user.identityNumber},
           '${user.email}',
           '${user.password}',
           '${user.status}'
@@ -161,28 +161,28 @@ const createLiability = (req, res) => {
         if (error) {
           throw error;
         }
-        const user_id = results.rows[0].id;
-        insertLiability(liabilities, admin_user_id, user_id, building_id);
+        const userId = results.rows[0].id;
+        insertLiability(liabilities, adminUserId, userId, buildingId);
       }
     );
   };
 
   member
     ? // If user is already a member then just insert liabilities.
-      insertLiability(liabilities, admin_user_id, user.user_id, building_id)
+      insertLiability(liabilities, adminUserId, user.userId, buildingId)
     : // If user is NOT a member then insert user (basic data) and liabilities.
-      insertUserLiabilities(user, liabilities, building_id, admin_user_id);
+      insertUserLiabilities(user, liabilities, buildingId, adminUserId);
 };
 
 /* UPDATE LIABILITY */
 const updateLiability = (req, res) => {
   const {
     id,
-    admin_user_id,
-    user_id,
-    user_type_id,
-    property_id,
-    building_id,
+    adminUserId,
+    userId,
+    userTypeId,
+    propertyId,
+    buildingId,
     status,
   } = req.body;
   pool.query(
@@ -190,11 +190,11 @@ const updateLiability = (req, res) => {
     UPDATE 
       concepts 
     SET 
-      admin_user_id = ${admin_user_id},
-      user_id = ${user_id},
-      user_type_id = ${user_type_id},
-      property_id = ${property_id},
-      building_id = ${building_id},
+      admin_user_id = ${adminUserId},
+      user_id = ${userId},
+      user_type_id = ${userTypeId},
+      property_id = ${propertyId},
+      building_id = ${buildingId},
       status = ${status}
     WHERE 
       id = ${id}`,
