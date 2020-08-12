@@ -60,6 +60,16 @@ const getPropertyById = (req, res) => {
       pr.defaulting,
       pr.property_type_id,
       pr.building_id,
+      spr.id
+        AS sub_property_id,
+      spt.property_type
+        AS sub_property_type,
+      spr.number
+        AS sub_property_number,
+      spr.floor
+        AS sub_property_floor,
+      spr.aliquot
+        AS sub_property_aliquot,
       li.user_id,
       us.image,
       us.first_name,
@@ -73,6 +83,14 @@ const getPropertyById = (req, res) => {
       property_types
       AS pt
       ON pr.property_type_id = pt.id
+    LEFT JOIN
+      sub_properties
+      AS spr
+      ON spr.property_id = pr.id
+    LEFT JOIN
+      property_types
+      AS spt
+      ON spr.property_type_id = spt.id
     LEFT JOIN
       liabilities
       AS li

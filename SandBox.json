@@ -59,10 +59,10 @@ PROPERTIES:
   "GetAll":
   {
     /* "index":
-      ""(all), 
-      "1"(pr.number), 
-      "2"(pr.floor), 
-      "3"(pr.defaulting), 
+      ""(all),
+      "1"(pr.number),
+      "2"(pr.floor),
+      "3"(pr.defaulting),
       "4"(pr.property_type_id).
     */
     "buildingId": "29",
